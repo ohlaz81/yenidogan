@@ -1,0 +1,176 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum Gender {
+  GIRL
+  BOY
+  UNISEX
+}
+
+enum NameStyle {
+  MODERN
+  CLASSIC
+  RARE
+  POPULAR
+}
+
+enum UserRole {
+  ADMIN
+}
+
+model User {
+  id             String   @id @default(cuid())
+  email          String   @unique
+  passwordHash   String
+  name           String?
+  role           UserRole @default(ADMIN)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model MediaAsset {
+  id               String              @id @default(cuid())
+  url              String
+  alt              String?
+  createdAt        DateTime            @default(now())
+  names            Name[]
+  heroSlides       HeroSlide[]         @relation("HeroSlideImage")
+  showcases        CategoryShowcase[]  @relation("ShowcaseImage")
+  guideCovers      GuideArticle[]      @relation("GuideCover")
+}
+
+model Name {
+  id               String         @id @default(cuid())
+  slug             String         @unique
+  displayName      String
+  gender           Gender
+  meaning          String
+  origin           String
+  pronunciation    String
+  popularity       Int            @default(3)
+  popularScore     Int            @default(0)
+  inQuran          Boolean        @default(false)
+  style            NameStyle      @default(MODERN)
+  isShort          Boolean        @default(false)
+  beautifulMeaning Boolean        @default(false)
+  firstLetter      String
+  intro            String?
+  traits           Json?
+  published        Boolean        @default(true)
+  imageId          String?
+  image            MediaAsset?    @relation(fields: [imageId], references: [id])
+  similarFrom      SimilarName[]  @relation("SimilarSource")
+  similarTo        SimilarName[]  @relation("SimilarTarget")
+  homeFeatured     HomeFeaturedName[]
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  @@index([gender, published])
+  @@index([firstLetter, gender, published])
+  @@index([inQuran, published])
+  @@index([style, published])
+  @@index([isShort, published])
+  @@index([beautifulMeaning, published])
+  @@index([popularScore])
+}
+
+model SimilarName {
+  id       String @id @default(cuid())
+  sourceId String
+  targetId String
+  source   Name   @relation("SimilarSource", fields: [sourceId], references: [id], onDelete: Cascade)
+  target   Name   @relation("SimilarTarget", fields: [targetId], references: [id], onDelete: Cascade)
+
+  @@unique([sourceId, targetId])
+}
+
+model GuideArticle {
+  id          String      @id @default(cuid())
+  slug        String      @unique
+  title       String
+  excerpt     String?
+  body        String
+  coverId     String?
+  cover       MediaAsset? @relation("GuideCover", fields: [coverId], references: [id])
+  published   Boolean     @default(false)
+  publishedAt DateTime?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model FAQ {
+  id        String @id @default(cuid())
+  sortOrder Int    @default(0)
+  question  String
+  answer    String
+}
+
+model HeroSlide {
+  id        String     @id @default(cuid())
+  sortOrder Int        @default(0)
+  headline  String
+  subline   String?
+  ctaLabel  String?
+  ctaHref   String?
+  imageId   String
+  image     MediaAsset @relation("HeroSlideImage", fields: [imageId], references: [id])
+  published Boolean    @default(true)
+}
+
+model HomepageQuickLink {
+  id        String  @id @default(cuid())
+  label     String
+  href      String
+  iconKey   String
+  sortOrder Int     @default(0)
+  published Boolean @default(true)
+}
+
+model CategoryShowcase {
+  id        String      @id @default(cuid())
+  title     String
+  subtitle  String?
+  href      String
+  tagLabel  String
+  tagTone   String
+  imageId   String?
+  image     MediaAsset? @relation("ShowcaseImage", fields: [imageId], references: [id])
+  sortOrder Int         @default(0)
+  published Boolean     @default(true)
+}
+
+model HomeFeaturedName {
+  id       String @id @default(cuid())
+  column   String
+  position Int
+  nameId   String?
+  name     Name?  @relation(fields: [nameId], references: [id])
+
+  @@unique([column, position])
+}
+
+model SiteSetting {
+  key   String @id
+  value String
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  message   String
+  createdAt DateTime @default(now())
+  read      Boolean  @default(false)
+}
+
+model NewsletterSubscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+}

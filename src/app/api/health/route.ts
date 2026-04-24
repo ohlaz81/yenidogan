@@ -48,13 +48,13 @@ export async function GET() {
 
   try {
     const s = getSupabase();
-    const probe = await s.from("Name").select("id", { count: "exact", head: true });
+    const probe = await s.from("User").select("id", { count: "exact", head: true });
     if (probe.error) {
       return NextResponse.json(
         {
           ok: false,
           step: "supabase",
-          message: "Supabase bağlandı; sorgu hata verdi (tablo adı / şema farkı olabilir).",
+          message: "Supabase bağlandı; sorgu hata verdi (User tablosu / şema farkı olabilir).",
           supabaseMessage: probe.error.message,
         },
         { status: 503 },
@@ -69,7 +69,7 @@ export async function GET() {
         AUTH_SECRET: "set",
         NEXT_PUBLIC_SUPABASE_ANON_KEY: hasAnon ? "set" : "optional",
       },
-      nameTableProbe: { count: probe.count },
+      userTableProbe: { count: probe.count },
     });
   } catch (e) {
     const err = e instanceof Error ? e.message : String(e);

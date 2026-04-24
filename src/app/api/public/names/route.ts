@@ -1,33 +1,20 @@
 import { NextRequest } from "next/server";
-import { getSupabase } from "@/lib/supabase/admin";
-import { mapByIds } from "@/lib/supabase/media-helpers";
+import { getNameBySlugFromStore } from "@/lib/static/names-store";
 
-const sel =
-  "id,slug,displayName,gender,meaning,origin,pronunciation,popularity,popularScore,inQuran,style,isShort,beautifulMeaning,firstLetter,intro,traits,published,imageId,createdAt,updatedAt";
-
+/**
+ * Sorgu param: ?slugs=a,b,c — slug listesine göre isim yükler (kaynak: src/data/baby-names.ts).
+ */
 export async function GET(req: NextRequest) {
   const raw = req.nextUrl.searchParams.get("slugs");
-  const slugs = raw?.split(",").map((s) => s.trim()).filter(Boolean) ?? [];
+  const slugs = raw
+    ?.split(",")
+    .map((s) => s.trim())
+    .filter(Boolean) ?? [];
   if (!slugs.length) {
     return Response.json([]);
   }
-  const s = getSupabase();
-  const { data, error } = await s
-    .from("Name")
-    .select(sel)
-    .eq("published", true)
-    .in("slug", slugs);
-  if (error) {
-    return Response.json({ error: error.message }, { status: 500 });
-  }
-  const rows = data ?? [];
-  const m = await mapByIds(
-    s,
-    rows.map((n: { imageId: string | null }) => n.imageId).filter(Boolean) as string[],
-  );
-  const names = rows.map((n: (typeof rows)[0]) => ({
-    ...n,
-    image: n.imageId ? m.get(n.imageId) ?? null : null,
-  }));
+  const names = slugs
+    .map((slug) => getNameBySlugFromStore(slug))
+    .filter((n): n is NonNullable<typeof n> => n != null);
   return Response.json(names);
 }

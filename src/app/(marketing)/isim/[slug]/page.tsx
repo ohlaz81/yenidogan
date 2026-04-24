@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getSupabase } from "@/lib/supabase/admin";
+import { getStaticGuides } from "@/data/static-guide";
 import { getNameBySlug, getNamesByLetter } from "@/lib/queries/names";
+import { getAllNameSlugs } from "@/lib/static/names-store";
 import { genderLabels, styleLabels } from "@/lib/labels";
 import { Breadcrumb } from "@/components/marketing/Breadcrumb";
 import { FavoriteHeart } from "@/components/marketing/FavoriteHeart";
@@ -14,17 +15,14 @@ import { Stars } from "@/components/marketing/Stars";
 
 type Props = { params: Promise<{ slug: string }> };
 
+export function generateStaticParams() {
+  return getAllNameSlugs().map((slug) => ({ slug }));
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const s = getSupabase();
-  const { data: name } = await s
-    .from("Name")
-    .select("displayName,meaning,origin")
-    .eq("slug", slug)
-    .eq("published", true)
-    .maybeSingle();
-  if (!name) return { title: "İsim bulunamadı" };
-  const n = name as { displayName: string; meaning: string; origin: string };
+  const n = await getNameBySlug(slug);
+  if (!n) return { title: "İsim bulunamadı" };
   return {
     title: `${n.displayName} isminin anlamı`,
     description: `${n.displayName}: ${n.meaning} (${n.origin})`,
@@ -49,13 +47,7 @@ export default async function NameDetailPage({ params }: Props) {
   const sameLetter = await getNamesByLetter(name.firstLetter, name.gender, 8);
   const others = sameLetter.filter((n) => n.id !== name.id && !similar.some((s) => s.id === n.id)).slice(0, 6);
 
-  const s2 = getSupabase();
-  const { data: guides } = await s2
-    .from("GuideArticle")
-    .select("id,slug,title,excerpt")
-    .eq("published", true)
-    .order("publishedAt", { ascending: false, nullsFirst: false })
-    .limit(3);
+  const guides = getStaticGuides().slice(0, 3);
 
   const genderPath = name.gender === "GIRL" ? "/kiz-isimleri" : name.gender === "BOY" ? "/erkek-isimleri" : "/tum-isimleri";
   const genderCrumb =
@@ -181,11 +173,11 @@ export default async function NameDetailPage({ params }: Props) {
         </section>
       )}
 
-      {(guides ?? []).length > 0 && (
+      {guides.length > 0 && (
         <section className="mt-12">
           <h2 className="font-display text-xl font-semibold text-primary">İlginizi çekebilir</h2>
           <ul className="mt-4 space-y-2 text-sm">
-            {(guides ?? []).map((g) => (
+            {guides.map((g) => (
               <li key={g.id}>
                 <Link href={`/isim-rehberi/${g.slug}`} className="font-medium text-accent-pink hover:underline">
                   {g.title}

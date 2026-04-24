@@ -5,11 +5,6 @@ export const dynamic = "force-dynamic";
 
 const links = [
   { href: "/admin", label: "Özet" },
-  { href: "/admin/isimler", label: "İsimler" },
-  { href: "/admin/medya", label: "Medya" },
-  { href: "/admin/rehber", label: "Rehber" },
-  { href: "/admin/sss-faq", label: "SSS" },
-  { href: "/admin/anasayfa", label: "Ana sayfa" },
   { href: "/admin/iletisim", label: "İletişim" },
 ];
 
@@ -30,7 +25,11 @@ export default async function AdminProtectedLayout({ children }: { children: Rea
               {l.label}
             </Link>
           ))}
-          <Link href="/" className="mt-6 rounded-lg px-3 py-2 text-zinc-500 hover:bg-zinc-50">
+          <p className="mt-4 px-3 text-xs leading-relaxed text-zinc-500">
+            İsim listesi ve rehber yazıları sitede koddan gelir. Diğer yönetim ekranları (eski URL’ler) varsa doğrudan
+            adresle açılabilir; menüde gösterilmez.
+          </p>
+          <Link href="/" className="mt-4 rounded-lg px-3 py-2 text-zinc-500 hover:bg-zinc-50">
             Siteye dön →
           </Link>
         </nav>

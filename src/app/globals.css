@@ -1,19 +1,22 @@
 @import "tailwindcss";
 
+/* Mockup: yumuşak bebek / ebeveyn arayüzü — mor (#4B2A7F), pembe, lavanta */
 :root {
-  --background: #faf8ff;
-  --foreground: #1f1633;
-  --primary: #4b2c82;
+  --background: #f8f6fc;
+  --foreground: #1d1b41;
+  --primary: #4b2a7f;
   --primary-foreground: #ffffff;
   --accent-pink: #e91e8c;
-  --accent-pink-soft: #fce7f3;
+  --accent-pink-soft: #fff0f3;
   --accent-blue: #5b8def;
-  --accent-blue-soft: #e3f0ff;
+  --accent-blue-soft: #e8f0ff;
   --accent-yellow: #f5c542;
   --accent-green: #34a853;
+  --accent-lavender: #9b7fd1;
   --muted: #6b5f7a;
   --card: #ffffff;
   --border: #ede7f7;
+  --footer: #1a1430;
 }
 
 @theme inline {

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getSupabase } from "@/lib/supabase/admin";
+import { isMissingTableError, postgrestToError } from "@/lib/supabase/errors";
 import { mapByIds } from "@/lib/supabase/media-helpers";
 import { MediaImage } from "@/components/marketing/MediaImage";
 import type { GuideArticle, MediaAsset } from "@/types/database";
@@ -17,7 +18,17 @@ export default async function GuideIndexPage() {
     .select("*")
     .eq("published", true)
     .order("publishedAt", { ascending: false, nullsFirst: false });
-  if (error) throw error;
+  if (error) {
+    if (isMissingTableError(error)) {
+      return (
+        <div className="mx-auto max-w-6xl px-4 py-10">
+          <h1 className="font-display text-3xl font-semibold text-primary">İsim rehberi</h1>
+          <p className="mt-2 text-sm text-muted">Rehber tablosu henüz yok; admin panelden içerik eklediğinizde burada listelenir.</p>
+        </div>
+      );
+    }
+    throw postgrestToError(error, "isim-rehberi:GuideArticle");
+  }
   const raw = (data ?? []) as GuideArticle[];
   const m = await mapByIds(
     s,

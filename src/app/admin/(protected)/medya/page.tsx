@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { getSupabase } from "@/lib/supabase/admin";
+import { postgrestToError } from "@/lib/supabase/errors";
 import { requireAdminSession } from "@/lib/admin-auth";
 import { MediaUpload } from "@/components/admin/MediaUpload";
 
@@ -11,7 +12,7 @@ export default async function AdminMediaPage() {
     .select("*")
     .order("createdAt", { ascending: false })
     .limit(200);
-  if (error) throw error;
+  if (error) throw postgrestToError(error, "admin/medya:MediaAsset");
 
   return (
     <div className="space-y-6">

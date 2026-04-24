@@ -1,4 +1,5 @@
 import { getSupabase } from "@/lib/supabase/admin";
+import { postgrestToError } from "@/lib/supabase/errors";
 import { mapByIds } from "@/lib/supabase/media-helpers";
 import type { Gender, Name, NameStyle, NameWithDetail, MediaAsset } from "@/types/database";
 
@@ -58,8 +59,8 @@ export async function listNames(p: NameListParams) {
   dataQ = dataQ.range(skip, to);
 
   const [cRes, dRes] = await Promise.all([countQ, dataQ]);
-  if (cRes.error) throw cRes.error;
-  if (dRes.error) throw dRes.error;
+  if (cRes.error) throw postgrestToError(cRes.error, "listNames:count");
+  if (dRes.error) throw postgrestToError(dRes.error, "listNames:rows");
   const itemsRaw = (dRes.data ?? []) as Name[];
   const total = cRes.count ?? 0;
   const media = await mapByIds(
@@ -81,7 +82,7 @@ export async function getNameBySlug(slug: string): Promise<NameWithDetail | null
     .eq("slug", slug)
     .eq("published", true)
     .maybeSingle();
-  if (n.error) throw n.error;
+  if (n.error) throw postgrestToError(n.error, "getNameBySlug:Name");
   const name = n.data as Name | null;
   if (!name) return null;
   const imgM = await mapByIds(s, name.imageId ? [name.imageId] : []);
@@ -91,7 +92,7 @@ export async function getNameBySlug(slug: string): Promise<NameWithDetail | null
     .from("SimilarName")
     .select("id,sourceId,targetId")
     .eq("sourceId", name.id);
-  if (sErr) throw sErr;
+  if (sErr) throw postgrestToError(sErr, "getNameBySlug:SimilarName");
   const tids = [...new Set((sims ?? []).map((x) => (x as { targetId: string }).targetId))];
   if (!tids.length) {
     return { ...name, image, similarFrom: [] };
@@ -100,7 +101,7 @@ export async function getNameBySlug(slug: string): Promise<NameWithDetail | null
     .from("Name")
     .select(nameSelect)
     .in("id", tids);
-  if (tErr) throw tErr;
+  if (tErr) throw postgrestToError(tErr, "getNameBySlug:Name:targets");
   const tRows = (tnames ?? []) as Name[];
   const tum = await mapByIds(
     s,

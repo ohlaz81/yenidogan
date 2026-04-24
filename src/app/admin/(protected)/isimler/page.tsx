@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getSupabase } from "@/lib/supabase/admin";
+import { postgrestToError } from "@/lib/supabase/errors";
 import { requireAdminSession } from "@/lib/admin-auth";
 import { deleteNameAction } from "@/app/admin/actions/name";
 
@@ -11,7 +12,7 @@ export default async function AdminNamesPage() {
     .select("*")
     .order("updatedAt", { ascending: false })
     .limit(200);
-  if (error) throw error;
+  if (error) throw postgrestToError(error, "admin/isimler:Name");
 
   return (
     <div className="space-y-6">

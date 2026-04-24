@@ -1,4 +1,5 @@
 import { getSupabase } from "@/lib/supabase/admin";
+import { postgrestToError } from "@/lib/supabase/errors";
 import { requireAdminSession } from "@/lib/admin-auth";
 import { GuideForm } from "@/components/admin/GuideForm";
 
@@ -10,7 +11,7 @@ export default async function NewGuidePage() {
     .select("*")
     .order("createdAt", { ascending: false })
     .limit(200);
-  if (error) throw error;
+  if (error) throw postgrestToError(error, "admin/rehber/yeni:MediaAsset");
   return (
     <div className="space-y-6">
       <h1 className="font-display text-2xl font-semibold text-primary">Yeni rehber yazısı</h1>

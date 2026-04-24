@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createId } from "@paralleldrive/cuid2";
 import { getSupabase } from "@/lib/supabase/admin";
+import { postgrestToError } from "@/lib/supabase/errors";
 import { requireAdminSession } from "@/lib/admin-auth";
 
 const schema = z.object({
@@ -32,7 +33,7 @@ export async function saveFaq(formData: FormData) {
       .from("FAQ")
       .update({ question: d.question, answer: d.answer, sortOrder: d.sortOrder } as never)
       .eq("id", d.id);
-    if (error) throw error;
+    if (error) throw postgrestToError(error, "saveFaq:update");
   } else {
     const { error } = await s.from("FAQ").insert({
       id: createId(),
@@ -40,7 +41,7 @@ export async function saveFaq(formData: FormData) {
       answer: d.answer,
       sortOrder: d.sortOrder,
     } as never);
-    if (error) throw error;
+    if (error) throw postgrestToError(error, "saveFaq:insert");
   }
   revalidatePath("/");
   revalidatePath("/sss");
@@ -51,7 +52,7 @@ export async function deleteFaqAction(formData: FormData) {
   await requireAdminSession();
   const id = z.string().parse(formData.get("id"));
   const { error } = await getSupabase().from("FAQ").delete().eq("id", id);
-  if (error) throw error;
+  if (error) throw postgrestToError(error, "deleteFaqAction");
   revalidatePath("/");
   revalidatePath("/sss");
   redirect("/admin/sss-faq");

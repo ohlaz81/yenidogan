@@ -1,4 +1,5 @@
 import { getSupabase } from "@/lib/supabase/admin";
+import { postgrestToError } from "@/lib/supabase/errors";
 import { requireAdminSession } from "@/lib/admin-auth";
 import { markMessageRead } from "@/app/admin/actions/message";
 
@@ -10,7 +11,7 @@ export default async function AdminInboxPage() {
     .select("*")
     .order("createdAt", { ascending: false })
     .limit(100);
-  if (error) throw error;
+  if (error) throw postgrestToError(error, "admin/iletisim:ContactMessage");
   return (
     <div className="space-y-6">
       <h1 className="font-display text-2xl font-semibold text-primary">İletişim kutusu</h1>

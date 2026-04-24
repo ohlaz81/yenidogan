@@ -1,4 +1,5 @@
 import { getSupabase } from "@/lib/supabase/admin";
+import { postgrestToError } from "@/lib/supabase/errors";
 import { requireAdminSession } from "@/lib/admin-auth";
 import { updateFeaturedSlot } from "@/app/admin/actions/home";
 
@@ -13,8 +14,8 @@ export default async function AdminHomeSettingsPage() {
       .eq("published", true)
       .order("displayName", { ascending: true }),
   ]);
-  if (a.error) throw a.error;
-  if (b.error) throw b.error;
+  if (a.error) throw postgrestToError(a.error, "admin/anasayfa:HomeFeaturedName");
+  if (b.error) throw postgrestToError(b.error, "admin/anasayfa:Name");
   const slots = a.data ?? [];
   const names = b.data ?? [];
 

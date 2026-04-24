@@ -1,5 +1,5 @@
 import { getSupabase } from "@/lib/supabase/admin";
-import { isMissingTableError } from "@/lib/supabase/errors";
+import { isMissingTableError, postgrestToError } from "@/lib/supabase/errors";
 import { mapByIds } from "@/lib/supabase/media-helpers";
 import type { PostgrestError } from "@supabase/supabase-js";
 import type {
@@ -50,7 +50,7 @@ function takeRows<T>(
       }
       return [];
     }
-    throw res.error;
+    throw postgrestToError(res.error, `getHomePageData/${tableName}`);
   }
   return (res.data ?? []) as T[];
 }
@@ -58,7 +58,7 @@ function takeRows<T>(
 function takeCount(res: { count: number | null; error: PostgrestError | null }): number {
   if (res.error) {
     if (isMissingTableError(res.error)) return 0;
-    throw res.error;
+    throw postgrestToError(res.error, "getHomePageData/Name:count");
   }
   return res.count ?? 0;
 }
@@ -73,7 +73,7 @@ async function fetchFeatured(
   const n = await s.from("Name").select("*").in("id", nameIds);
   if (n.error) {
     if (isMissingTableError(n.error)) return list.map((r) => ({ ...r, name: null }));
-    throw n.error;
+    throw postgrestToError(n.error, "getHomePageData/Name:featured");
   }
   const nameRows = (n.data ?? []) as Name[];
   const media = await mapByIds(
@@ -147,7 +147,7 @@ export async function getHomePageData() {
       if (isMissingTableError(one.error)) {
         /* random isim atlanır */
       } else {
-        throw one.error;
+        throw postgrestToError(one.error, "getHomePageData/Name:random");
       }
     } else {
       const row = (one.data ?? [])[0] as Name | undefined;

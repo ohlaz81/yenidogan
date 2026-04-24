@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getSupabase } from "@/lib/supabase/admin";
+import { postgrestToError } from "@/lib/supabase/errors";
 import { requireAdminSession } from "@/lib/admin-auth";
 import { deleteGuideAction } from "@/app/admin/actions/guide";
 
@@ -7,7 +8,7 @@ export default async function AdminGuideListPage() {
   await requireAdminSession();
   const s = getSupabase();
   const { data: items, error } = await s.from("GuideArticle").select("*").order("updatedAt", { ascending: false });
-  if (error) throw error;
+  if (error) throw postgrestToError(error, "admin/rehber:GuideArticle");
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">

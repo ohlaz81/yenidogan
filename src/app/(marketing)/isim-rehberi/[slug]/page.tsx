@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getSupabase } from "@/lib/supabase/admin";
+import { postgrestToError } from "@/lib/supabase/errors";
 import { mapByIds } from "@/lib/supabase/media-helpers";
 import { Breadcrumb } from "@/components/marketing/Breadcrumb";
 import { MediaImage } from "@/components/marketing/MediaImage";
@@ -31,7 +32,7 @@ export default async function GuideArticlePage({ params }: Props) {
     .eq("slug", slug)
     .eq("published", true)
     .maybeSingle();
-  if (error) throw error;
+  if (error) throw postgrestToError(error, "isim-rehberi/[slug]:GuideArticle");
   if (!data) notFound();
   const base = data as GuideArticle;
   const m = base.coverId ? await mapByIds(s, [base.coverId]) : new Map();

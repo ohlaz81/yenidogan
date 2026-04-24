@@ -1,4 +1,5 @@
 import { getSupabase } from "@/lib/supabase/admin";
+import { postgrestToError } from "@/lib/supabase/errors";
 import { requireAdminSession } from "@/lib/admin-auth";
 import { FaqForm } from "@/components/admin/FaqForm";
 import { deleteFaqAction } from "@/app/admin/actions/faq";
@@ -7,7 +8,7 @@ export default async function AdminFaqPage() {
   await requireAdminSession();
   const s = getSupabase();
   const { data: faqs, error } = await s.from("FAQ").select("*").order("sortOrder", { ascending: true });
-  if (error) throw error;
+  if (error) throw postgrestToError(error, "admin/sss-faq:FAQ");
   return (
     <div className="space-y-8">
       <h1 className="font-display text-2xl font-semibold text-primary">Sık sorulan sorular</h1>

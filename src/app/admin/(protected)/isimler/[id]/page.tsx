@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { getSupabase } from "@/lib/supabase/admin";
+import { postgrestToError } from "@/lib/supabase/errors";
 import { requireAdminSession } from "@/lib/admin-auth";
 import { NameForm } from "@/components/admin/NameForm";
 import type { Name } from "@/types/database";
@@ -11,7 +12,7 @@ export default async function EditNamePage({ params }: Props) {
   const { id } = await params;
   const s = getSupabase();
   const { data: row, error } = await s.from("Name").select("*").eq("id", id).maybeSingle();
-  if (error) throw error;
+  if (error) throw postgrestToError(error, "admin/isimler/[id]:Name");
   if (!row) notFound();
   const { data: sims } = await s.from("SimilarName").select("targetId").eq("sourceId", id);
   const tids = [...new Set((sims ?? []).map((x) => (x as { targetId: string }).targetId))];
@@ -28,7 +29,7 @@ export default async function EditNamePage({ params }: Props) {
     .select("*")
     .order("createdAt", { ascending: false })
     .limit(200);
-  if (mErr) throw mErr;
+  if (mErr) throw postgrestToError(mErr, "admin/isimler/[id]:MediaAsset");
 
   return (
     <div className="space-y-6">

@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createId } from "@paralleldrive/cuid2";
 import { getSupabase } from "@/lib/supabase/admin";
+import { postgrestToError } from "@/lib/supabase/errors";
 import { requireAdminSession } from "@/lib/admin-auth";
 import { slugify } from "@/lib/slug";
 
@@ -49,7 +50,7 @@ export async function saveGuide(formData: FormData) {
       .from("GuideArticle")
       .update({ ...data, updatedAt: new Date().toISOString() } as never)
       .eq("id", d.id);
-    if (error) throw error;
+    if (error) throw postgrestToError(error, "saveGuide:update");
   } else {
     const { error } = await s.from("GuideArticle").insert({
       id: createId(),
@@ -57,7 +58,7 @@ export async function saveGuide(formData: FormData) {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     } as never);
-    if (error) throw error;
+    if (error) throw postgrestToError(error, "saveGuide:insert");
   }
   revalidatePath("/isim-rehberi");
   revalidatePath(`/isim-rehberi/${slug}`);
@@ -68,7 +69,7 @@ export async function deleteGuideAction(formData: FormData) {
   await requireAdminSession();
   const id = z.string().parse(formData.get("id"));
   const { error } = await getSupabase().from("GuideArticle").delete().eq("id", id);
-  if (error) throw error;
+  if (error) throw postgrestToError(error, "deleteGuideAction");
   revalidatePath("/isim-rehberi");
   redirect("/admin/rehber");
 }

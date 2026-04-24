@@ -1,7 +1,7 @@
 import path from "path";
 import { config as loadEnv } from "dotenv";
-import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@/generated/prisma/client";
+import { createPrismaPgForDatabaseUrl } from "./prisma-pg-adapter";
 
 const root = process.cwd();
 loadEnv({ path: path.join(root, ".env"), override: true });
@@ -12,14 +12,7 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 function createPrisma() {
-  const connectionString = process.env.DATABASE_URL;
-  if (!connectionString) {
-    throw new Error(
-      "DATABASE_URL tanımlı değil. Supabase: pool (örn. 6543 + pgbouncer) .env’e; DIRECT_URL ayrı (migrasyon).",
-    );
-  }
-  const adapter = new PrismaPg({ connectionString });
-  return new PrismaClient({ adapter });
+  return new PrismaClient({ adapter: createPrismaPgForDatabaseUrl() });
 }
 
 export const prisma = globalForPrisma.prisma ?? createPrisma();

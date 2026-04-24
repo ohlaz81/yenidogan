@@ -1,13 +1,22 @@
-import { prisma } from "@/lib/db";
+import { getSupabase } from "@/lib/supabase/admin";
 import { requireAdminSession } from "@/lib/admin-auth";
 import { updateFeaturedSlot } from "@/app/admin/actions/home";
 
 export default async function AdminHomeSettingsPage() {
   await requireAdminSession();
-  const [slots, names] = await Promise.all([
-    prisma.homeFeaturedName.findMany({ orderBy: [{ column: "asc" }, { position: "asc" }], include: { name: true } }),
-    prisma.name.findMany({ where: { published: true }, orderBy: { displayName: "asc" }, select: { id: true, displayName: true } }),
+  const s = getSupabase();
+  const [a, b] = await Promise.all([
+    s.from("HomeFeaturedName").select("*").order("column", { ascending: true }).order("position", { ascending: true }),
+    s
+      .from("Name")
+      .select("id, displayName")
+      .eq("published", true)
+      .order("displayName", { ascending: true }),
   ]);
+  if (a.error) throw a.error;
+  if (b.error) throw b.error;
+  const slots = a.data ?? [];
+  const names = b.data ?? [];
 
   return (
     <div className="space-y-8">

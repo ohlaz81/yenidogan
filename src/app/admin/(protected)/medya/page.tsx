@@ -1,11 +1,17 @@
 import Image from "next/image";
-import { prisma } from "@/lib/db";
+import { getSupabase } from "@/lib/supabase/admin";
 import { requireAdminSession } from "@/lib/admin-auth";
 import { MediaUpload } from "@/components/admin/MediaUpload";
 
 export default async function AdminMediaPage() {
   await requireAdminSession();
-  const items = await prisma.mediaAsset.findMany({ orderBy: { createdAt: "desc" }, take: 200 });
+  const s = getSupabase();
+  const { data: items, error } = await s
+    .from("MediaAsset")
+    .select("*")
+    .order("createdAt", { ascending: false })
+    .limit(200);
+  if (error) throw error;
 
   return (
     <div className="space-y-6">
@@ -15,7 +21,7 @@ export default async function AdminMediaPage() {
       </div>
       <MediaUpload />
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {items.map((m) => (
+        {(items ?? []).map((m) => (
           <div key={m.id} className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
             <div className="relative aspect-square bg-zinc-50">
               {m.url.endsWith(".svg") ? (

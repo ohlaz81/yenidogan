@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { NameListTemplate } from "@/components/marketing/NameListTemplate";
-import type { Gender } from "@/generated/prisma/enums";
+import type { Gender } from "@/types/database";
 
 type SP = Record<string, string | string[] | undefined>;
 

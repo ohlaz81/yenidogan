@@ -1,4 +1,4 @@
-import type { Gender, NameStyle } from "@/generated/prisma/enums";
+import type { Gender, NameStyle } from "@/types/database";
 
 export const genderLabels: Record<Gender, string> = {
   GIRL: "Kız ismi",

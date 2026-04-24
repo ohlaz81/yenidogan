@@ -1,7 +1,8 @@
 "use server";
 
 import { z } from "zod";
-import { prisma } from "@/lib/db";
+import { createId } from "@paralleldrive/cuid2";
+import { getSupabase } from "@/lib/supabase/admin";
 
 const schema = z.object({
   name: z.string().min(2),
@@ -20,6 +21,14 @@ export async function sendContact(_: ContactState, formData: FormData): Promise<
   if (!parsed.success) {
     return { error: "Lütfen tüm alanları doğru doldurun." };
   }
-  await prisma.contactMessage.create({ data: parsed.data });
+  const { error } = await getSupabase().from("ContactMessage").insert({
+    id: createId(),
+    name: parsed.data.name,
+    email: parsed.data.email,
+    message: parsed.data.message,
+    read: false,
+    createdAt: new Date().toISOString(),
+  } as never);
+  if (error) return { error: "Gönderilemedi." };
   return { ok: true };
 }

@@ -3,7 +3,8 @@
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { prisma } from "@/lib/db";
+import { createId } from "@paralleldrive/cuid2";
+import { getSupabase } from "@/lib/supabase/admin";
 import { requireAdminSession } from "@/lib/admin-auth";
 import { slugify } from "@/lib/slug";
 
@@ -42,10 +43,21 @@ export async function saveGuide(formData: FormData) {
     published: d.published === "true",
     publishedAt: d.published === "true" ? new Date() : null,
   };
+  const s = getSupabase();
   if (d.id) {
-    await prisma.guideArticle.update({ where: { id: d.id }, data });
+    const { error } = await s
+      .from("GuideArticle")
+      .update({ ...data, updatedAt: new Date().toISOString() } as never)
+      .eq("id", d.id);
+    if (error) throw error;
   } else {
-    await prisma.guideArticle.create({ data });
+    const { error } = await s.from("GuideArticle").insert({
+      id: createId(),
+      ...data,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    } as never);
+    if (error) throw error;
   }
   revalidatePath("/isim-rehberi");
   revalidatePath(`/isim-rehberi/${slug}`);
@@ -55,7 +67,8 @@ export async function saveGuide(formData: FormData) {
 export async function deleteGuideAction(formData: FormData) {
   await requireAdminSession();
   const id = z.string().parse(formData.get("id"));
-  await prisma.guideArticle.delete({ where: { id } });
+  const { error } = await getSupabase().from("GuideArticle").delete().eq("id", id);
+  if (error) throw error;
   revalidatePath("/isim-rehberi");
   redirect("/admin/rehber");
 }

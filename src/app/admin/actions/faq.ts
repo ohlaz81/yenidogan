@@ -3,7 +3,8 @@
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { prisma } from "@/lib/db";
+import { createId } from "@paralleldrive/cuid2";
+import { getSupabase } from "@/lib/supabase/admin";
 import { requireAdminSession } from "@/lib/admin-auth";
 
 const schema = z.object({
@@ -25,10 +26,21 @@ export async function saveFaq(formData: FormData) {
     throw new Error("Geçersiz form");
   }
   const d = parsed.data;
+  const s = getSupabase();
   if (d.id) {
-    await prisma.fAQ.update({ where: { id: d.id }, data: { question: d.question, answer: d.answer, sortOrder: d.sortOrder } });
+    const { error } = await s
+      .from("FAQ")
+      .update({ question: d.question, answer: d.answer, sortOrder: d.sortOrder } as never)
+      .eq("id", d.id);
+    if (error) throw error;
   } else {
-    await prisma.fAQ.create({ data: { question: d.question, answer: d.answer, sortOrder: d.sortOrder } });
+    const { error } = await s.from("FAQ").insert({
+      id: createId(),
+      question: d.question,
+      answer: d.answer,
+      sortOrder: d.sortOrder,
+    } as never);
+    if (error) throw error;
   }
   revalidatePath("/");
   revalidatePath("/sss");
@@ -38,7 +50,8 @@ export async function saveFaq(formData: FormData) {
 export async function deleteFaqAction(formData: FormData) {
   await requireAdminSession();
   const id = z.string().parse(formData.get("id"));
-  await prisma.fAQ.delete({ where: { id } });
+  const { error } = await getSupabase().from("FAQ").delete().eq("id", id);
+  if (error) throw error;
   revalidatePath("/");
   revalidatePath("/sss");
   redirect("/admin/sss-faq");

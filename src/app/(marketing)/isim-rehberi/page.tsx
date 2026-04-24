@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { prisma } from "@/lib/db";
+import { getSupabase } from "@/lib/supabase/admin";
+import { mapByIds } from "@/lib/supabase/media-helpers";
 import { MediaImage } from "@/components/marketing/MediaImage";
+import type { GuideArticle, MediaAsset } from "@/types/database";
 
 export const metadata: Metadata = {
   title: "İsim rehberi",
@@ -9,40 +11,56 @@ export const metadata: Metadata = {
 };
 
 export default async function GuideIndexPage() {
-  const articles = await prisma.guideArticle.findMany({
-    where: { published: true },
-    orderBy: { publishedAt: "desc" },
-    include: { cover: true },
-  });
+  const s = getSupabase();
+  const { data, error } = await s
+    .from("GuideArticle")
+    .select("*")
+    .eq("published", true)
+    .order("publishedAt", { ascending: false, nullsFirst: false });
+  if (error) throw error;
+  const raw = (data ?? []) as GuideArticle[];
+  const m = await mapByIds(
+    s,
+    raw.map((a) => a.coverId).filter(Boolean) as string[],
+  );
+  const articles = raw.map((a) => ({
+    ...a,
+    cover: a.coverId ? m.get(a.coverId) ?? null : null,
+  }));
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
       <h1 className="font-display text-3xl font-semibold text-primary">İsim rehberi</h1>
       <p className="mt-2 max-w-2xl text-muted">İsim seçimine dair pratik rehber yazıları ve öneriler.</p>
       <div className="mt-10 grid gap-6 sm:grid-cols-2">
-        {articles.map((a) => (
-          <Link
-            key={a.id}
-            href={`/isim-rehberi/${a.slug}`}
-            className="group overflow-hidden rounded-3xl border border-border bg-card shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-          >
-            <div className="relative h-40 w-full">
-              <MediaImage
-                src={a.cover?.url ?? "/media/placeholder.svg"}
-                alt={a.cover?.alt ?? a.title}
-                fill
-                className="object-cover transition duration-500 group-hover:scale-105"
-                sizes="(max-width:768px) 100vw, 50vw"
-              />
-            </div>
-            <div className="p-5">
-              <p className="text-xs font-bold uppercase tracking-wide text-accent-pink">İsim rehberi</p>
-              <h2 className="mt-1 font-display text-xl font-semibold text-primary group-hover:underline">{a.title}</h2>
-              {a.excerpt && <p className="mt-2 line-clamp-3 text-sm text-muted">{a.excerpt}</p>}
-              <span className="mt-3 inline-block text-sm font-semibold text-accent-pink">Devamını oku →</span>
-            </div>
-          </Link>
-        ))}
+        {articles.map((a) => {
+          const cover = a.cover as MediaAsset | null;
+          return (
+            <Link
+              key={a.id}
+              href={`/isim-rehberi/${a.slug}`}
+              className="group overflow-hidden rounded-2xl border border-border bg-white shadow-sm transition hover:border-primary/30"
+            >
+              <div className="relative aspect-[16/10] bg-muted/30">
+                {cover && (
+                  <MediaImage
+                    src={cover.url}
+                    alt={cover.alt || a.title}
+                    className="object-cover transition group-hover:scale-105"
+                    fill
+                    sizes="(min-width: 640px) 50vw, 100vw"
+                  />
+                )}
+              </div>
+              <div className="p-4">
+                <h2 className="font-display text-lg font-semibold text-primary group-hover:underline">
+                  {a.title}
+                </h2>
+                {a.excerpt && <p className="mt-1 line-clamp-2 text-sm text-muted">{a.excerpt}</p>}
+              </div>
+            </Link>
+          );
+        })}
       </div>
     </div>
   );

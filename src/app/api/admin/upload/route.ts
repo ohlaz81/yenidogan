@@ -1,5 +1,6 @@
+import { createId } from "@paralleldrive/cuid2";
 import { auth } from "@/auth";
-import { prisma } from "@/lib/db";
+import { getSupabase } from "@/lib/supabase/admin";
 import { mkdir, writeFile } from "fs/promises";
 import path from "path";
 
@@ -29,9 +30,19 @@ export async function POST(req: Request) {
   await writeFile(path.join(dir, filename), buffer);
 
   const url = `/uploads/${filename}`;
-  const asset = await prisma.mediaAsset.create({
-    data: { url, alt: original },
-  });
-
-  return Response.json(asset);
+  const s = getSupabase();
+  const { data, error } = await s
+    .from("MediaAsset")
+    .insert({
+      id: createId(),
+      url,
+      alt: original,
+      createdAt: new Date().toISOString(),
+    } as never)
+    .select()
+    .single();
+  if (error) {
+    return Response.json({ error: error.message }, { status: 500 });
+  }
+  return Response.json(data);
 }

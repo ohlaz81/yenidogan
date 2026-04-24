@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Name, MediaAsset } from "@/generated/prisma/client";
+import type { Name, MediaAsset } from "@/types/database";
 import { genderLabels, styleLabels } from "@/lib/labels";
 import { FavoriteHeart } from "./FavoriteHeart";
 import { MediaImage } from "./MediaImage";

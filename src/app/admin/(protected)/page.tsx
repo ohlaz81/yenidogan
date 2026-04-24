@@ -1,15 +1,20 @@
 import Link from "next/link";
-import { prisma } from "@/lib/db";
+import { getSupabase } from "@/lib/supabase/admin";
 import { requireAdminSession } from "@/lib/admin-auth";
 
 export default async function AdminHomePage() {
   await requireAdminSession();
-  const [names, articles, media, messages] = await Promise.all([
-    prisma.name.count(),
-    prisma.guideArticle.count(),
-    prisma.mediaAsset.count(),
-    prisma.contactMessage.count({ where: { read: false } }),
+  const s = getSupabase();
+  const [n, a, m, u] = await Promise.all([
+    s.from("Name").select("id", { count: "exact", head: true }),
+    s.from("GuideArticle").select("id", { count: "exact", head: true }),
+    s.from("MediaAsset").select("id", { count: "exact", head: true }),
+    s.from("ContactMessage").select("id", { count: "exact", head: true }).eq("read", false),
   ]);
+  const names = n.count ?? 0;
+  const articles = a.count ?? 0;
+  const media = m.count ?? 0;
+  const messages = u.count ?? 0;
 
   return (
     <div className="space-y-8">

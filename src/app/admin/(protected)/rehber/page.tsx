@@ -1,11 +1,13 @@
 import Link from "next/link";
-import { prisma } from "@/lib/db";
+import { getSupabase } from "@/lib/supabase/admin";
 import { requireAdminSession } from "@/lib/admin-auth";
 import { deleteGuideAction } from "@/app/admin/actions/guide";
 
 export default async function AdminGuideListPage() {
   await requireAdminSession();
-  const items = await prisma.guideArticle.findMany({ orderBy: { updatedAt: "desc" } });
+  const s = getSupabase();
+  const { data: items, error } = await s.from("GuideArticle").select("*").order("updatedAt", { ascending: false });
+  if (error) throw error;
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
@@ -15,7 +17,7 @@ export default async function AdminGuideListPage() {
         </Link>
       </div>
       <ul className="space-y-2">
-        {items.map((a) => (
+        {(items ?? []).map((a) => (
           <li key={a.id} className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm">
             <span className="font-medium">{a.title}</span>
             <div className="flex items-center gap-3">

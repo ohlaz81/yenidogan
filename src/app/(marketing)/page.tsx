@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { prisma } from "@/lib/db";
+import { getSupabase } from "@/lib/supabase/admin";
 import { getHomePageData } from "@/lib/queries/home";
 import { genderLabels, styleLabels, toneClass } from "@/lib/labels";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
@@ -19,10 +19,13 @@ const quickIcon: Record<string, string> = {
 };
 
 export default async function HomePage() {
-  const [data, faqs] = await Promise.all([
+  const s = getSupabase();
+  const [data, fr] = await Promise.all([
     getHomePageData(),
-    prisma.fAQ.findMany({ orderBy: { sortOrder: "asc" } }),
+    s.from("FAQ").select("*").order("sortOrder", { ascending: true }),
   ]);
+  if (fr.error) throw fr.error;
+  const faqs = fr.data ?? [];
 
   const hero = data.heroSlides[0];
   const heroImg = hero?.image?.url ?? "/media/placeholder.svg";

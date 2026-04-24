@@ -3,7 +3,7 @@
 import { useActionState } from "react";
 import Link from "next/link";
 import { saveName, type NameSaveState } from "@/app/admin/actions/name";
-import type { Name } from "@/generated/prisma/client";
+import type { Name } from "@/types/database";
 
 const initial: NameSaveState = {};
 

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { NameListTemplate } from "@/components/marketing/NameListTemplate";
-import type { Gender, NameStyle } from "@/generated/prisma/enums";
+import type { Gender, NameStyle } from "@/types/database";
 import type { NameListParams } from "@/lib/queries/names";
 
 export const metadata: Metadata = {

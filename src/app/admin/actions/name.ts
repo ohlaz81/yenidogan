@@ -1,13 +1,13 @@
 "use server";
 
+import { createId } from "@paralleldrive/cuid2";
 import { z } from "zod";
-import { prisma } from "@/lib/db";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import { getSupabase } from "@/lib/supabase/admin";
 import { requireAdminSession } from "@/lib/admin-auth";
 import { slugify } from "@/lib/slug";
 import { firstLetterTr } from "@/lib/text";
-import { Prisma } from "@/generated/prisma/client";
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 
 const genderZ = z.enum(["GIRL", "BOY", "UNISEX"]);
 const styleZ = z.enum(["MODERN", "CLASSIC", "RARE", "POPULAR"]);
@@ -72,7 +72,7 @@ export async function saveName(_: NameSaveState, formData: FormData): Promise<Na
         .filter(Boolean)
     : [];
 
-  const data: Prisma.NameUncheckedUpdateInput = {
+  const row: Record<string, unknown> = {
     slug,
     displayName: d.displayName.trim(),
     gender: d.gender,
@@ -87,35 +87,48 @@ export async function saveName(_: NameSaveState, formData: FormData): Promise<Na
     beautifulMeaning: d.beautifulMeaning === "true",
     firstLetter,
     intro: d.intro?.trim() || null,
-    traits: traitsArr.length ? traitsArr : Prisma.JsonNull,
+    traits: traitsArr.length ? traitsArr : null,
     imageId: d.imageId && d.imageId.length ? d.imageId : null,
     published: d.published === "true",
   };
 
+  const s = getSupabase();
   let id = d.id;
   if (id) {
-    await prisma.name.update({ where: { id }, data });
+    const up = await s
+      .from("Name")
+      .update({ ...row, updatedAt: new Date().toISOString() } as never)
+      .eq("id", id);
+    if (up.error) return { error: up.error.message };
   } else {
-    const created = await prisma.name.create({
-      data: {
-        ...data,
-        traits: traitsArr.length ? traitsArr : undefined,
-      } as Prisma.NameUncheckedCreateInput,
-    });
-    id = created.id;
+    const newId = createId();
+    const ins = await s.from("Name").insert({
+      id: newId,
+      ...row,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    } as never);
+    if (ins.error) return { error: ins.error.message };
+    id = newId;
   }
 
   if (id) {
-    await prisma.similarName.deleteMany({ where: { sourceId: id } });
+    await s.from("SimilarName").delete().eq("sourceId", id);
     if (d.similarSlugs?.trim()) {
       const parts = d.similarSlugs
         .split(/[\n,]+/)
         .map((s) => slugify(s.trim()))
         .filter(Boolean);
-      const targets = await prisma.name.findMany({ where: { slug: { in: parts } } });
-      for (const t of targets) {
-        if (t.id === id) continue;
-        await prisma.similarName.create({ data: { sourceId: id, targetId: t.id } }).catch(() => {});
+      const { data: targets } = await s.from("Name").select("id,slug").in("slug", parts);
+      for (const t of targets ?? []) {
+        if ((t as { id: string }).id === id) continue;
+        await s
+          .from("SimilarName")
+          .insert({
+            id: createId(),
+            sourceId: id,
+            targetId: (t as { id: string }).id,
+          } as never);
       }
     }
   }
@@ -131,9 +144,11 @@ export async function saveName(_: NameSaveState, formData: FormData): Promise<Na
 export async function deleteNameAction(formData: FormData) {
   await requireAdminSession();
   const id = z.string().parse(formData.get("id"));
-  await prisma.similarName.deleteMany({ where: { OR: [{ sourceId: id }, { targetId: id }] } });
-  await prisma.homeFeaturedName.updateMany({ where: { nameId: id }, data: { nameId: null } });
-  await prisma.name.delete({ where: { id } });
+  const s = getSupabase();
+  await s.from("SimilarName").delete().eq("sourceId", id);
+  await s.from("SimilarName").delete().eq("targetId", id);
+  await s.from("HomeFeaturedName").update({ nameId: null } as never).eq("nameId", id);
+  await s.from("Name").delete().eq("id", id);
   revalidatePath("/");
   redirect("/admin/isimler");
 }

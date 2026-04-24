@@ -1,5 +1,5 @@
 import { saveFaq } from "@/app/admin/actions/faq";
-import type { FAQ } from "@/generated/prisma/client";
+import type { FAQ } from "@/types/database";
 
 export function FaqForm({ item }: { item?: FAQ }) {
   return (

@@ -1,11 +1,17 @@
 import Link from "next/link";
-import { prisma } from "@/lib/db";
+import { getSupabase } from "@/lib/supabase/admin";
 import { requireAdminSession } from "@/lib/admin-auth";
 import { deleteNameAction } from "@/app/admin/actions/name";
 
 export default async function AdminNamesPage() {
   await requireAdminSession();
-  const names = await prisma.name.findMany({ orderBy: { updatedAt: "desc" }, take: 200 });
+  const s = getSupabase();
+  const { data: names, error } = await s
+    .from("Name")
+    .select("*")
+    .order("updatedAt", { ascending: false })
+    .limit(200);
+  if (error) throw error;
 
   return (
     <div className="space-y-6">
@@ -30,7 +36,7 @@ export default async function AdminNamesPage() {
             </tr>
           </thead>
           <tbody>
-            {names.map((n) => (
+            {(names ?? []).map((n) => (
               <tr key={n.id} className="border-b border-zinc-50">
                 <td className="px-4 py-3 font-medium">{n.displayName}</td>
                 <td className="px-4 py-3 text-zinc-600">{n.slug}</td>

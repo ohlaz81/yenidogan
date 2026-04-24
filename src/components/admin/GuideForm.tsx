@@ -1,5 +1,5 @@
 import { saveGuide } from "@/app/admin/actions/guide";
-import type { GuideArticle } from "@/generated/prisma/client";
+import type { GuideArticle } from "@/types/database";
 
 type Props = {
   article?: GuideArticle;

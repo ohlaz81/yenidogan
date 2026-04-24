@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { compare } from "bcryptjs";
-import { prisma } from "@/lib/db";
+import { getSupabase } from "@/lib/supabase/admin";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   trustHost: true,
@@ -20,16 +20,20 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const email = credentials?.email;
         const password = credentials?.password;
         if (!email || !password) return null;
-        const user = await prisma.user.findUnique({
-          where: { email: String(email) },
-        });
-        if (!user) return null;
-        const ok = await compare(String(password), user.passwordHash);
+        const s = getSupabase();
+        const { data: user, error } = await s
+          .from("User")
+          .select("id,email,passwordHash,name")
+          .eq("email", String(email))
+          .maybeSingle();
+        if (error || !user) return null;
+        const ok = await compare(String(password), (user as { passwordHash: string }).passwordHash);
         if (!ok) return null;
+        const u = user as { id: string; email: string; name: string | null };
         return {
-          id: user.id,
-          email: user.email,
-          name: user.name ?? undefined,
+          id: u.id,
+          email: u.email,
+          name: u.name ?? undefined,
         };
       },
     }),

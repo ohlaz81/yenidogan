@@ -1,11 +1,13 @@
-import { prisma } from "@/lib/db";
+import { getSupabase } from "@/lib/supabase/admin";
 import { requireAdminSession } from "@/lib/admin-auth";
 import { FaqForm } from "@/components/admin/FaqForm";
 import { deleteFaqAction } from "@/app/admin/actions/faq";
 
 export default async function AdminFaqPage() {
   await requireAdminSession();
-  const faqs = await prisma.fAQ.findMany({ orderBy: { sortOrder: "asc" } });
+  const s = getSupabase();
+  const { data: faqs, error } = await s.from("FAQ").select("*").order("sortOrder", { ascending: true });
+  if (error) throw error;
   return (
     <div className="space-y-8">
       <h1 className="font-display text-2xl font-semibold text-primary">Sık sorulan sorular</h1>

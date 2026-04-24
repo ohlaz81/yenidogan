@@ -1,5 +1,7 @@
 import { getSupabase } from "@/lib/supabase/admin";
+import { isMissingTableError } from "@/lib/supabase/errors";
 import { mapByIds } from "@/lib/supabase/media-helpers";
+import type { PostgrestError } from "@supabase/supabase-js";
 import type {
   CategoryShowcase,
   GuideArticle,
@@ -37,6 +39,30 @@ function withCovers(
   return (rows ?? []).map((a) => ({ ...a, cover: a.coverId ? m.get(a.coverId) ?? null : null }));
 }
 
+function takeRows<T>(
+  res: { data: T[] | null; error: PostgrestError | null },
+  tableName: string,
+): T[] {
+  if (res.error) {
+    if (isMissingTableError(res.error)) {
+      if (process.env.NODE_ENV === "development") {
+        console.warn(`[getHomePageData] ${tableName}:`, res.error.message);
+      }
+      return [];
+    }
+    throw res.error;
+  }
+  return (res.data ?? []) as T[];
+}
+
+function takeCount(res: { count: number | null; error: PostgrestError | null }): number {
+  if (res.error) {
+    if (isMissingTableError(res.error)) return 0;
+    throw res.error;
+  }
+  return res.count ?? 0;
+}
+
 async function fetchFeatured(
   s: ReturnType<typeof getSupabase>,
   rows: HomeFeaturedName[] | null,
@@ -45,7 +71,10 @@ async function fetchFeatured(
   const nameIds = [...new Set(list.map((r) => r.nameId).filter(Boolean))] as string[];
   if (!nameIds.length) return list.map((r) => ({ ...r, name: null }));
   const n = await s.from("Name").select("*").in("id", nameIds);
-  if (n.error) throw n.error;
+  if (n.error) {
+    if (isMissingTableError(n.error)) return list.map((r) => ({ ...r, name: null }));
+    throw n.error;
+  }
   const nameRows = (n.data ?? []) as Name[];
   const media = await mapByIds(
     s,
@@ -79,35 +108,32 @@ export async function getHomePageData() {
       .limit(4),
     s.from("Name").select("id", { count: "exact", head: true }).eq("published", true),
   ]);
-  for (const r of [hs, sh, qk, fg, fb, ga, countRes]) {
-    if (r.error) throw r.error;
-  }
-  const heroList = (hs.data ?? []) as HeroSlide[];
+  const heroList = takeRows(hs, "HeroSlide") as HeroSlide[];
   const mHero = await mapByIds(
     s,
     heroList.map((h) => h.imageId),
   );
   const heroSlides: Hero[] = withImages(heroList, mHero) as Hero[];
 
-  const shList = (sh.data ?? []) as CategoryShowcase[];
+  const shList = takeRows(sh, "CategoryShowcase") as CategoryShowcase[];
   const mSh = await mapByIds(
     s,
     shList.map((x) => x.imageId).filter(Boolean) as string[],
   );
   const showcases: Showcase[] = withOptionalImage(shList, mSh) as Showcase[];
 
-  const quickLinks = (qk.data ?? []) as HomepageQuickLink[];
-  const featuredGirlSlots = await fetchFeatured(s, fg.data as HomeFeaturedName[] | null);
-  const featuredBoySlots = await fetchFeatured(s, fb.data as HomeFeaturedName[] | null);
+  const quickLinks = takeRows(qk, "HomepageQuickLink") as HomepageQuickLink[];
+  const featuredGirlSlots = await fetchFeatured(s, takeRows(fg, "HomeFeaturedName") as HomeFeaturedName[] | null);
+  const featuredBoySlots = await fetchFeatured(s, takeRows(fb, "HomeFeaturedName") as HomeFeaturedName[] | null);
 
-  const gList = (ga.data ?? []) as GuideArticle[];
+  const gList = takeRows(ga, "GuideArticle") as GuideArticle[];
   const mGa = await mapByIds(
     s,
     gList.map((a) => a.coverId).filter(Boolean) as string[],
   );
   const guideArticles: GArticle[] = withCovers(gList, mGa);
 
-  const nameCount = countRes.count ?? 0;
+  const nameCount = takeCount(countRes);
   let randomName: NWithImg | null = null;
   if (nameCount > 0) {
     const offset = Math.floor(Math.random() * nameCount);
@@ -117,11 +143,18 @@ export async function getHomePageData() {
       .eq("published", true)
       .order("id", { ascending: true })
       .range(offset, offset);
-    if (one.error) throw one.error;
-    const row = (one.data ?? [])[0] as Name | undefined;
-    if (row) {
-      const mi = await mapByIds(s, row.imageId ? [row.imageId] : []);
-      randomName = { ...row, image: row.imageId ? mi.get(row.imageId) ?? null : null };
+    if (one.error) {
+      if (isMissingTableError(one.error)) {
+        /* random isim atlanır */
+      } else {
+        throw one.error;
+      }
+    } else {
+      const row = (one.data ?? [])[0] as Name | undefined;
+      if (row) {
+        const mi = await mapByIds(s, row.imageId ? [row.imageId] : []);
+        randomName = { ...row, image: row.imageId ? mi.get(row.imageId) ?? null : null };
+      }
     }
   }
 

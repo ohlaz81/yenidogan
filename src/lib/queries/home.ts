@@ -135,3 +135,5 @@ export async function getHomePageData() {
     randomName,
   };
 }
+
+export type HomePageData = Awaited<ReturnType<typeof getHomePageData>>;

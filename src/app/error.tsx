@@ -14,9 +14,8 @@ export default function AppError({ error, reset }: { error: Error & { digest?: s
     <div className="flex min-h-dvh flex-col items-center justify-center bg-zinc-50 px-6 text-center text-zinc-800">
       <h1 className="font-display text-2xl font-semibold text-primary">Sayfa yüklenemedi</h1>
       <p className="mt-3 max-w-md text-sm text-zinc-600">
-        Sunucu tarafında bir hata oluştu. Sık neden: Vercel’de <code className="rounded bg-zinc-200 px-1">NEXT_PUBLIC_SUPABASE_URL</code> ve{" "}
-        <code className="rounded bg-zinc-200 px-1">SUPABASE_SERVICE_ROLE_KEY</code> ve{" "}
-        <code className="rounded bg-zinc-200 px-1">AUTH_SECRET</code> eksik veya hatalı.
+        Sunucu tarafında bir hata oluştu. <code className="rounded bg-zinc-200 px-1">/api/health</code> — env ve veritabanı; E394
+        gibi ref’ler genelde iç içe async bileşen kaynaklıydı (düzeltme push’landı, yeniden deploy edin).
       </p>
       <p className="mt-2 max-w-md text-xs text-zinc-500">
         Teşhis: canlı sitede <code className="break-all">/api/health</code> adresini aç; hangi adımın kırmızı olduğunu gösterir.

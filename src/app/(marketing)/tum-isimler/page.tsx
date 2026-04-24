@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { NameListTemplate } from "@/components/marketing/NameListTemplate";
+import { NameListTemplate, loadNameListTemplateData } from "@/components/marketing/NameListTemplate";
 
 export const metadata: Metadata = {
   title: "Tüm isimler (A–Z)",
@@ -10,14 +10,14 @@ type SP = Record<string, string | string[] | undefined>;
 
 export default async function Page({ searchParams }: { searchParams: Promise<SP> }) {
   const sp = await searchParams;
+  const list = await loadNameListTemplateData({ searchParams: sp, query: { orderBy: "alpha" } });
   return (
     <NameListTemplate
       title="Tüm isimler"
       description="A–Z alfabetik sıralı tam liste."
       crumbs={[{ label: "Anasayfa", href: "/" }, { label: "Tüm isimler" }]}
-      query={{ orderBy: "alpha" }}
       path="/tum-isimler"
-      searchParams={sp}
+      {...list}
     />
   );
 }

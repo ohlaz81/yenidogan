@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { NameListTemplate } from "@/components/marketing/NameListTemplate";
+import { NameListTemplate, loadNameListTemplateData } from "@/components/marketing/NameListTemplate";
 import type { Gender } from "@/types/database";
 
 type SP = Record<string, string | string[] | undefined>;
@@ -48,6 +48,7 @@ export default async function Page({
   const pathname = `/harf/${encodeURIComponent(harf)}`;
   const paginationExtra = c ? { cinsiyet: c } : undefined;
 
+  const list = await loadNameListTemplateData({ searchParams: sp, query: { letter: L, gender } });
   return (
     <NameListTemplate
       title={`${L} harfi ile başlayan ${genderLabel ? `${genderLabel} ` : ""}isimler`}
@@ -57,10 +58,9 @@ export default async function Page({
         { label: "Harfe göre", href: "/tum-isimler" },
         { label: `${L} harfi` },
       ]}
-      query={{ letter: L, gender }}
       path={pathname}
       paginationExtra={paginationExtra}
-      searchParams={sp}
+      {...list}
     />
   );
 }

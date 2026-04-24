@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { NameListTemplate } from "@/components/marketing/NameListTemplate";
+import { NameListTemplate, loadNameListTemplateData } from "@/components/marketing/NameListTemplate";
 import type { Gender, NameStyle } from "@/types/database";
 import type { NameListParams } from "@/lib/queries/names";
 
@@ -62,6 +62,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<SP>
     if (s && k !== "sayfa") extra[k] = s;
   }
 
+  const list = await loadNameListTemplateData({ searchParams: sp, query });
   return (
     <NameListTemplate
       title="İsim bulucu sonuçları"
@@ -71,10 +72,9 @@ export default async function Page({ searchParams }: { searchParams: Promise<SP>
         { label: "İsim bulucu", href: "/isim-bulucu" },
         { label: "Sonuçlar" },
       ]}
-      query={query}
       path="/isim-bulucu/sonuc"
       paginationExtra={Object.keys(extra).length ? extra : undefined}
-      searchParams={sp}
+      {...list}
     />
   );
 }

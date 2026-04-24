@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { listNames, type NameListParams } from "@/lib/queries/names";
 import { Breadcrumb, type Crumb } from "./Breadcrumb";
-import { NameCard } from "./NameCard";
+import { NameCard, type NameWithImage } from "./NameCard";
 
 function buildPageHref(path: string, page: number, extra?: Record<string, string>) {
   const qs = new URLSearchParams();
@@ -58,34 +58,60 @@ function Pagination({
   );
 }
 
-export async function NameListTemplate({
-  title,
-  description,
-  crumbs,
-  query,
-  path,
-  paginationExtra,
-  searchParams,
-}: {
-  title: string;
-  description: string;
-  crumbs: Crumb[];
-  query: NameListParams;
-  path: string;
-  paginationExtra?: Record<string, string>;
+export type NameListTemplateListState = {
+  page: number;
+  pages: number;
+  items: NameWithImage[];
+  total: number;
+};
+
+const DEFAULT_TAKE = 12;
+
+/**
+ * Sadece sayfa (default export) async olsun; bu fonksiyonu orada await edin.
+ * İç içe async Server Component (E394) üretim hatasını önler.
+ */
+export async function loadNameListTemplateData(args: {
   searchParams: Record<string, string | string[] | undefined>;
-}) {
-  const raw = searchParams.sayfa;
+  query: NameListParams;
+  take?: number;
+}): Promise<NameListTemplateListState> {
+  const take = args.take ?? DEFAULT_TAKE;
+  const raw = args.searchParams.sayfa;
   const sayfa = Array.isArray(raw) ? raw[0] : raw;
   const page = Math.max(1, parseInt(sayfa ?? "1", 10) || 1);
-  const take = 12;
   const { items, total } = await listNames({
-    ...query,
+    ...args.query,
     skip: (page - 1) * take,
     take,
   });
   const pages = Math.max(1, Math.ceil(total / take));
+  return { page, pages, items, total };
+}
 
+export function NameListTemplate({
+  title,
+  description,
+  crumbs,
+  path,
+  paginationExtra,
+  page,
+  pages,
+  items,
+  total,
+  take = DEFAULT_TAKE,
+}: {
+  title: string;
+  description: string;
+  crumbs: Crumb[];
+  path: string;
+  paginationExtra?: Record<string, string>;
+  page: number;
+  pages: number;
+  items: NameWithImage[];
+  total: number;
+  take?: number;
+}) {
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
       <Breadcrumb items={crumbs} />

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { NameListTemplate } from "@/components/marketing/NameListTemplate";
+import { NameListTemplate, loadNameListTemplateData } from "@/components/marketing/NameListTemplate";
 
 export const metadata: Metadata = {
   title: "Anlamı güzel isimler",
@@ -10,14 +10,14 @@ type SP = Record<string, string | string[] | undefined>;
 
 export default async function Page({ searchParams }: { searchParams: Promise<SP> }) {
   const sp = await searchParams;
+  const list = await loadNameListTemplateData({ searchParams: sp, query: { beautifulMeaning: true } });
   return (
     <NameListTemplate
       title="Anlamı güzel isimler"
       description="Editoryal olarak “anlamı güzel” olarak işaretlenen isimler."
       crumbs={[{ label: "Anasayfa", href: "/" }, { label: "Anlamı güzel isimler" }]}
-      query={{ beautifulMeaning: true }}
       path="/anlami-guzel-isimler"
-      searchParams={sp}
+      {...list}
     />
   );
 }

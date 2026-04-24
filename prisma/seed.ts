@@ -1,6 +1,6 @@
 import path from "path";
 import { config as loadEnv } from "dotenv";
-import { PrismaLibSql } from "@prisma/adapter-libsql";
+import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../src/generated/prisma/client";
 import bcrypt from "bcryptjs";
 import { Gender, NameStyle } from "../src/generated/prisma/enums";
@@ -9,14 +9,11 @@ loadEnv({ path: path.resolve(process.cwd(), ".env"), override: true });
 
 const connectionString = process.env.DATABASE_URL;
 if (!connectionString) {
-  throw new Error("DATABASE_URL gerekli (prisma/seed.ts)");
+  throw new Error("DATABASE_URL gerekli (prisma/seed.ts) — Supabase pool string’i .env’e ekleyin.");
 }
 
-const authToken = process.env.LIBSQL_AUTH_TOKEN;
 const prisma = new PrismaClient({
-  adapter: new PrismaLibSql(
-    authToken ? { url: connectionString, authToken } : { url: connectionString },
-  ),
+  adapter: new PrismaPg({ connectionString }),
 });
 
 async function main() {

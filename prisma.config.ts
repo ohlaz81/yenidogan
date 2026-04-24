@@ -11,7 +11,8 @@ export default defineConfig({
     path: "prisma/migrations",
     seed: "tsx prisma/seed.ts",
   },
+  // Prisma 7: migrate/CLI — Supabase doğrudan (5432), pooler (6543) değil
   datasource: {
-    url: env("DATABASE_URL"),
+    url: env("DIRECT_URL"),
   },
 });

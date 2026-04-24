@@ -4,7 +4,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
+  // URL: prisma.config.ts (DIRECT migrasyon) — uygulama: DATABASE_URL + @prisma/adapter-pg
 }
 
 enum Gender {

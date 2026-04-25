@@ -1,4 +1,8 @@
 import type { Metadata } from "next";
+import {
+  CategoryListAside,
+  NAME_LIST_CATEGORY_HEADER_CLASS,
+} from "@/components/marketing/CategoryListAside";
 import { NameListTemplate, loadNameListTemplateData } from "@/components/marketing/NameListTemplate";
 
 export const metadata: Metadata = {
@@ -17,6 +21,8 @@ export default async function Page({ searchParams }: { searchParams: Promise<SP>
       description="Özgünleşmek isteyen aileler için daha az duyulan anlamlı isimler."
       crumbs={[{ label: "Anasayfa", href: "/" }, { label: "Nadir isimler" }]}
       path="/nadir-isimler"
+      headerClassName={NAME_LIST_CATEGORY_HEADER_CLASS}
+      aside={<CategoryListAside variant="rare" listTotal={list.total} />}
       {...list}
     />
   );

@@ -177,3 +177,18 @@ export function getFeaturedByGenderFromStore(gender: "GIRL" | "BOY", limit: numb
   const { items } = listNamesFromStore({ gender, take: 200, orderBy: "popular" });
   return items.slice(0, limit);
 }
+
+export function countNamesByGender(gender: "GIRL" | "BOY") {
+  return allWithImage.filter((n) => n.gender === gender).length;
+}
+
+export function getModernOrPopularTopByGenderFromStore(gender: "GIRL" | "BOY", limit: number) {
+  const { items: modern } = listNamesFromStore({
+    gender,
+    style: "MODERN",
+    take: 200,
+    orderBy: "popular",
+  });
+  if (modern.length >= limit) return modern.slice(0, limit);
+  return getFeaturedByGenderFromStore(gender, limit);
+}

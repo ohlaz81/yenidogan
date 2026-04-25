@@ -3,26 +3,12 @@
  * Örnek olarak verilen isimler bilinçle kullanılmadı; bu liste şablon/çerçevedir.
  * Varsayılan görsel: /media/default-name.jpg
  */
-import type { Gender, Name, NameStyle } from "@/types/database";
+import { BOY_NAME_PIPE, GIRL_NAME_PIPE } from "@/data/baby-name-pipe-lists";
+import { expandExtraNameSeeds } from "@/lib/expand-extra-name-seeds";
+import type { BabyNameSeed } from "@/types/baby-name-seed";
+import type { Name } from "@/types/database";
 
-export type BabyNameSeed = {
-  id: string;
-  slug: string;
-  displayName: string;
-  gender: Gender;
-  meaning: string;
-  origin: string;
-  pronunciation: string;
-  popularity: number;
-  popularScore: number;
-  inQuran: boolean;
-  style: NameStyle;
-  isShort: boolean;
-  beautifulMeaning: boolean;
-  intro: string;
-  traits: string[];
-  similar: string[];
-};
+export type { BabyNameSeed } from "@/types/baby-name-seed";
 
 const T = "2020-01-10T00:00:00.000Z";
 
@@ -30,7 +16,7 @@ function firstLetter(name: string) {
   return name.slice(0, 1).toLocaleUpperCase("tr-TR");
 }
 
-export const BABY_NAME_SEED: BabyNameSeed[] = [
+const CORE_BABY_NAME_SEED: BabyNameSeed[] = [
   {
     id: "n-1",
     slug: "zeynep",
@@ -553,6 +539,11 @@ export const BABY_NAME_SEED: BabyNameSeed[] = [
     traits: ["Açık", "Özgür ruh", "Dinamik"],
     similar: ["duru", "ege", "dila"],
   },
+];
+
+export const BABY_NAME_SEED: BabyNameSeed[] = [
+  ...CORE_BABY_NAME_SEED,
+  ...expandExtraNameSeeds(CORE_BABY_NAME_SEED, BOY_NAME_PIPE, GIRL_NAME_PIPE),
 ];
 
 export function seedToName(s: BabyNameSeed): Name {

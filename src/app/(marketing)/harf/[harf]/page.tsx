@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import {
+  CategoryListAside,
+  NAME_LIST_CATEGORY_HEADER_CLASS,
+} from "@/components/marketing/CategoryListAside";
 import { NameListTemplate, loadNameListTemplateData } from "@/components/marketing/NameListTemplate";
 import type { Gender } from "@/types/database";
 
@@ -60,6 +64,8 @@ export default async function Page({
       ]}
       path={pathname}
       paginationExtra={paginationExtra}
+      headerClassName={NAME_LIST_CATEGORY_HEADER_CLASS}
+      aside={<CategoryListAside variant={{ kind: "letter", letter: L, gender }} listTotal={list.total} />}
       {...list}
     />
   );

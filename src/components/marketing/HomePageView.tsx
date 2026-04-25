@@ -258,39 +258,40 @@ export function HomePageView({
             </div>
             {data.randomName ? (
               <div>
-                <div className="grid min-h-[11.5rem] grid-cols-1 gap-0 sm:min-h-[13rem] sm:grid-cols-2">
-                  <div className="flex min-w-0 flex-col justify-center gap-1.5 border-b border-border/50 p-2.5 min-[400px]:min-h-0 min-[400px]:border-b-0 min-[400px]:border-r min-[400px]:border-border/50 sm:gap-2 sm:p-3">
-                    <div className="flex min-w-0 items-center gap-1.5">
-                      <h3 className="font-display text-lg font-semibold leading-tight text-accent-pink min-[400px]:text-xl sm:text-2xl">
+                {/* Her zaman yarım-yarım: sol metin, sağ görsel (alt-üst değil) */}
+                <div className="grid min-h-[10.5rem] grid-cols-2 grid-rows-1 gap-0 min-[500px]:min-h-[12.5rem]">
+                  <div className="flex min-w-0 flex-col justify-center gap-1 border-r border-border/50 p-2 pr-1.5 min-[420px]:gap-1.5 min-[420px]:p-2.5 min-[500px]:gap-2 min-[500px]:p-3 min-[500px]:pr-3">
+                    <div className="flex min-w-0 items-center gap-0.5 min-[420px]:gap-1.5">
+                      <h3 className="font-display text-sm font-semibold leading-tight text-accent-pink min-[420px]:text-base min-[500px]:text-lg sm:text-xl sm:leading-tight sm:text-2xl">
                         {data.randomName.displayName}
                       </h3>
                       <FavoriteHeart slug={data.randomName.slug} />
                     </div>
-                    <div className="flex min-w-0 flex-wrap gap-1 text-[0.6rem] min-[400px]:text-xs sm:gap-1.5 sm:text-sm">
-                      <span className="rounded-full bg-accent-pink-soft px-2 py-0.5 font-medium text-accent-pink">
+                    <div className="flex min-w-0 flex-wrap gap-0.5 min-[420px]:gap-1 min-[500px]:gap-1.5 min-[500px]:text-sm">
+                      <span className="rounded-full bg-accent-pink-soft px-1.5 py-0.5 text-[0.58rem] font-medium text-accent-pink min-[420px]:px-2 min-[420px]:text-xs">
                         {genderLabels[data.randomName.gender]}
                       </span>
-                      <span className="rounded-full bg-violet-100 px-2 py-0.5 font-medium text-violet-800">
+                      <span className="rounded-full bg-violet-100 px-1.5 py-0.5 text-[0.58rem] font-medium text-violet-800 min-[420px]:px-2 min-[420px]:text-xs">
                         {styleLabels[data.randomName.style]}
                       </span>
-                      <span className="rounded-full bg-amber-100 px-2 py-0.5 font-medium text-amber-900">
+                      <span className="max-w-full truncate rounded-full bg-amber-100 px-1.5 py-0.5 text-[0.58rem] font-medium text-amber-900 min-[420px]:px-2 min-[420px]:text-xs">
                         {data.randomName.origin}
                       </span>
                     </div>
-                    <p className="line-clamp-4 min-w-0 text-[0.65rem] leading-snug text-muted min-[400px]:text-sm min-[400px]:leading-tight sm:line-clamp-5">
+                    <p className="line-clamp-4 min-w-0 text-[0.62rem] leading-snug text-muted min-[420px]:line-clamp-5 min-[420px]:text-xs min-[500px]:text-sm min-[500px]:leading-tight">
                       <span className="font-semibold text-foreground">Anlamı:</span> {data.randomName.meaning}
                     </p>
                   </div>
-                  <div className="relative w-full min-w-0 min-h-[10.5rem] sm:h-full sm:min-h-0">
+                  <div className="relative min-h-[10.5rem] w-full min-w-0 min-[500px]:min-h-0 min-[500px]:self-stretch">
                     <MediaImage
                       src={data.randomName.image?.url ?? "/media/placeholder.svg"}
                       alt={data.randomName.image?.alt ?? data.randomName.displayName}
                       fill
                       className="no-organic object-cover"
-                      sizes="(max-width: 400px) 100vw, 50vw"
+                      sizes="(max-width: 500px) 50vw, 25vw"
                     />
                     <div
-                      className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/5 to-transparent"
+                      className="pointer-events-none absolute inset-0 bg-gradient-to-l from-black/10 to-transparent to-40%"
                       aria-hidden
                     />
                   </div>

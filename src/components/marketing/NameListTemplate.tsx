@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { listNames, type NameListParams } from "@/lib/queries/names";
 import { Breadcrumb, type Crumb } from "./Breadcrumb";
@@ -101,6 +102,8 @@ export function NameListTemplate({
   items,
   total,
   take = DEFAULT_TAKE,
+  aside,
+  headerClassName,
 }: {
   title: string;
   description: string;
@@ -112,38 +115,54 @@ export function NameListTemplate({
   items: NameWithImage[];
   total: number;
   take?: number;
+  aside?: ReactNode;
+  /** Örn. erkek/kız sayfaları: gradient kutu */
+  headerClassName?: string;
 }) {
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
       <Breadcrumb items={crumbs} />
-      <header className="mt-6 space-y-3">
-        <h1 className="font-display text-3xl font-semibold text-primary sm:text-4xl">{title}</h1>
-        <p className="max-w-2xl text-muted">{description}</p>
-        <p className="text-sm text-muted">Toplam {total} isim</p>
+      <header
+        className={headerClassName ? `mt-6 ${headerClassName}` : "mt-6 space-y-3"}
+      >
+        {headerClassName ? (
+          <div className="space-y-2">
+            <h1 className="font-display text-2xl font-bold text-primary sm:text-3xl md:text-4xl">{title}</h1>
+            <p className="max-w-2xl text-sm text-muted sm:text-base">{description}</p>
+            <p className="text-sm font-medium text-foreground/80">Toplam {total} isim</p>
+          </div>
+        ) : (
+          <>
+            <h1 className="font-display text-3xl font-semibold text-primary sm:text-4xl">{title}</h1>
+            <p className="max-w-2xl text-muted">{description}</p>
+            <p className="text-sm text-muted">Toplam {total} isim</p>
+          </>
+        )}
       </header>
-      <div className="mt-8 overflow-hidden rounded-2xl border border-border/80 bg-white shadow-sm">
-        <div
-          className="hidden border-b border-border/70 bg-violet-50/60 px-2 py-2 text-xs font-semibold text-muted md:grid md:grid-cols-[2.5rem_3.25rem_minmax(0,1fr)_6.5rem_6rem_6.5rem_6rem] md:items-center md:gap-2 lg:grid-cols-[2.5rem_3.25rem_minmax(0,1fr)_6.5rem_6.5rem_7.5rem_6.5rem] lg:gap-3"
-          aria-hidden
-        >
-          <span className="text-center">#</span>
-          <span className="text-center" title="Foto">
-            Foto
-          </span>
-          <span className="pl-0.5">İsim</span>
-          <span className="text-center">Tür</span>
-          <span className="text-center">Köken</span>
-          <span className="text-center">Kur&apos;an</span>
-          <span className="text-right pr-0.5">İşlem</span>
+      <div
+        className={
+          aside
+            ? "mt-6 grid grid-cols-1 gap-8 lg:mt-8 lg:grid-cols-[1fr_17.5rem] lg:items-start"
+            : "contents"
+        }
+      >
+        <div className={aside ? "min-w-0" : "mt-8 min-w-0"}>
+          <div className="mt-0 overflow-hidden rounded-2xl border border-violet-100/80 bg-gradient-to-b from-white to-slate-50/40 p-0.5 shadow-sm ring-1 ring-violet-100/50 sm:px-0.5 sm:py-0.5 lg:mt-0">
+            <ul className="px-0 pb-1.5 sm:px-0 sm:pb-2">
+              {items.map((n, i) => (
+                <NameListRow key={n.id} name={n} rank={(page - 1) * take + i + 1} />
+              ))}
+            </ul>
+          </div>
+          {items.length === 0 && <p className="mt-10 text-center text-muted">Bu kritere uygun isim bulunamadı.</p>}
+          <Pagination page={page} pages={pages} path={path} extra={paginationExtra} />
         </div>
-        <ul className="px-0">
-          {items.map((n, i) => (
-            <NameListRow key={n.id} name={n} rank={(page - 1) * take + i + 1} />
-          ))}
-        </ul>
+        {aside && (
+          <aside className="w-full min-w-0 space-y-4 lg:sticky lg:top-6 lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto">
+            {aside}
+          </aside>
+        )}
       </div>
-      {items.length === 0 && <p className="mt-10 text-center text-muted">Bu kritere uygun isim bulunamadı.</p>}
-      <Pagination page={page} pages={pages} path={path} extra={paginationExtra} />
     </div>
   );
 }

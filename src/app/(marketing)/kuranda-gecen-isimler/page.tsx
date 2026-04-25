@@ -1,4 +1,8 @@
 import type { Metadata } from "next";
+import {
+  CategoryListAside,
+  NAME_LIST_CATEGORY_HEADER_CLASS,
+} from "@/components/marketing/CategoryListAside";
 import { NameListTemplate, loadNameListTemplateData } from "@/components/marketing/NameListTemplate";
 
 export const metadata: Metadata = {
@@ -17,6 +21,8 @@ export default async function Page({ searchParams }: { searchParams: Promise<SP>
       description="Kur'anî kökeni veya Kur'an'da geçtiği kaynaklarda yer alan isimleri bir arada listeliyoruz."
       crumbs={[{ label: "Anasayfa", href: "/" }, { label: "Kur'an'da geçen isimler" }]}
       path="/kuranda-gecen-isimler"
+      headerClassName={NAME_LIST_CATEGORY_HEADER_CLASS}
+      aside={<CategoryListAside variant="quran" listTotal={list.total} />}
       {...list}
     />
   );

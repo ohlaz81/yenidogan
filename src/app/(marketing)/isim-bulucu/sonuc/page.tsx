@@ -1,4 +1,8 @@
 import type { Metadata } from "next";
+import {
+  CategoryListAside,
+  NAME_LIST_CATEGORY_HEADER_CLASS,
+} from "@/components/marketing/CategoryListAside";
 import { NameListTemplate, loadNameListTemplateData } from "@/components/marketing/NameListTemplate";
 import type { Gender, NameStyle } from "@/types/database";
 import type { NameListParams } from "@/lib/queries/names";
@@ -74,6 +78,8 @@ export default async function Page({ searchParams }: { searchParams: Promise<SP>
       ]}
       path="/isim-bulucu/sonuc"
       paginationExtra={Object.keys(extra).length ? extra : undefined}
+      headerClassName={NAME_LIST_CATEGORY_HEADER_CLASS}
+      aside={<CategoryListAside variant="finder" listTotal={list.total} />}
       {...list}
     />
   );

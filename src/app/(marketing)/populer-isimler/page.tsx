@@ -1,4 +1,8 @@
 import type { Metadata } from "next";
+import {
+  CategoryListAside,
+  NAME_LIST_CATEGORY_HEADER_CLASS,
+} from "@/components/marketing/CategoryListAside";
 import { NameListTemplate, loadNameListTemplateData } from "@/components/marketing/NameListTemplate";
 
 export const metadata: Metadata = {
@@ -20,6 +24,8 @@ export default async function Page({ searchParams }: { searchParams: Promise<SP>
       description="Popülerlik skoruna göre sıralanan tüm isimler. Anasayfadaki “Türkiye’de popüler isimler” bandındaki kartlar da aynı skor mantığıyla seçilir; burada tam listeyi ve sayfalamayı görebilirsiniz."
       crumbs={[{ label: "Anasayfa", href: "/" }, { label: "Popüler isimler" }]}
       path="/populer-isimler"
+      headerClassName={NAME_LIST_CATEGORY_HEADER_CLASS}
+      aside={<CategoryListAside variant="popular" listTotal={list.total} />}
       {...list}
     />
   );

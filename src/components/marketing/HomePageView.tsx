@@ -108,7 +108,7 @@ export function HomePageView({
                   src={src}
                   alt={hero?.image?.alt ?? "Bebek ismi görseli"}
                   fill
-                  className="object-cover"
+                  className="no-organic object-contain object-center"
                   sizes="100vw"
                 />
               </div>

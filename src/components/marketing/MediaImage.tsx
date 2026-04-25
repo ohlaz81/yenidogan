@@ -17,7 +17,8 @@ export function MediaImage({
   height?: number;
   sizes?: string;
 }) {
-  const mergedClassName = `site-organic-image ${className ?? ""}`.trim();
+  const hasNoOrganic = (className ?? "").includes("no-organic");
+  const mergedClassName = `${hasNoOrganic ? "" : "site-organic-image"} ${className ?? ""}`.trim();
   const isSvg = src.endsWith(".svg");
   if (isSvg) {
     const cls = fill

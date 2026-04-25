@@ -11,8 +11,11 @@ export function syntheticMedia(suffix: string, url: string, alt: string): MediaA
   };
 }
 
-/** Tekil yerel görsel: `public/media/default-name.jpg` (isteğe göre değiştirilebilir). */
-const HERO = "/media/default-name.jpg";
+const HERO = "/media/hero-soft.svg";
+const CAT_GIRL = "/media/cat-girl.svg";
+const CAT_BOY = "/media/cat-boy.svg";
+const CAT_QURAN = "/media/cat-quran.svg";
+const CAT_POPULAR = "/media/cat-popular.svg";
 
 export function defaultHeroIfEmpty(): (HeroSlide & { image: MediaAsset }) {
   return {
@@ -24,7 +27,7 @@ export function defaultHeroIfEmpty(): (HeroSlide & { image: MediaAsset }) {
     ctaHref: "/isim-bulucu",
     imageId: "fallback-hero-img",
     published: true,
-    image: syntheticMedia("hero", HERO, "Ana sayfa görseli — public/media altında değiştirilebilir"),
+    image: syntheticMedia("hero", HERO, "Ana sayfa hero görseli"),
   };
 }
 
@@ -40,7 +43,7 @@ export function defaultShowcasesIfEmpty(): Array<CategoryShowcase & { image: Med
       imageId: "fallback-cat-1",
       sortOrder: 0,
       published: true,
-      image: syntheticMedia("cat1", HERO, "Kız isimleri kategorisi"),
+      image: syntheticMedia("cat1", CAT_GIRL, "Kız isimleri kategorisi"),
     },
     {
       id: "fb-showcase-boy",
@@ -52,7 +55,7 @@ export function defaultShowcasesIfEmpty(): Array<CategoryShowcase & { image: Med
       imageId: "fallback-cat-2",
       sortOrder: 1,
       published: true,
-      image: syntheticMedia("cat2", HERO, "Erkek isimleri kategorisi"),
+      image: syntheticMedia("cat2", CAT_BOY, "Erkek isimleri kategorisi"),
     },
     {
       id: "fb-showcase-quran",
@@ -64,7 +67,7 @@ export function defaultShowcasesIfEmpty(): Array<CategoryShowcase & { image: Med
       imageId: "fallback-cat-3",
       sortOrder: 2,
       published: true,
-      image: syntheticMedia("cat3", HERO, "Kur'an isimleri kategorisi"),
+      image: syntheticMedia("cat3", CAT_QURAN, "Kur'an isimleri kategorisi"),
     },
     {
       id: "fb-showcase-pop",
@@ -76,7 +79,7 @@ export function defaultShowcasesIfEmpty(): Array<CategoryShowcase & { image: Med
       imageId: "fallback-cat-4",
       sortOrder: 3,
       published: true,
-      image: syntheticMedia("cat4", HERO, "Popüler isimler"),
+      image: syntheticMedia("cat4", CAT_POPULAR, "Popüler isimler"),
     },
   ];
 }

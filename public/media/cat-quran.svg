@@ -1,0 +1,19 @@
+<svg width="1000" height="700" viewBox="0 0 1000 700" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g3" x1="120" y1="90" x2="860" y2="620" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E8F4EC"/>
+      <stop offset="1" stop-color="#F4EFE6"/>
+    </linearGradient>
+    <linearGradient id="book" x1="338" y1="236" x2="658" y2="480" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#5E8E72"/>
+      <stop offset="1" stop-color="#3F6E56"/>
+    </linearGradient>
+  </defs>
+  <rect width="1000" height="700" rx="28" fill="url(#g3)"/>
+  <ellipse cx="500" cy="572" rx="290" ry="88" fill="#A4B4A8" fill-opacity="0.28"/>
+  <rect x="320" y="226" width="360" height="260" rx="24" fill="url(#book)"/>
+  <rect x="340" y="246" width="320" height="220" rx="16" fill="#F8F3E7"/>
+  <path d="M500 246V466" stroke="#D6CDBB" stroke-width="6"/>
+  <path d="M384 286H458M384 320H470M384 354H450M542 286H616M530 320H616M550 354H616" stroke="#C3B69D" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="500" cy="178" r="24" fill="#F5C542" fill-opacity="0.7"/>
+</svg>

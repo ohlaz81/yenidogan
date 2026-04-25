@@ -1,0 +1,20 @@
+<svg width="1000" height="700" viewBox="0 0 1000 700" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g4" x1="160" y1="80" x2="860" y2="620" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF4D6"/>
+      <stop offset="1" stop-color="#F9EBD1"/>
+    </linearGradient>
+    <linearGradient id="trophy" x1="432" y1="198" x2="586" y2="492" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F5C542"/>
+      <stop offset="1" stop-color="#C8911A"/>
+    </linearGradient>
+  </defs>
+  <rect width="1000" height="700" rx="28" fill="url(#g4)"/>
+  <ellipse cx="500" cy="586" rx="250" ry="68" fill="#CCB386" fill-opacity="0.3"/>
+  <path d="M430 240H570V300C570 354 538 398 500 420C462 398 430 354 430 300V240Z" fill="url(#trophy)"/>
+  <path d="M430 262H380C380 324 412 356 452 356" stroke="#D39B23" stroke-width="14" stroke-linecap="round"/>
+  <path d="M570 262H620C620 324 588 356 548 356" stroke="#D39B23" stroke-width="14" stroke-linecap="round"/>
+  <rect x="470" y="420" width="60" height="82" rx="14" fill="#D39B23"/>
+  <rect x="420" y="500" width="160" height="48" rx="14" fill="#B37F18"/>
+  <path d="M500 278L518 314H558L526 338L538 376L500 352L462 376L474 338L442 314H482L500 278Z" fill="#FFF5D8"/>
+</svg>

@@ -1,11 +1,16 @@
 import type { GuideArticle, MediaAsset } from "@/types/database";
-import { DEFAULT_NAME_MEDIA } from "@/lib/static/default-name-media";
+import { syntheticMedia } from "@/lib/queries/home-fallbacks";
 
 const T = "2020-01-20T00:00:00.000Z";
 
 export type GuideWithCover = GuideArticle & { cover: MediaAsset | null };
 
-const cover = () => DEFAULT_NAME_MEDIA;
+const covers = [
+  syntheticMedia("guide-1", "/media/hero-soft.svg", "Bebek ismi rehber kapağı"),
+  syntheticMedia("guide-2", "/media/cat-girl.svg", "Kız isimleri rehber kapağı"),
+  syntheticMedia("guide-3", "/media/cat-boy.svg", "Erkek isimleri rehber kapağı"),
+  syntheticMedia("guide-4", "/media/cat-quran.svg", "Kur'an isimleri rehber kapağı"),
+];
 
 const articles: GuideWithCover[] = [
   {
@@ -23,7 +28,7 @@ const articles: GuideWithCover[] = [
     publishedAt: T,
     createdAt: T,
     updatedAt: T,
-    cover: cover(),
+    cover: covers[0],
   },
   {
     id: "g-2",
@@ -37,7 +42,7 @@ const articles: GuideWithCover[] = [
     publishedAt: T,
     createdAt: T,
     updatedAt: T,
-    cover: cover(),
+    cover: covers[1],
   },
   {
     id: "g-3",
@@ -51,7 +56,7 @@ const articles: GuideWithCover[] = [
     publishedAt: T,
     createdAt: T,
     updatedAt: T,
-    cover: cover(),
+    cover: covers[2],
   },
   {
     id: "g-4",
@@ -65,7 +70,7 @@ const articles: GuideWithCover[] = [
     publishedAt: T,
     createdAt: T,
     updatedAt: T,
-    cover: cover(),
+    cover: covers[3],
   },
 ];
 

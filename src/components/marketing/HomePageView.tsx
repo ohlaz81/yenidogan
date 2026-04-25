@@ -228,11 +228,11 @@ export function HomePageView({
       </section>
 
       <section className="mx-auto max-w-6xl px-4">
-        <div className="grid grid-cols-2 gap-2.5 sm:gap-4 lg:grid-cols-2">
+        <div className="grid items-start grid-cols-1 gap-2.5 min-[500px]:grid-cols-2 min-[500px]:gap-3 sm:gap-3">
           <div className="overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
-            <div className="flex items-center justify-between bg-primary px-3 py-2.5 text-white sm:px-4 sm:py-3">
-              <span className="text-[0.68rem] font-semibold uppercase tracking-wide sm:text-sm">İsim Rehberi</span>
-              <Link href="/isim-rehberi" className="text-[0.62rem] font-semibold uppercase sm:text-xs">
+            <div className="flex items-center justify-between bg-primary px-2.5 py-2 text-white sm:px-3 sm:py-2.5">
+              <span className="text-[0.65rem] font-semibold uppercase tracking-wide sm:text-sm">İsim Rehberi</span>
+              <Link href="/isim-rehberi" className="text-[0.6rem] font-semibold uppercase sm:text-xs">
                 Tümü
               </Link>
             </div>
@@ -241,65 +241,74 @@ export function HomePageView({
                 <Link
                   key={a.id}
                   href={`/isim-rehberi/${a.slug}`}
-                  className="flex items-center justify-between px-2.5 py-2 text-xs hover:bg-accent-pink-soft/40 sm:px-4 sm:py-3 sm:text-sm"
+                  className="flex min-h-0 items-center justify-between px-2 py-1.5 text-[0.7rem] hover:bg-accent-pink-soft/40 min-[500px]:text-xs sm:px-2.5 sm:py-2 sm:text-sm"
                 >
-                  <span className="line-clamp-1">{a.title}</span>
-                  <span>›</span>
+                  <span className="line-clamp-1 pr-1">{a.title}</span>
+                  <span className="shrink-0" aria-hidden>
+                    ›
+                  </span>
                 </Link>
               ))}
             </div>
           </div>
           <div className="overflow-hidden rounded-2xl border border-border/80 bg-white shadow-sm">
-            <div className="flex items-center justify-between bg-gradient-to-r from-primary to-accent-pink px-3 py-2.5 text-white sm:px-4 sm:py-3">
-              <span className="text-[0.68rem] font-semibold uppercase tracking-wide sm:text-sm">Rastgele İsim Keşfet</span>
+            <div className="flex items-center justify-between bg-gradient-to-r from-primary to-accent-pink px-2.5 py-2 text-white sm:px-3 sm:py-2.5">
+              <span className="text-[0.65rem] font-semibold uppercase tracking-wide sm:text-sm">Rastgele İsim Keşfet</span>
               <RefreshButton />
             </div>
             {data.randomName ? (
-              <div className="space-y-2 p-2.5 sm:space-y-3 sm:p-4">
-                <div className="flex gap-2 sm:gap-3">
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-1.5 sm:gap-2">
-                      <h3 className="font-display text-xl font-semibold text-accent-pink sm:text-4xl">{data.randomName.displayName}</h3>
-                      <FavoriteHeart slug={data.randomName.slug} />
-                    </div>
-                    <div className="mt-1.5 flex flex-wrap gap-1 text-[0.62rem] sm:mt-2 sm:gap-1.5 sm:text-xs">
-                      <span className="rounded-full bg-accent-pink-soft px-2 py-1 text-accent-pink">
-                        {genderLabels[data.randomName.gender]}
-                      </span>
-                      <span className="rounded-full bg-violet-100 px-2 py-1 text-violet-800">
-                        {styleLabels[data.randomName.style]}
-                      </span>
-                      <span className="rounded-full bg-amber-100 px-2 py-1 text-amber-900">{data.randomName.origin}</span>
-                    </div>
-                    <p className="mt-1.5 text-[0.68rem] leading-tight text-muted sm:mt-3 sm:text-sm">
-                      <span className="font-semibold text-foreground">Anlamı:</span> {data.randomName.meaning}
-                    </p>
+              <div className="p-2 min-[500px]:p-2.5 sm:p-3">
+                <div className="grid min-w-0 [grid-template-columns:minmax(0,1fr)_auto] gap-x-2 gap-y-1 sm:gap-x-2.5 sm:gap-y-1.5">
+                  <div className="row-start-1 col-start-1 flex min-w-0 items-center gap-1.5 self-center">
+                    <h3 className="font-display text-base font-semibold text-accent-pink min-[500px]:text-lg sm:text-xl sm:leading-tight">
+                      {data.randomName.displayName}
+                    </h3>
+                    <FavoriteHeart slug={data.randomName.slug} />
                   </div>
-                  <div className="soft-photo-frame relative h-16 w-16 shrink-0 sm:h-24 sm:w-24">
-                    <MediaImage
-                      src={data.randomName.image?.url ?? "/media/placeholder.svg"}
-                      alt={data.randomName.image?.alt ?? data.randomName.displayName}
-                      fill
-                      className="soft-photo-image object-cover"
-                      sizes="96px"
-                    />
-                    <span className="soft-photo-vignette" aria-hidden />
+                  <div className="row-start-1 col-start-2 self-center justify-self-end">
+                    <div className="soft-photo-frame relative h-12 w-12 min-[500px]:h-14 min-[500px]:w-14 sm:h-16 sm:w-16">
+                      <MediaImage
+                        src={data.randomName.image?.url ?? "/media/placeholder.svg"}
+                        alt={data.randomName.image?.alt ?? data.randomName.displayName}
+                        fill
+                        className="soft-photo-image object-cover"
+                        sizes="(max-width: 640px) 48px, 64px"
+                      />
+                      <span className="soft-photo-vignette" aria-hidden />
+                    </div>
                   </div>
+                  <div className="col-span-2 flex min-w-0 flex-wrap gap-1 text-[0.58rem] min-[500px]:text-[0.62rem] sm:gap-1.5 sm:text-xs">
+                    <span className="rounded-full bg-accent-pink-soft px-1.5 py-0.5 text-accent-pink min-[500px]:px-2 min-[500px]:py-1">
+                      {genderLabels[data.randomName.gender]}
+                    </span>
+                    <span className="rounded-full bg-violet-100 px-1.5 py-0.5 text-violet-800 min-[500px]:px-2 min-[500px]:py-1">
+                      {styleLabels[data.randomName.style]}
+                    </span>
+                    <span className="rounded-full bg-amber-100 px-1.5 py-0.5 text-amber-900 min-[500px]:px-2 min-[500px]:py-1">
+                      {data.randomName.origin}
+                    </span>
+                  </div>
+                  <p className="col-span-2 min-w-0 text-[0.65rem] leading-snug text-muted min-[500px]:text-[0.7rem] sm:leading-tight sm:text-sm">
+                    <span className="font-semibold text-foreground">Anlamı:</span> {data.randomName.meaning}
+                  </p>
                 </div>
-                <div className="grid grid-cols-2 gap-1.5 sm:gap-2">
-                  <button type="button" className="h-8 rounded-lg border border-border text-[0.65rem] font-semibold text-muted sm:h-10 sm:rounded-xl sm:text-sm">
+                <div className="mt-1.5 grid min-[500px]:mt-2 grid-cols-2 gap-1.5 sm:gap-2">
+                  <button
+                    type="button"
+                    className="h-7 rounded-md border border-border text-[0.6rem] font-semibold text-muted min-[500px]:h-8 min-[500px]:rounded-lg min-[500px]:text-xs sm:h-8 sm:rounded-lg sm:text-sm"
+                  >
                     Favorilere ekle
                   </button>
                   <Link
                     href={`/isim/${data.randomName.slug}`}
-                    className="inline-flex h-8 items-center justify-center rounded-lg bg-primary text-[0.65rem] font-semibold text-white sm:h-10 sm:rounded-xl sm:text-sm"
+                    className="inline-flex h-7 min-[500px]:h-8 items-center justify-center rounded-md bg-primary text-[0.6rem] font-semibold text-white min-[500px]:rounded-lg min-[500px]:text-xs sm:rounded-lg sm:text-sm"
                   >
                     Detayı gör
                   </Link>
                 </div>
               </div>
             ) : (
-              <p className="p-5 text-sm text-muted">Henüz yayınlanmış isim yok.</p>
+              <p className="p-3 text-sm text-muted">Henüz yayınlanmış isim yok.</p>
             )}
           </div>
         </div>

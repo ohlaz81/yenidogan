@@ -3,18 +3,21 @@ import { NameListTemplate, loadNameListTemplateData } from "@/components/marketi
 
 export const metadata: Metadata = {
   title: "Popüler isimler",
-  description: "Öne çıkan ve sık tercih edilen bebek isimleri.",
+  description:
+    "Türkiye’de popülerlik skoruna göre sıralanan tüm bebek isimleri; anasayfadaki kayan listedeki isimler de bu sıralamayla aynı havuzdan gelir.",
 };
 
 type SP = Record<string, string | string[] | undefined>;
 
 export default async function Page({ searchParams }: { searchParams: Promise<SP> }) {
   const sp = await searchParams;
-  const list = await loadNameListTemplateData({ searchParams: sp, query: { style: "POPULAR" } });
+  // style: "POPULAR" sadece birkaç kayıtta; ana sayfa şeridi ise popularScore + kız/erkek
+  // öne çıkarma ile çalışır. Tüm isimleri popülerlik sırasıyla listele.
+  const list = await loadNameListTemplateData({ searchParams: sp, query: { orderBy: "popular" } });
   return (
     <NameListTemplate
       title="Popüler isimler"
-      description="Popülerlik skoruna göre sıralanan güncel isim listesi."
+      description="Popülerlik skoruna göre sıralanan tüm isimler. Anasayfadaki “Türkiye’de popüler isimler” bandındaki kartlar da aynı skor mantığıyla seçilir; burada tam listeyi ve sayfalamayı görebilirsiniz."
       crumbs={[{ label: "Anasayfa", href: "/" }, { label: "Popüler isimler" }]}
       path="/populer-isimler"
       {...list}

@@ -46,6 +46,14 @@ body {
   border-radius: 1.1rem;
   clip-path: polygon(3% 1%, 97% 0%, 100% 7%, 99% 93%, 96% 100%, 4% 99%, 0% 92%, 1% 8%);
   filter: saturate(1.02) contrast(1.02);
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+}
+
+img.site-organic-image,
+picture .site-organic-image {
+  display: block;
 }
 
 .hero-cycle-slide {

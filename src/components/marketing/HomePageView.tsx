@@ -34,7 +34,12 @@ export function HomePageView({
   faqs: FAQ[];
 }) {
   const hero = data.heroSlides[0];
-  const heroImg = hero?.image?.url ?? "/media/placeholder.svg";
+  const heroRotatingImages = [
+    "/media/babies/baby%20(5).jpeg",
+    "/media/babies/baby%20(6).jpeg",
+    "/media/babies/baby%20(7).jpeg",
+    "/media/babies/baby%20(8).jpeg",
+  ];
 
   const defaultHead = (
     <>
@@ -92,13 +97,22 @@ export function HomePageView({
       <section className="px-4 pt-4 sm:pt-6">
         <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[1.8rem] shadow-md shadow-primary/10">
           <div className="absolute inset-0">
-            <MediaImage
-              src={heroImg}
-              alt={hero?.image?.alt ?? "Bebek ismi görseli"}
-              fill
-              className="object-cover"
-              sizes="100vw"
-            />
+            {heroRotatingImages.map((src, i) => (
+              <div
+                key={src}
+                className="hero-cycle-slide absolute inset-0"
+                style={{ animationDelay: `${i * 5}s` }}
+                aria-hidden={i > 0}
+              >
+                <MediaImage
+                  src={src}
+                  alt={hero?.image?.alt ?? "Bebek ismi görseli"}
+                  fill
+                  className="object-cover"
+                  sizes="100vw"
+                />
+              </div>
+            ))}
           </div>
           <div className="absolute inset-0 bg-gradient-to-r from-white/82 via-white/58 to-white/15" />
           <div className="relative min-h-[18rem] px-5 py-6 sm:min-h-[24rem] sm:px-8 sm:py-8 lg:px-10">
@@ -304,30 +318,6 @@ export function HomePageView({
             </div>
           </div>
         )}
-      </section>
-
-      <section className="mx-auto max-w-6xl space-y-3 px-4 sm:space-y-4">
-        <h2 className="font-display text-2xl font-semibold text-primary">İlginizi çekebilecek içerikler</h2>
-        <div className="mobile-content-rail">
-          {data.guideArticles.slice(0, 4).map((a) => (
-            <Link key={a.id} href={`/isim-rehberi/${a.slug}`} className="mobile-content-card overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
-              <div className="relative h-24 sm:h-36">
-                <MediaImage
-                  src={a.cover?.url ?? "/media/placeholder.svg"}
-                  alt={a.cover?.alt ?? a.title}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width:1024px) 50vw, 25vw"
-                />
-              </div>
-              <div className="space-y-1.5 p-2.5 sm:space-y-2 sm:p-3">
-                <p className="text-[0.6rem] font-semibold uppercase text-accent-pink sm:text-[0.65rem]">İsim rehberi</p>
-                <p className="line-clamp-2 text-sm font-semibold leading-tight text-primary sm:text-base">{a.title}</p>
-                <p className="text-xs text-muted sm:text-sm">Devamını oku →</p>
-              </div>
-            </Link>
-          ))}
-        </div>
       </section>
 
       <section className="mx-auto max-w-6xl space-y-3 px-4">

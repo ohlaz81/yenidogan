@@ -121,23 +121,6 @@ export function HomePageView({
             </div>
           </div>
         </div>
-        <div className="mx-auto mt-4 grid max-w-6xl gap-2 rounded-2xl border border-border bg-white p-2 shadow-sm sm:grid-cols-2 lg:grid-cols-6">
-          {["Cinsiyet", "Köken", "Harf", "Anlam", "Kur'an'da Geçen"].map((label) => (
-            <button
-              key={label}
-              type="button"
-              className="h-12 rounded-xl border border-border/80 px-3 text-left text-sm font-medium text-muted transition hover:bg-accent-pink-soft/40"
-            >
-              {label}
-            </button>
-          ))}
-          <Link
-            href="/isim-bulucu"
-            className="inline-flex h-12 items-center justify-center rounded-xl bg-primary px-4 text-sm font-semibold text-white"
-          >
-            İsim bul →
-          </Link>
-        </div>
       </section>
 
       <section className="mx-auto max-w-6xl space-y-3 px-4 sm:space-y-4">
@@ -324,12 +307,7 @@ export function HomePageView({
       </section>
 
       <section className="mx-auto max-w-6xl space-y-3 px-4 sm:space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="font-display text-2xl font-semibold text-primary">İlginizi çekebilecek içerikler</h2>
-          <Link href="/isim-rehberi" className="text-xs font-semibold uppercase tracking-wide text-muted hover:text-primary">
-            Tüm yazıları gör
-          </Link>
-        </div>
+        <h2 className="font-display text-2xl font-semibold text-primary">İlginizi çekebilecek içerikler</h2>
         <div className="mobile-content-rail">
           {data.guideArticles.slice(0, 4).map((a) => (
             <Link key={a.id} href={`/isim-rehberi/${a.slug}`} className="mobile-content-card overflow-hidden rounded-2xl border border-border bg-white shadow-sm">

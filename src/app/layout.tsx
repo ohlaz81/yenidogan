@@ -17,11 +17,37 @@ const display = DM_Serif_Display({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} — Bebek isimleri ve isim rehberi`,
+    default: `${site.name} — ${site.defaultTitle}`,
     template: `%s | ${site.name}`,
   },
   description: site.description,
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "tr_TR",
+    url: site.url,
+    siteName: site.name,
+    title: `${site.name} — ${site.defaultTitle}`,
+    description: "En güzel bebek isimleri, anlamları, kökenleri ve rehber içerikleri bir arada.",
+    images: [
+      {
+        url: site.ogImage,
+        width: 1200,
+        height: 630,
+        alt: "En güzel bebek isimleri",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${site.name} — ${site.defaultTitle}`,
+    description: "Kız ve erkek bebek isimleri, anlamları ve isim seçimi rehberi.",
+    images: [site.ogImage],
+  },
 };
 
 export default function RootLayout({

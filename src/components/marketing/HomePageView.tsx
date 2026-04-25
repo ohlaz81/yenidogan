@@ -51,6 +51,41 @@ export function HomePageView({
     .filter((n): n is NonNullable<typeof n> => n != null);
   const popularNames = [...girlNames, ...boyNames].slice(0, 10);
   const noPopularNames = girlNames.length === 0 && boyNames.length === 0;
+  const popularTickerSeed =
+    popularNames.length > 0
+      ? popularNames
+      : [
+          {
+            id: "fallback-asel",
+            slug: "asel",
+            displayName: "Asel",
+            meaning: "Bal gibi tatlı ve zarif bir isim.",
+            image: { url: "/media/hero-soft.svg", alt: "Asel" },
+            gender: "GIRL" as const,
+          },
+          {
+            id: "fallback-yusuf",
+            slug: "yusuf",
+            displayName: "Yusuf",
+            meaning: "Güzelliği ve ahlakı simgeleyen güçlü bir isim.",
+            image: { url: "/media/cat-boy.svg", alt: "Yusuf" },
+            gender: "BOY" as const,
+          },
+          {
+            id: "fallback-lina",
+            slug: "lina",
+            displayName: "Lina",
+            meaning: "Işık saçan, nazik ve sevgi dolu bir isim.",
+            image: { url: "/media/cat-girl.svg", alt: "Lina" },
+            gender: "GIRL" as const,
+          },
+        ];
+  const popularTickerItems = popularTickerSeed.map((n, index) => ({
+    ...n,
+    category: index % 3 === 0 ? "Karışık" : n.gender === "GIRL" ? "Kız" : "Erkek",
+    shortMeaning: n.meaning.length > 72 ? `${n.meaning.slice(0, 72).trim()}...` : n.meaning,
+  }));
+  const popularTickerLoop = [...popularTickerItems, ...popularTickerItems];
 
   return (
     <div className="space-y-8 pb-8 sm:space-y-10">
@@ -133,27 +168,34 @@ export function HomePageView({
             Henüz öne çıkarılmış isim yok.
           </div>
         ) : (
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-            {popularNames.map((name, index) => (
-              <article key={name.id} className="overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
-                <div className="relative h-28 w-full">
-                  <MediaImage
-                    src={name.image?.url ?? "/media/placeholder.svg"}
-                    alt={name.image?.alt ?? name.displayName}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width:1024px) 50vw, 20vw"
-                  />
-                </div>
-                <div className="space-y-1 p-3">
-                  <p className="text-[0.7rem] font-bold text-accent-pink">{index + 1}</p>
-                  <Link href={`/isim/${name.slug}`} className="font-display text-lg font-semibold text-primary hover:underline">
-                    {name.displayName}
-                  </Link>
-                  <p className="line-clamp-2 text-xs text-muted">{name.meaning}</p>
-                </div>
-              </article>
-            ))}
+          <div className="popular-marquee-wrapper rounded-3xl border border-border/80 bg-white/90 p-3 shadow-sm sm:p-4">
+            <div className="popular-marquee-track">
+              {popularTickerLoop.map((name, index) => (
+                <Link
+                  key={`${name.id}-${index}`}
+                  href={`/isim/${name.slug}`}
+                  className="popular-mini-card group"
+                  aria-label={`${name.displayName} ismini incele`}
+                >
+                  <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl border border-border/80 bg-accent-pink-soft/20">
+                    <MediaImage
+                      src={name.image?.url ?? "/media/placeholder.svg"}
+                      alt={name.image?.alt ?? name.displayName}
+                      fill
+                      className="object-cover"
+                      sizes="64px"
+                    />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="font-display text-lg leading-tight text-primary transition group-hover:text-accent-pink">
+                      {name.displayName}
+                    </p>
+                    <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-accent-pink">{name.category}</p>
+                    <p className="mt-1 line-clamp-2 text-xs text-muted">{name.shortMeaning}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
         )}
       </section>

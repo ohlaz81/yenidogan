@@ -64,7 +64,6 @@ export type NameListTemplateListState = {
   page: number;
   pages: number;
   items: NameWithImage[];
-  total: number;
 };
 
 const DEFAULT_TAKE = 12;
@@ -88,7 +87,7 @@ export async function loadNameListTemplateData(args: {
     take,
   });
   const pages = Math.max(1, Math.ceil(total / take));
-  return { page, pages, items, total };
+  return { page, pages, items };
 }
 
 export function NameListTemplate({
@@ -100,7 +99,6 @@ export function NameListTemplate({
   page,
   pages,
   items,
-  total,
   take = DEFAULT_TAKE,
   aside,
   headerClassName,
@@ -113,7 +111,6 @@ export function NameListTemplate({
   page: number;
   pages: number;
   items: NameWithImage[];
-  total: number;
   take?: number;
   aside?: ReactNode;
   /** Örn. erkek/kız sayfaları: gradient kutu */
@@ -129,13 +126,11 @@ export function NameListTemplate({
           <div className="space-y-2">
             <h1 className="font-display text-2xl font-bold text-primary sm:text-3xl md:text-4xl">{title}</h1>
             <p className="max-w-2xl text-sm text-muted sm:text-base">{description}</p>
-            <p className="text-sm font-medium text-foreground/80">Toplam {total} isim</p>
           </div>
         ) : (
           <>
             <h1 className="font-display text-3xl font-semibold text-primary sm:text-4xl">{title}</h1>
             <p className="max-w-2xl text-muted">{description}</p>
-            <p className="text-sm text-muted">Toplam {total} isim</p>
           </>
         )}
       </header>

@@ -38,45 +38,15 @@ function modernSpotlight(): NameWithImage[] {
   return listNamesFromStore({ style: "MODERN", take: 5, orderBy: "popular" }).items;
 }
 
-function blurbFor(v: CategoryAsideVariant): string {
-  if (v === "popular") return "Popülerlik skoruna göre sıralanan isimler.";
-  if (v === "quran") return "Kur’an’da geçtiği belirtilen isimler.";
-  if (v === "modern") return "Modern tını ve çağdaş tercihlere yakın isimler.";
-  if (v === "rare") return "Daha az rastlanan, özgün isimler.";
-  if (v === "short") return "Kısa ve akılda kalıcı isimler.";
-  if (v === "beautiful") return "Anlamı güçlü ve olumlu çağrışımlı isimler.";
-  if (v === "all") return "Alfabetik sırayla tüm isimler.";
-  if (v === "finder") return "Seçtiğiniz filtrelere uyan sonuçlar.";
-  if (typeof v === "object" && v.kind === "letter") {
-    return `${v.letter} harfiyle başlayan isimler; cinsiyet filtresi uygulanmış olabilir.`;
-  }
-  return "";
-}
-
 /**
  * Kategori listeleri için kısa yan sütun (erkek/kız sayfalarındaki GenderListAside’tan daha sade).
  */
-export function CategoryListAside({
-  variant,
-  listTotal,
-}: {
-  variant: CategoryAsideVariant;
-  listTotal: number;
-}) {
+export function CategoryListAside({ variant }: { variant: CategoryAsideVariant }) {
   const top5 = top5ForVariant(variant);
   const modern5 = modernSpotlight();
-  const blurb = blurbFor(variant);
 
   return (
     <div className="space-y-4 text-sm">
-      <div className="rounded-2xl border border-violet-200/50 bg-gradient-to-b from-white to-violet-50/35 p-4 shadow-sm">
-        <p className="text-xs font-semibold uppercase tracking-wide text-muted">Özet</p>
-        <p className="mt-1 text-base font-semibold text-primary">
-          Bu sayfada <span className="text-accent-pink">{listTotal}</span> isim
-        </p>
-        <p className="mt-1 text-xs leading-relaxed text-muted">{blurb}</p>
-      </div>
-
       <div className="rounded-2xl border border-border/70 bg-white p-4 shadow-sm">
         <h2 className="font-display text-base font-semibold text-primary">Öne çıkan 5</h2>
         <p className="mt-0.5 text-xs text-muted">Bu kategoriye göre popüler skor.</p>

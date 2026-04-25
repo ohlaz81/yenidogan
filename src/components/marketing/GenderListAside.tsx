@@ -1,28 +1,15 @@
 import Link from "next/link";
-import {
-  countNamesByGender,
-  getFeaturedByGenderFromStore,
-  getModernOrPopularTopByGenderFromStore,
-} from "@/lib/static/names-store";
+import { getFeaturedByGenderFromStore, getModernOrPopularTopByGenderFromStore } from "@/lib/static/names-store";
 
 export function GenderListAside({ gender }: { gender: "BOY" | "GIRL" }) {
   const isBoy = gender === "BOY";
   const pop5 = getFeaturedByGenderFromStore(gender, 5);
   const rising5 = getModernOrPopularTopByGenderFromStore(gender, 5);
-  const total = countNamesByGender(gender);
   const gLabel = isBoy ? "erkek" : "kız";
   const gLabelCap = isBoy ? "Erkek" : "Kız";
 
   return (
     <div className="space-y-4 text-sm">
-      <div className="rounded-2xl border border-violet-200/60 bg-gradient-to-b from-white to-violet-50/40 p-4 shadow-sm">
-        <p className="text-xs font-semibold uppercase tracking-wide text-muted">Veri özeti</p>
-        <p className="mt-1.5 text-base font-semibold text-primary">
-          {gLabelCap} isim havuzu: <span className="text-accent-pink">{total}</span> isim
-        </p>
-        <p className="mt-1 text-xs text-muted">Anlamlar ve kökenler şablon + genişletilmiş listeyle güncellenir.</p>
-      </div>
-
       <div className="rounded-2xl border border-border/70 bg-white p-4 shadow-sm">
         <h2 className="font-display text-base font-semibold text-primary">En popüler {gLabel} isimleri</h2>
         <ol className="mt-2 space-y-1.5">

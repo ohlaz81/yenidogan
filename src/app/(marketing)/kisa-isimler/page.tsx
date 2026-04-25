@@ -22,7 +22,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<SP>
       crumbs={[{ label: "Anasayfa", href: "/" }, { label: "Kısa isimler" }]}
       path="/kisa-isimler"
       headerClassName={NAME_LIST_CATEGORY_HEADER_CLASS}
-      aside={<CategoryListAside variant="short" listTotal={list.total} />}
+      aside={<CategoryListAside variant="short" />}
       {...list}
     />
   );

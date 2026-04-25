@@ -25,7 +25,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<SP>
       crumbs={[{ label: "Anasayfa", href: "/" }, { label: "Popüler isimler" }]}
       path="/populer-isimler"
       headerClassName={NAME_LIST_CATEGORY_HEADER_CLASS}
-      aside={<CategoryListAside variant="popular" listTotal={list.total} />}
+      aside={<CategoryListAside variant="popular" />}
       {...list}
     />
   );

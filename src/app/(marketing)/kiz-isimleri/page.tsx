@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { GenderListAside } from "@/components/marketing/GenderListAside";
 import { NameListTemplate, loadNameListTemplateData } from "@/components/marketing/NameListTemplate";
-import { countNamesByGender } from "@/lib/static/names-store";
 
 export const metadata: Metadata = {
   title: "Kız isimleri",
@@ -13,10 +12,9 @@ type SP = Record<string, string | string[] | undefined>;
 export default async function Page({ searchParams }: { searchParams: Promise<SP> }) {
   const sp = await searchParams;
   const list = await loadNameListTemplateData({ searchParams: sp, query: { gender: "GIRL" } });
-  const pool = countNamesByGender("GIRL");
   return (
     <NameListTemplate
-      title={`Kız isimleri (${pool} isim)`}
+      title="Kız isimleri"
       description="Zarif, modern ve klasik kız isimlerini anlam, köken, popülerlik ve Kur’an bilgisiyle inceleyin. Sağ sütunda en popüler ve öne çıkan tınılara hızlı erişin."
       crumbs={[{ label: "Anasayfa", href: "/" }, { label: "Kız isimleri" }]}
       path="/kiz-isimleri"

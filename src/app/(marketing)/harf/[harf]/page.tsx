@@ -65,7 +65,7 @@ export default async function Page({
       path={pathname}
       paginationExtra={paginationExtra}
       headerClassName={NAME_LIST_CATEGORY_HEADER_CLASS}
-      aside={<CategoryListAside variant={{ kind: "letter", letter: L, gender }} listTotal={list.total} />}
+      aside={<CategoryListAside variant={{ kind: "letter", letter: L, gender }} />}
       {...list}
     />
   );

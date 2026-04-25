@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { listNames, type NameListParams } from "@/lib/queries/names";
 import { Breadcrumb, type Crumb } from "./Breadcrumb";
-import { NameCard, type NameWithImage } from "./NameCard";
+import { type NameWithImage } from "./NameCard";
+import { NameListRow } from "./NameListRow";
 
 function buildPageHref(path: string, page: number, extra?: Record<string, string>) {
   const qs = new URLSearchParams();
@@ -120,10 +121,26 @@ export function NameListTemplate({
         <p className="max-w-2xl text-muted">{description}</p>
         <p className="text-sm text-muted">Toplam {total} isim</p>
       </header>
-      <div className="mt-10 grid gap-4 md:grid-cols-2">
-        {items.map((n, i) => (
-          <NameCard key={n.id} name={n} index={(page - 1) * take + i} />
-        ))}
+      <div className="mt-8 overflow-hidden rounded-2xl border border-border/80 bg-white shadow-sm">
+        <div
+          className="hidden border-b border-border/70 bg-violet-50/60 px-2 py-2 text-xs font-semibold text-muted md:grid md:grid-cols-[2.5rem_3.25rem_minmax(0,1fr)_6.5rem_6rem_6.5rem_6rem] md:items-center md:gap-2 lg:grid-cols-[2.5rem_3.25rem_minmax(0,1fr)_6.5rem_6.5rem_7.5rem_6.5rem] lg:gap-3"
+          aria-hidden
+        >
+          <span className="text-center">#</span>
+          <span className="text-center" title="Foto">
+            Foto
+          </span>
+          <span className="pl-0.5">İsim</span>
+          <span className="text-center">Tür</span>
+          <span className="text-center">Köken</span>
+          <span className="text-center">Kur&apos;an</span>
+          <span className="text-right pr-0.5">İşlem</span>
+        </div>
+        <ul className="px-0">
+          {items.map((n, i) => (
+            <NameListRow key={n.id} name={n} rank={(page - 1) * take + i + 1} />
+          ))}
+        </ul>
       </div>
       {items.length === 0 && <p className="mt-10 text-center text-muted">Bu kritere uygun isim bulunamadı.</p>}
       <Pagination page={page} pages={pages} path={path} extra={paginationExtra} />

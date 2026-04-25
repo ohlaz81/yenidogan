@@ -35,10 +35,8 @@ export function HomePageView({
 }) {
   const hero = data.heroSlides[0];
   const heroRotatingImages = [
-    "/media/babies/baby%20(5).jpeg",
-    "/media/babies/baby%20(6).jpeg",
-    "/media/babies/baby%20(7).jpeg",
-    "/media/babies/baby%20(8).jpeg",
+    "/media/babies/baby%20(1).jpg",
+    "/media/babies/baby%20(9).jpeg",
   ];
 
   const defaultHead = (
@@ -101,21 +99,21 @@ export function HomePageView({
               <div
                 key={src}
                 className="hero-cycle-slide absolute inset-0"
-                style={{ animationDelay: `${i * 5}s` }}
+                style={{ animationDelay: `${i * 6}s` }}
                 aria-hidden={i > 0}
               >
                 <MediaImage
                   src={src}
                   alt={hero?.image?.alt ?? "Bebek ismi görseli"}
                   fill
-                  className="no-organic object-cover object-top"
+                  className="no-organic object-cover object-center"
                   sizes="100vw"
                 />
               </div>
             ))}
           </div>
           <div className="absolute inset-0 bg-gradient-to-r from-white/82 via-white/58 to-white/15" />
-          <div className="relative min-h-[18rem] px-5 py-6 sm:min-h-[24rem] sm:px-8 sm:py-8 lg:px-10">
+          <div className="relative min-h-[22rem] px-5 py-6 sm:min-h-[29rem] sm:px-8 sm:py-8 lg:px-10">
             <div className="max-w-xl">
               <span className="inline-flex w-fit rounded-full bg-accent-pink-soft px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-wide text-accent-pink">
                 Bebek isimleri
@@ -155,19 +153,39 @@ export function HomePageView({
 
         <div className="grid gap-3">
           {[
-            { href: "/kiz-isimleri", title: "Kız isimleri", count: "250+ anlamlı ve güzel isim", img: "/media/cat-girl.svg" },
-            { href: "/erkek-isimleri", title: "Erkek isimleri", count: "350+ modern ve özel erkek ismi", img: "/media/cat-boy.svg" },
+            {
+              href: "/kiz-isimleri",
+              title: "Kız isimleri",
+              count: "250+ anlamlı ve güzel isim",
+              img: "/media/babies/baby%20(5).jpeg",
+            },
+            {
+              href: "/erkek-isimleri",
+              title: "Erkek isimleri",
+              count: "350+ modern ve özel erkek ismi",
+              img: "/media/babies/baby%20(6).jpeg",
+            },
           ].map((x, i) => (
             <Link
               key={x.title}
               href={x.href}
-              className={`flex items-center justify-between rounded-2xl border border-border/80 p-3 shadow-sm ${
+              className={`flex items-center justify-between rounded-2xl border border-border/80 px-3.5 py-3.5 shadow-sm ${
                 i === 0 ? "bg-pink-50/70" : "bg-sky-50/70"
               }`}
             >
               <div className="flex items-center gap-2.5">
-                <div className="relative h-14 w-14 overflow-hidden rounded-xl sm:h-16 sm:w-16">
-                  <MediaImage src={x.img} alt={x.title} fill className="object-cover" sizes="64px" />
+                <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl border border-border/50 bg-white sm:h-[4.5rem] sm:w-[4.5rem]">
+                  <MediaImage
+                    src={x.img}
+                    alt={x.title}
+                    fill
+                    className={
+                      i === 1
+                        ? "no-organic object-cover object-[50%_4%]"
+                        : "no-organic object-cover object-top"
+                    }
+                    sizes="72px"
+                  />
                 </div>
                 <div>
                   <p className="font-display text-lg font-semibold leading-tight text-primary sm:text-xl">{x.title}</p>
@@ -177,7 +195,14 @@ export function HomePageView({
                   </span>
                 </div>
               </div>
-              <span className="hidden h-9 w-9 items-center justify-center rounded-full bg-white/80 text-lg text-primary sm:flex">⟲</span>
+              <span
+                className={`hidden h-9 w-9 items-center justify-center rounded-full text-base font-semibold text-white shadow-sm sm:flex ${
+                  i === 0 ? "bg-accent-pink/70" : "bg-accent-blue/70"
+                }`}
+                aria-hidden
+              >
+                ✓
+              </span>
             </Link>
           ))}
         </div>

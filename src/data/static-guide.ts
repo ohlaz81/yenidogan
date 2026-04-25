@@ -6,10 +6,10 @@ const T = "2020-01-20T00:00:00.000Z";
 export type GuideWithCover = GuideArticle & { cover: MediaAsset | null };
 
 const covers = [
-  syntheticMedia("guide-1", "/media/hero-soft.svg", "Bebek ismi rehber kapağı"),
-  syntheticMedia("guide-2", "/media/cat-girl.svg", "Kız isimleri rehber kapağı"),
-  syntheticMedia("guide-3", "/media/cat-boy.svg", "Erkek isimleri rehber kapağı"),
-  syntheticMedia("guide-4", "/media/cat-quran.svg", "Kur'an isimleri rehber kapağı"),
+  syntheticMedia("guide-1", "/media/babies/baby%20(2).jpeg", "Bebek ismi rehber kapağı 1"),
+  syntheticMedia("guide-2", "/media/babies/baby%20(3).jpeg", "Bebek ismi rehber kapağı 2"),
+  syntheticMedia("guide-3", "/media/babies/baby%20(4).jpeg", "Bebek ismi rehber kapağı 3"),
+  syntheticMedia("guide-4", "/media/babies/baby%20(5).jpeg", "Bebek ismi rehber kapağı 4"),
 ];
 
 const articles: GuideWithCover[] = [

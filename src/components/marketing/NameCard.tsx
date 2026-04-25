@@ -56,14 +56,15 @@ export function NameCard({ name, index }: { name: NameWithImage; index?: number 
         </Link>
       </div>
       <div className="order-1 flex shrink-0 justify-center self-center sm:order-2 sm:justify-end sm:self-start">
-        <div className="relative h-24 w-24 overflow-hidden rounded-2xl border-4 border-white shadow-md sm:h-28 sm:w-28 sm:rounded-full">
+        <div className="soft-photo-frame relative h-24 w-24 border-4 border-white shadow-md sm:h-28 sm:w-28">
           <MediaImage
             src={name.image?.url ?? "/media/placeholder.svg"}
             alt={name.image?.alt ?? name.displayName}
             fill
-            className="object-cover"
+            className="soft-photo-image object-cover"
             sizes="(max-width:640px) 96px, 112px"
           />
+          <span className="soft-photo-vignette" aria-hidden />
         </div>
       </div>
     </article>

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { HomePageData } from "@/lib/queries/home";
-import { genderLabels, styleLabels, toneClass } from "@/lib/labels";
+import { genderLabels, styleLabels } from "@/lib/labels";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { MediaImage } from "@/components/marketing/MediaImage";
 import { NewsletterBar } from "@/components/marketing/NewsletterBar";
@@ -88,19 +88,29 @@ export function HomePageView({
   const popularTickerLoop = [...popularTickerItems, ...popularTickerItems];
 
   return (
-    <div className="space-y-8 pb-8 sm:space-y-10">
+    <div className="space-y-6 pb-8 sm:space-y-10">
       <section className="px-4 pt-4 sm:pt-6">
-        <div className="mx-auto max-w-6xl overflow-hidden rounded-[1.8rem] border border-border bg-white shadow-md shadow-primary/5">
-          <div className="grid min-h-[26rem] gap-0 lg:grid-cols-[1.05fr_1fr]">
-            <div className="order-2 flex flex-col justify-center p-6 sm:p-8 lg:order-1 lg:pr-10">
+        <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[1.8rem] shadow-md shadow-primary/10">
+          <div className="absolute inset-0">
+            <MediaImage
+              src={heroImg}
+              alt={hero?.image?.alt ?? "Bebek ismi görseli"}
+              fill
+              className="object-cover"
+              sizes="100vw"
+            />
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-r from-white/82 via-white/58 to-white/15" />
+          <div className="relative min-h-[18rem] px-5 py-6 sm:min-h-[24rem] sm:px-8 sm:py-8 lg:px-10">
+            <div className="max-w-xl">
               <span className="inline-flex w-fit rounded-full bg-accent-pink-soft px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-wide text-accent-pink">
                 Bebek isimleri
               </span>
-              <h1 className="mt-4 font-display text-4xl font-semibold leading-[1.1] text-primary sm:text-5xl">
+              <h1 className="mt-3 font-display text-4xl font-semibold leading-[1.1] text-primary sm:mt-4 sm:text-5xl">
                 {hero?.headline ? hero.headline : defaultHead}
               </h1>
-              <p className="mt-4 max-w-xl text-base leading-relaxed text-muted sm:text-lg">{hero?.subline ?? defaultSub}</p>
-              <div className="mt-6 flex flex-wrap gap-3">
+              <p className="mt-3 text-base leading-relaxed text-muted sm:mt-4 sm:text-lg">{hero?.subline ?? defaultSub}</p>
+              <div className="mt-5 sm:mt-6">
                 <Link
                   href={hero?.ctaHref ?? "/isim-bulucu"}
                   className="inline-flex min-h-11 items-center justify-center rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white"
@@ -108,15 +118,6 @@ export function HomePageView({
                   {hero?.ctaLabel ?? "İsim bulucuya git"} →
                 </Link>
               </div>
-            </div>
-            <div className="relative order-1 min-h-[15rem] lg:order-2 lg:min-h-full">
-              <MediaImage
-                src={heroImg}
-                alt={hero?.image?.alt ?? "Bebek ismi görseli"}
-                fill
-                className="object-cover"
-                sizes="(max-width:1024px) 100vw, 50vw"
-              />
             </div>
           </div>
         </div>
@@ -139,111 +140,77 @@ export function HomePageView({
         </div>
       </section>
 
-      <section className="px-4">
-        <div className="mx-auto grid max-w-6xl grid-cols-3 gap-3 rounded-2xl bg-white p-4 shadow-sm sm:grid-cols-6">
-          {data.quickLinks.map((q) => (
-            <Link key={q.id} href={q.href} className="group flex flex-col items-center gap-2 text-center">
-              <span
-                className={`flex h-11 w-11 items-center justify-center rounded-xl text-xl ${
-                  quickIconBg[q.iconKey] ?? "bg-violet-100 text-violet-700"
-                }`}
-              >
-                {quickIcon[q.iconKey] ?? "✦"}
-              </span>
-              <span className="text-xs font-semibold text-primary/90 transition group-hover:text-primary">{q.label}</span>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-6xl space-y-4 px-4">
-        <div className="flex items-center justify-between">
-          <h2 className="font-display text-2xl font-semibold text-primary">Popüler isimler</h2>
-          <Link href="/populer-isimler" className="text-xs font-semibold uppercase tracking-wide text-muted hover:text-primary">
-            Tümünü gör
-          </Link>
-        </div>
-        {noPopularNames ? (
-          <div className="rounded-2xl border border-dashed border-border/80 bg-accent-pink-soft/20 p-6 text-center text-sm text-muted">
-            Henüz öne çıkarılmış isim yok.
+      <section className="mx-auto max-w-6xl space-y-3 px-4 sm:space-y-4">
+        <div className="grid grid-cols-3 gap-2 rounded-2xl border border-border/80 bg-white p-2.5 shadow-sm sm:gap-3 sm:p-3">
+          <div className="rounded-xl bg-accent-pink-soft/60 px-2 py-2 text-center">
+            <p className="text-xs font-bold text-accent-pink sm:text-sm">10,000+</p>
+            <p className="text-[0.68rem] text-muted sm:text-xs">İsim</p>
           </div>
-        ) : (
-          <div className="popular-marquee-wrapper rounded-3xl border border-border/80 bg-white/90 p-3 shadow-sm sm:p-4">
-            <div className="popular-marquee-track">
-              {popularTickerLoop.map((name, index) => (
-                <Link
-                  key={`${name.id}-${index}`}
-                  href={`/isim/${name.slug}`}
-                  className="popular-mini-card group"
-                  aria-label={`${name.displayName} ismini incele`}
-                >
-                  <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl border border-border/80 bg-accent-pink-soft/20">
-                    <MediaImage
-                      src={name.image?.url ?? "/media/placeholder.svg"}
-                      alt={name.image?.alt ?? name.displayName}
-                      fill
-                      className="object-cover"
-                      sizes="64px"
-                    />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="font-display text-lg leading-tight text-primary transition group-hover:text-accent-pink">
-                      {name.displayName}
-                    </p>
-                    <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-accent-pink">{name.category}</p>
-                    <p className="mt-1 line-clamp-2 text-xs text-muted">{name.shortMeaning}</p>
-                  </div>
-                </Link>
-              ))}
-            </div>
+          <div className="rounded-xl bg-accent-blue-soft/60 px-2 py-2 text-center">
+            <p className="text-xs font-bold text-accent-blue sm:text-sm">50,000+</p>
+            <p className="text-[0.68rem] text-muted sm:text-xs">Mutlu Ebeveyn</p>
           </div>
-        )}
-      </section>
-
-      <section className="mx-auto max-w-6xl space-y-4 px-4">
-        <div className="flex items-center justify-between">
-          <h2 className="font-display text-2xl font-semibold text-primary">İsim kategorileri</h2>
-          <Link href="/tum-isimler" className="text-xs font-semibold uppercase tracking-wide text-muted hover:text-primary">
-            Tümünü gör
-          </Link>
+          <div className="rounded-xl bg-amber-50 px-2 py-2 text-center">
+            <p className="text-xs font-bold text-amber-700 sm:text-sm">Her Gün</p>
+            <p className="text-[0.68rem] leading-tight text-muted sm:text-xs">Güncellenen Veritabanı</p>
+          </div>
         </div>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-          {data.showcases.slice(0, 5).map((c) => (
+
+        <div className="grid gap-3">
+          {[
+            { href: "/kiz-isimleri", title: "Kız isimleri", count: "250+ anlamlı ve güzel isim", img: "/media/cat-girl.svg" },
+            { href: "/erkek-isimleri", title: "Erkek isimleri", count: "350+ modern ve özel erkek ismi", img: "/media/cat-boy.svg" },
+          ].map((x, i) => (
             <Link
-              key={c.id}
-              href={c.href}
-              className="group relative overflow-hidden rounded-2xl border border-border/80 bg-card shadow-sm"
+              key={x.title}
+              href={x.href}
+              className={`flex items-center justify-between rounded-2xl border border-border/80 p-3 shadow-sm ${
+                i === 0 ? "bg-pink-50/70" : "bg-sky-50/70"
+              }`}
             >
-              <div className="relative h-44 w-full">
-                <MediaImage
-                  src={c.image?.url ?? "/media/placeholder.svg"}
-                  alt={c.image?.alt ?? c.title}
-                  fill
-                  className="object-cover transition duration-500 group-hover:scale-105"
-                  sizes="(max-width:1024px) 50vw, 20vw"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#1a1430]/75 via-transparent to-transparent" />
-                <span
-                  className={`absolute left-2 top-2 rounded-full px-2.5 py-1 text-[0.65rem] font-semibold uppercase ${toneClass(c.tagTone)}`}
-                >
-                  {c.tagLabel}
-                </span>
-                <div className="absolute bottom-0 left-0 right-0 p-3 text-white">
-                  <p className="font-display text-lg leading-tight">{c.title}</p>
-                  <p className="text-xs text-white/90">{c.subtitle}</p>
+              <div className="flex items-center gap-2.5">
+                <div className="relative h-14 w-14 overflow-hidden rounded-xl sm:h-16 sm:w-16">
+                  <MediaImage src={x.img} alt={x.title} fill className="object-cover" sizes="64px" />
+                </div>
+                <div>
+                  <p className="font-display text-lg font-semibold leading-tight text-primary sm:text-xl">{x.title}</p>
+                  <p className="text-[0.7rem] leading-tight text-muted sm:text-xs">{x.count}</p>
+                  <span className="mt-1 inline-flex rounded-full bg-primary px-2 py-1 text-[0.62rem] font-semibold text-white sm:px-2.5 sm:text-[0.65rem]">
+                    TÜMÜNÜ GÖR →
+                  </span>
                 </div>
               </div>
+              <span className="hidden h-9 w-9 items-center justify-center rounded-full bg-white/80 text-lg text-primary sm:flex">⟲</span>
             </Link>
           ))}
+        </div>
+
+        <div>
+          <h3 className="text-center text-sm font-semibold text-primary">Kategorilere Göre İsimler</h3>
+          <div className="mt-2.5 grid grid-cols-4 gap-2 sm:mt-3 sm:gap-3">
+            {data.quickLinks.slice(2, 6).map((q) => (
+              <Link key={q.id} href={q.href} className="rounded-xl border border-border/70 bg-white px-2 py-2.5 text-center shadow-sm sm:rounded-2xl sm:px-3 sm:py-3">
+                <span
+                  className={`mx-auto flex h-8 w-8 items-center justify-center rounded-full text-base sm:h-10 sm:w-10 sm:text-lg ${
+                    quickIconBg[q.iconKey] ?? "bg-violet-100 text-violet-700"
+                  }`}
+                >
+                  {quickIcon[q.iconKey] ?? "✦"}
+                </span>
+                <p className="mt-1.5 text-[0.72rem] font-semibold leading-tight text-primary sm:mt-2 sm:text-sm">{q.label}</p>
+                <p className="text-[0.65rem] text-muted sm:text-xs">Keşfet →</p>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
       <section className="mx-auto max-w-6xl px-4">
-        <div className="grid gap-4 lg:grid-cols-2">
+        <div className="grid grid-cols-2 gap-2.5 sm:gap-4 lg:grid-cols-2">
           <div className="overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
-            <div className="flex items-center justify-between bg-primary px-4 py-3 text-white">
-              <span className="text-sm font-semibold uppercase tracking-wide">İsim Rehberi</span>
-              <Link href="/isim-rehberi" className="text-xs font-semibold uppercase">
+            <div className="flex items-center justify-between bg-primary px-3 py-2.5 text-white sm:px-4 sm:py-3">
+              <span className="text-[0.68rem] font-semibold uppercase tracking-wide sm:text-sm">İsim Rehberi</span>
+              <Link href="/isim-rehberi" className="text-[0.62rem] font-semibold uppercase sm:text-xs">
                 Tümü
               </Link>
             </div>
@@ -252,28 +219,28 @@ export function HomePageView({
                 <Link
                   key={a.id}
                   href={`/isim-rehberi/${a.slug}`}
-                  className="flex items-center justify-between px-4 py-3 text-sm hover:bg-accent-pink-soft/40"
+                  className="flex items-center justify-between px-2.5 py-2 text-xs hover:bg-accent-pink-soft/40 sm:px-4 sm:py-3 sm:text-sm"
                 >
-                  <span>{a.title}</span>
+                  <span className="line-clamp-1">{a.title}</span>
                   <span>›</span>
                 </Link>
               ))}
             </div>
           </div>
           <div className="overflow-hidden rounded-2xl border border-border/80 bg-white shadow-sm">
-            <div className="flex items-center justify-between bg-gradient-to-r from-primary to-accent-pink px-4 py-3 text-white">
-              <span className="text-sm font-semibold uppercase tracking-wide">Rastgele İsim Keşfet</span>
+            <div className="flex items-center justify-between bg-gradient-to-r from-primary to-accent-pink px-3 py-2.5 text-white sm:px-4 sm:py-3">
+              <span className="text-[0.68rem] font-semibold uppercase tracking-wide sm:text-sm">Rastgele İsim Keşfet</span>
               <RefreshButton />
             </div>
             {data.randomName ? (
-              <div className="space-y-3 p-4">
-                <div className="flex gap-3">
+              <div className="space-y-2 p-2.5 sm:space-y-3 sm:p-4">
+                <div className="flex gap-2 sm:gap-3">
                   <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-2">
-                      <h3 className="font-display text-4xl font-semibold text-accent-pink">{data.randomName.displayName}</h3>
+                    <div className="flex items-center gap-1.5 sm:gap-2">
+                      <h3 className="font-display text-xl font-semibold text-accent-pink sm:text-4xl">{data.randomName.displayName}</h3>
                       <FavoriteHeart slug={data.randomName.slug} />
                     </div>
-                    <div className="mt-2 flex flex-wrap gap-1.5 text-xs">
+                    <div className="mt-1.5 flex flex-wrap gap-1 text-[0.62rem] sm:mt-2 sm:gap-1.5 sm:text-xs">
                       <span className="rounded-full bg-accent-pink-soft px-2 py-1 text-accent-pink">
                         {genderLabels[data.randomName.gender]}
                       </span>
@@ -282,27 +249,28 @@ export function HomePageView({
                       </span>
                       <span className="rounded-full bg-amber-100 px-2 py-1 text-amber-900">{data.randomName.origin}</span>
                     </div>
-                    <p className="mt-3 text-sm text-muted">
+                    <p className="mt-1.5 text-[0.68rem] leading-tight text-muted sm:mt-3 sm:text-sm">
                       <span className="font-semibold text-foreground">Anlamı:</span> {data.randomName.meaning}
                     </p>
                   </div>
-                  <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl">
+                  <div className="soft-photo-frame relative h-16 w-16 shrink-0 sm:h-24 sm:w-24">
                     <MediaImage
                       src={data.randomName.image?.url ?? "/media/placeholder.svg"}
                       alt={data.randomName.image?.alt ?? data.randomName.displayName}
                       fill
-                      className="object-cover"
+                      className="soft-photo-image object-cover"
                       sizes="96px"
                     />
+                    <span className="soft-photo-vignette" aria-hidden />
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-2">
-                  <button type="button" className="h-10 rounded-xl border border-border text-sm font-semibold text-muted">
+                <div className="grid grid-cols-2 gap-1.5 sm:gap-2">
+                  <button type="button" className="h-8 rounded-lg border border-border text-[0.65rem] font-semibold text-muted sm:h-10 sm:rounded-xl sm:text-sm">
                     Favorilere ekle
                   </button>
                   <Link
                     href={`/isim/${data.randomName.slug}`}
-                    className="inline-flex h-10 items-center justify-center rounded-xl bg-primary text-sm font-semibold text-white"
+                    className="inline-flex h-8 items-center justify-center rounded-lg bg-primary text-[0.65rem] font-semibold text-white sm:h-10 sm:rounded-xl sm:text-sm"
                   >
                     Detayı gör
                   </Link>
@@ -315,17 +283,57 @@ export function HomePageView({
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl space-y-4 px-4">
+      <section className="mx-auto max-w-6xl space-y-2.5 px-4 sm:space-y-3">
+        <div className="flex items-center justify-between">
+          <h2 className="font-display text-xl font-semibold text-primary">Turkiyede En Populer Isimler</h2>
+          <Link href="/populer-isimler" className="text-xs font-semibold text-muted hover:text-primary">
+            Tümünü Gör →
+          </Link>
+        </div>
+        {noPopularNames ? (
+          <div className="rounded-2xl border border-dashed border-border/80 bg-accent-pink-soft/20 p-5 text-center text-sm text-muted">
+            Henüz öne çıkarılmış isim yok.
+          </div>
+        ) : (
+          <div className="popular-marquee-wrapper rounded-2xl border border-border/70 bg-white p-2 shadow-sm">
+            <div className="popular-marquee-track">
+              {popularTickerLoop.map((name, index) => (
+                <Link key={`${name.id}-${index}`} href={`/isim/${name.slug}`} className="popular-mini-card group">
+                  <div className="soft-photo-frame relative h-14 w-14 shrink-0">
+                    <MediaImage
+                      src={name.image?.url ?? "/media/placeholder.svg"}
+                      alt={name.image?.alt ?? name.displayName}
+                      fill
+                      className="soft-photo-image object-cover"
+                      sizes="56px"
+                    />
+                    <span className="soft-photo-vignette" aria-hidden />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="font-display text-base leading-tight text-primary transition group-hover:text-accent-pink">
+                      {name.displayName}
+                    </p>
+                    <p className="text-[0.68rem] font-semibold uppercase text-accent-pink">{name.category}</p>
+                    <p className="line-clamp-1 text-xs text-muted">{name.shortMeaning}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+      </section>
+
+      <section className="mx-auto max-w-6xl space-y-3 px-4 sm:space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="font-display text-2xl font-semibold text-primary">İlginizi çekebilecek içerikler</h2>
           <Link href="/isim-rehberi" className="text-xs font-semibold uppercase tracking-wide text-muted hover:text-primary">
             Tüm yazıları gör
           </Link>
         </div>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mobile-content-rail">
           {data.guideArticles.slice(0, 4).map((a) => (
-            <Link key={a.id} href={`/isim-rehberi/${a.slug}`} className="overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
-              <div className="relative h-36">
+            <Link key={a.id} href={`/isim-rehberi/${a.slug}`} className="mobile-content-card overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
+              <div className="relative h-24 sm:h-36">
                 <MediaImage
                   src={a.cover?.url ?? "/media/placeholder.svg"}
                   alt={a.cover?.alt ?? a.title}
@@ -334,17 +342,59 @@ export function HomePageView({
                   sizes="(max-width:1024px) 50vw, 25vw"
                 />
               </div>
-              <div className="space-y-2 p-3">
-                <p className="text-[0.65rem] font-semibold uppercase text-accent-pink">İsim rehberi</p>
-                <p className="line-clamp-2 text-base font-semibold text-primary">{a.title}</p>
-                <p className="text-sm text-muted">Devamını oku →</p>
+              <div className="space-y-1.5 p-2.5 sm:space-y-2 sm:p-3">
+                <p className="text-[0.6rem] font-semibold uppercase text-accent-pink sm:text-[0.65rem]">İsim rehberi</p>
+                <p className="line-clamp-2 text-sm font-semibold leading-tight text-primary sm:text-base">{a.title}</p>
+                <p className="text-xs text-muted sm:text-sm">Devamını oku →</p>
               </div>
             </Link>
           ))}
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4">
+      <section className="mx-auto max-w-6xl space-y-3 px-4">
+        <div className="grid gap-4 rounded-2xl border border-border/80 bg-white p-3 shadow-sm lg:grid-cols-[1.1fr_1fr]">
+          <div className="rounded-2xl bg-gradient-to-br from-violet-50 to-pink-50 p-3">
+            <p className="text-xs font-semibold text-accent-pink">Bugünün İsmi</p>
+            <div className="mt-2 flex items-start gap-3">
+              <div className="relative h-20 w-20 overflow-hidden rounded-xl">
+                <MediaImage
+                  src={data.randomName?.image?.url ?? "/media/hero-soft.svg"}
+                  alt={data.randomName?.displayName ?? "Bugünün ismi"}
+                  fill
+                  className="object-cover"
+                  sizes="80px"
+                />
+              </div>
+              <div className="min-w-0">
+                <p className="font-display text-3xl text-primary">{data.randomName?.displayName ?? "Elif"}</p>
+                <p className="mt-1 text-xs text-muted">
+                  <span className="font-semibold text-foreground">Anlam:</span> {data.randomName?.meaning ?? "Nazik, başlangıç"}
+                </p>
+                <Link
+                  href={data.randomName ? `/isim/${data.randomName.slug}` : "/isim-bulucu"}
+                  className="mt-2 inline-flex rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-white"
+                >
+                  Detayı Gör →
+                </Link>
+              </div>
+            </div>
+          </div>
+          <div className="rounded-2xl border border-border/70 bg-white p-3">
+            <p className="font-semibold text-primary">İsim Seçim Rehberi</p>
+            <div className="mt-2 space-y-2">
+              {faqs.slice(0, 4).map((f) => (
+                <Link key={f.id} href="/sss" className="flex items-center justify-between rounded-lg bg-violet-50/70 px-3 py-2 text-sm">
+                  <span className="line-clamp-1">{f.question}</span>
+                  <span>+</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto hidden max-w-6xl px-4 sm:block">
         <div className="grid gap-8 lg:grid-cols-2">
           <div>
             <h2 className="font-display text-2xl font-semibold text-primary">Sık sorulan sorular</h2>
@@ -352,13 +402,23 @@ export function HomePageView({
               <FaqAccordion items={faqs.map((f) => ({ id: f.id, question: f.question, answer: f.answer }))} />
             </div>
           </div>
-          <div className="flex flex-col justify-center rounded-3xl border border-border bg-accent-pink-soft/30 p-8 text-center">
-            <p className="text-4xl">💬</p>
-            <p className="mt-4 font-semibold text-primary">Başka sorunuz mu var?</p>
-            <p className="mt-2 text-sm text-muted">Aklınıza takılanlar için bize ulaşabilirsiniz.</p>
+          <div className="relative flex flex-col justify-center overflow-hidden rounded-3xl border border-border p-8 text-center">
+            <div className="absolute inset-0">
+              <MediaImage
+                src="/media/babies/baby%20(5).jpeg"
+                alt="Başka sorunuz mu var alanı görseli"
+                fill
+                className="object-cover"
+                sizes="(max-width:1024px) 100vw, 50vw"
+              />
+            </div>
+            <div className="absolute inset-0 bg-white/80" />
+            <p className="relative text-4xl">💬</p>
+            <p className="relative mt-4 font-semibold text-primary">Başka sorunuz mu var?</p>
+            <p className="relative mt-2 text-sm text-muted">Aklınıza takılanlar için bize ulaşabilirsiniz.</p>
             <Link
               href="/iletisim"
-              className="mx-auto mt-6 inline-flex rounded-2xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground"
+              className="relative mx-auto mt-6 inline-flex rounded-2xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground"
             >
               Bize ulaşın
             </Link>

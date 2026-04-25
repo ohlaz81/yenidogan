@@ -2,8 +2,79 @@ import { BABY_NAME_SEED, seedToName } from "@/data/baby-names";
 import type { Gender, Name, NameWithDetail, MediaAsset } from "@/types/database";
 import { DEFAULT_NAME_MEDIA } from "@/lib/static/default-name-media";
 import type { NameListParams } from "@/lib/name-list-params";
+import fs from "node:fs";
+import path from "node:path";
 
 type NameWithImage = Name & { image: MediaAsset | null };
+
+type IndexedMedia = {
+  index: number;
+  asset: MediaAsset;
+};
+
+function toPublicMediaUrl(fileName: string) {
+  return `/media/babies/${encodeURIComponent(fileName)}`;
+}
+
+function readBabyMediaFromPublic(): IndexedMedia[] {
+  try {
+    const dir = path.join(process.cwd(), "public", "media", "babies");
+    if (!fs.existsSync(dir)) return [];
+    const files = fs.readdirSync(dir, { withFileTypes: true });
+    const ranked = files
+      .filter((f) => f.isFile())
+      .map((f) => {
+        const m = /^baby\s*\((\d+)\)\.(jpg|jpeg|png|webp)$/i.exec(f.name);
+        if (!m) return null;
+        const idx = Number(m[1]);
+        if (!Number.isFinite(idx)) return null;
+        const ext = m[2].toLowerCase();
+        const extRank = ext === "jpeg" ? 0 : ext === "jpg" ? 1 : ext === "png" ? 2 : 3;
+        return { idx, extRank, fileName: f.name };
+      })
+      .filter((x): x is { idx: number; extRank: number; fileName: string } => x !== null)
+      .sort((a, b) => a.idx - b.idx || a.extRank - b.extRank);
+
+    // Aynı index için tek dosya seç (örn: baby (1).jpg + baby (1).jpeg)
+    const picked = new Map<number, string>();
+    for (const x of ranked) {
+      if (!picked.has(x.idx)) picked.set(x.idx, x.fileName);
+    }
+
+    return Array.from(picked.entries())
+      .sort((a, b) => a[0] - b[0])
+      .map(([index, fileName]) => ({
+        index,
+        asset: {
+          id: `baby-media-${index}`,
+          url: toPublicMediaUrl(fileName),
+          alt: `Bebek görseli ${index}`,
+          createdAt: "2020-01-01T00:00:00.000Z",
+        },
+      }));
+  } catch {
+    return [];
+  }
+}
+
+const allBabyMedia = readBabyMediaFromPublic();
+// Kiz/erkek ayrimi: tek index -> kiz, cift index -> erkek.
+// Ornek: baby (1), baby (3), baby (5) kiz havuzu; baby (2), baby (4) erkek havuzu.
+const girlMediaPool = allBabyMedia.filter((m) => m.index % 2 === 1);
+const boyMediaPool = allBabyMedia.filter((m) => m.index % 2 === 0);
+
+function pickMediaForName(n: Name): MediaAsset {
+  if (allBabyMedia.length === 0) return DEFAULT_NAME_MEDIA;
+  const idNumber = Number(n.id.replace("n-", "")) || 1;
+
+  if (n.gender === "GIRL" && girlMediaPool.length > 0) {
+    return girlMediaPool[(idNumber - 1) % girlMediaPool.length]?.asset ?? DEFAULT_NAME_MEDIA;
+  }
+  if (n.gender === "BOY" && boyMediaPool.length > 0) {
+    return boyMediaPool[(idNumber - 1) % boyMediaPool.length]?.asset ?? DEFAULT_NAME_MEDIA;
+  }
+  return allBabyMedia[(idNumber - 1) % allBabyMedia.length]?.asset ?? DEFAULT_NAME_MEDIA;
+}
 
 const bySlug = new Map<string, (typeof BABY_NAME_SEED)[number]>();
 for (const s of BABY_NAME_SEED) {
@@ -11,7 +82,7 @@ for (const s of BABY_NAME_SEED) {
 }
 
 function withImage(n: Name): NameWithImage {
-  return { ...n, image: DEFAULT_NAME_MEDIA };
+  return { ...n, image: pickMediaForName(n) };
 }
 
 const allWithImage: NameWithImage[] = BABY_NAME_SEED.map((s) => withImage(seedToName(s)));

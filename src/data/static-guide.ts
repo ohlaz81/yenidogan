@@ -1,15 +1,16 @@
 import type { GuideArticle, MediaAsset } from "@/types/database";
 import { syntheticMedia } from "@/lib/queries/home-fallbacks";
+import { babyMediaPublicUrl } from "@/lib/static/baby-media-url";
 
 const T = "2020-01-20T00:00:00.000Z";
 
 export type GuideWithCover = GuideArticle & { cover: MediaAsset | null };
 
 const covers = [
-  syntheticMedia("guide-1", "/media/babies/baby%20(2).jpeg", "Bebek ismi rehber kapağı 1"),
-  syntheticMedia("guide-2", "/media/babies/baby%20(3).jpeg", "Bebek ismi rehber kapağı 2"),
-  syntheticMedia("guide-3", "/media/babies/baby%20(4).jpeg", "Bebek ismi rehber kapağı 3"),
-  syntheticMedia("guide-4", "/media/babies/baby%20(5).jpeg", "Bebek ismi rehber kapağı 4"),
+  syntheticMedia("guide-1", babyMediaPublicUrl("baby (2).jpeg"), "Bebek ismi rehber kapağı 1"),
+  syntheticMedia("guide-2", babyMediaPublicUrl("baby (3).jpeg"), "Bebek ismi rehber kapağı 2"),
+  syntheticMedia("guide-3", babyMediaPublicUrl("baby (4).jpeg"), "Bebek ismi rehber kapağı 3"),
+  syntheticMedia("guide-4", babyMediaPublicUrl("baby (5).jpeg"), "Bebek ismi rehber kapağı 4"),
 ];
 
 const articles: GuideWithCover[] = [

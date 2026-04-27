@@ -7,6 +7,14 @@ import { NewsletterBar } from "@/components/marketing/NewsletterBar";
 import { RefreshButton } from "@/components/marketing/RefreshButton";
 import { FavoriteHeart } from "@/components/marketing/FavoriteHeart";
 import type { FAQ } from "@/types/database";
+import { babyMediaPublicUrl } from "@/lib/static/baby-media-url";
+import {
+  nameDisplayTextClass,
+  nameGenderBadgeSmClass,
+  nameMarqueeCategoryClass,
+  nameMarqueeTitleClass,
+  nameRandomCardHeaderGradientClass,
+} from "@/lib/name-gender-styles";
 
 const quickIcon: Record<string, string> = {
   girl: "👧🏻",
@@ -34,10 +42,7 @@ export function HomePageView({
   faqs: FAQ[];
 }) {
   const hero = data.heroSlides[0];
-  const heroRotatingImages = [
-    "/media/babies/baby%20(1).jpg",
-    "/media/babies/baby%20(9).jpeg",
-  ];
+  const heroRotatingImages = [babyMediaPublicUrl("baby(41).jpeg"), babyMediaPublicUrl("baby(42).jpeg")];
 
   const defaultHead = (
     <>
@@ -157,13 +162,13 @@ export function HomePageView({
               href: "/kiz-isimleri",
               title: "Kız isimleri",
               count: "250+ anlamlı ve güzel isim",
-              img: "/media/babies/baby%20(5).jpeg",
+              img: babyMediaPublicUrl("baby (5).jpeg"),
             },
             {
               href: "/erkek-isimleri",
               title: "Erkek isimleri",
               count: "350+ modern ve özel erkek ismi",
-              img: "/media/babies/baby%20(6).jpeg",
+              img: babyMediaPublicUrl("baby (3).jpeg"),
             },
           ].map((x, i) => (
             <Link
@@ -188,7 +193,13 @@ export function HomePageView({
                   />
                 </div>
                 <div>
-                  <p className="font-display text-lg font-semibold leading-tight text-primary sm:text-xl">{x.title}</p>
+                  <p
+                    className={`font-display text-lg font-semibold leading-tight sm:text-xl ${
+                      i === 0 ? "text-accent-pink" : "text-accent-blue"
+                    }`}
+                  >
+                    {x.title}
+                  </p>
                   <p className="text-[0.7rem] leading-tight text-muted sm:text-xs">{x.count}</p>
                   <span className="mt-1 inline-flex rounded-full bg-primary px-2 py-1 text-[0.62rem] font-semibold text-white sm:px-2.5 sm:text-[0.65rem]">
                     TÜMÜNÜ GÖR →
@@ -252,7 +263,13 @@ export function HomePageView({
             </div>
           </div>
           <div className="overflow-hidden rounded-2xl border border-border/80 bg-white shadow-sm">
-            <div className="flex items-center justify-between bg-gradient-to-r from-primary to-accent-pink px-2.5 py-2 text-white sm:px-3 sm:py-2.5">
+            <div
+              className={`flex items-center justify-between px-2.5 py-2 text-white sm:px-3 sm:py-2.5 ${
+                data.randomName
+                  ? nameRandomCardHeaderGradientClass(data.randomName.gender)
+                  : "bg-gradient-to-r from-primary to-accent-pink"
+              }`}
+            >
               <span className="text-[0.65rem] font-semibold uppercase tracking-wide sm:text-sm">Rastgele İsim Keşfet</span>
               <RefreshButton />
             </div>
@@ -262,13 +279,17 @@ export function HomePageView({
                 <div className="grid min-h-[10.5rem] grid-cols-2 grid-rows-1 gap-0 min-[500px]:min-h-[12.5rem]">
                   <div className="flex min-w-0 flex-col justify-center gap-1 border-r border-border/50 p-2 pr-1.5 min-[420px]:gap-1.5 min-[420px]:p-2.5 min-[500px]:gap-2 min-[500px]:p-3 min-[500px]:pr-3">
                     <div className="flex min-w-0 items-center gap-0.5 min-[420px]:gap-1.5">
-                      <h3 className="font-display text-sm font-semibold leading-tight text-accent-pink min-[420px]:text-base min-[500px]:text-lg sm:text-xl sm:leading-tight sm:text-2xl">
+                      <h3
+                        className={`font-display text-sm font-semibold leading-tight min-[420px]:text-base min-[500px]:text-lg sm:text-xl sm:leading-tight sm:text-2xl ${nameDisplayTextClass(
+                          data.randomName.gender,
+                        )}`}
+                      >
                         {data.randomName.displayName}
                       </h3>
                       <FavoriteHeart slug={data.randomName.slug} />
                     </div>
                     <div className="flex min-w-0 flex-wrap gap-0.5 min-[420px]:gap-1 min-[500px]:gap-1.5 min-[500px]:text-sm">
-                      <span className="rounded-full bg-accent-pink-soft px-1.5 py-0.5 text-[0.58rem] font-medium text-accent-pink min-[420px]:px-2 min-[420px]:text-xs">
+                      <span className={nameGenderBadgeSmClass(data.randomName.gender)}>
                         {genderLabels[data.randomName.gender]}
                       </span>
                       <span className="rounded-full bg-violet-100 px-1.5 py-0.5 text-[0.58rem] font-medium text-violet-800 min-[420px]:px-2 min-[420px]:text-xs">
@@ -345,10 +366,8 @@ export function HomePageView({
                     <span className="soft-photo-vignette" aria-hidden />
                   </div>
                   <div className="min-w-0">
-                    <p className="font-display text-base leading-tight text-primary transition group-hover:text-accent-pink">
-                      {name.displayName}
-                    </p>
-                    <p className="text-[0.68rem] font-semibold uppercase text-accent-pink">{name.category}</p>
+                    <p className={`${nameMarqueeTitleClass(name.gender)}`}>{name.displayName}</p>
+                    <p className={nameMarqueeCategoryClass(name.category)}>{name.category}</p>
                     <p className="line-clamp-1 text-xs text-muted">{name.shortMeaning}</p>
                   </div>
                 </Link>
@@ -360,8 +379,18 @@ export function HomePageView({
 
       <section className="mx-auto max-w-6xl space-y-3 px-4">
         <div className="grid gap-4 rounded-2xl border border-border/80 bg-white p-3 shadow-sm lg:grid-cols-[1.1fr_1fr]">
-          <div className="rounded-2xl bg-gradient-to-br from-violet-50 to-pink-50 p-3">
-            <p className="text-xs font-semibold text-accent-pink">Bugünün İsmi</p>
+          <div
+            className={`rounded-2xl p-3 ${
+              data.randomName?.gender === "BOY"
+                ? "bg-gradient-to-br from-violet-50 to-sky-50"
+                : data.randomName?.gender === "UNISEX"
+                  ? "bg-gradient-to-br from-violet-50 to-zinc-100"
+                  : "bg-gradient-to-br from-violet-50 to-pink-50"
+            }`}
+          >
+            <p className={`text-xs font-semibold ${nameDisplayTextClass(data.randomName?.gender ?? "GIRL")}`}>
+              Bugünün İsmi
+            </p>
             <div className="mt-2 flex items-start gap-3">
               <div className="relative h-20 w-20 overflow-hidden rounded-xl">
                 <MediaImage
@@ -373,7 +402,9 @@ export function HomePageView({
                 />
               </div>
               <div className="min-w-0">
-                <p className="font-display text-3xl text-primary">{data.randomName?.displayName ?? "Elif"}</p>
+                <p className={`font-display text-3xl ${nameDisplayTextClass(data.randomName?.gender ?? "GIRL")}`}>
+                  {data.randomName?.displayName ?? "Elif"}
+                </p>
                 <p className="mt-1 text-xs text-muted">
                   <span className="font-semibold text-foreground">Anlam:</span> {data.randomName?.meaning ?? "Nazik, başlangıç"}
                 </p>
@@ -411,7 +442,7 @@ export function HomePageView({
           <div className="relative flex flex-col justify-center overflow-hidden rounded-3xl border border-border p-8 text-center">
             <div className="absolute inset-0">
               <MediaImage
-                src="/media/babies/baby%20(5).jpeg"
+                src={babyMediaPublicUrl("baby (4).jpeg")}
                 alt="Başka sorunuz mu var alanı görseli"
                 fill
                 className="object-cover"

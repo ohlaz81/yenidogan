@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { NameWithImage } from "./NameCard";
 import { styleLabels } from "@/lib/labels";
+import { nameDisplayTextClass, nameListRowHoverClass } from "@/lib/name-gender-styles";
 import { FavoriteHeart } from "./FavoriteHeart";
 import { MediaImage } from "./MediaImage";
 import type { NameStyle } from "@/types/database";
@@ -61,7 +62,7 @@ function NameBlock({ name }: { name: NameWithImage }) {
     <>
       <Link
         href={`/isim/${name.slug}`}
-        className="font-display text-base font-semibold text-primary hover:text-accent-pink sm:text-lg"
+        className={`font-display text-base font-semibold hover:underline sm:text-lg ${nameDisplayTextClass(name.gender)}`}
       >
         {name.displayName}
       </Link>
@@ -76,7 +77,9 @@ export function NameListRow({ name, rank }: { name: NameWithImage; rank: number 
   const pill = stylePillClass(name.style);
   return (
     <li className="list-none">
-      <div className="border-b border-dashed border-violet-200/20 py-1 transition even:bg-slate-50/50 first:pt-0 last:border-b-0 last:pb-0 hover:bg-pink-50/30">
+      <div
+        className={`border-b border-dashed border-violet-200/20 py-1 transition even:bg-slate-50/50 first:pt-0 last:border-b-0 last:pb-0 ${nameListRowHoverClass(name.gender)}`}
+      >
         {/* Mobil: sıra+avatar+isim, altında tür|köken|Kur'an yan yana satır, sağda aksiyon üstte */}
         <div className="p-0.5 md:hidden">
           <div className="flex min-w-0 items-start gap-2">

@@ -1,4 +1,5 @@
 import type { CategoryShowcase, HeroSlide, HomepageQuickLink, MediaAsset } from "@/types/database";
+import { babyMediaPublicUrl } from "@/lib/static/baby-media-url";
 
 /** Veritabanı boş/eksik olsa da ana sayfanın “tasarım gibi” dolu görünmesi için. */
 
@@ -11,7 +12,7 @@ export function syntheticMedia(suffix: string, url: string, alt: string): MediaA
   };
 }
 
-const HERO = "/media/babies/baby%20(1).jpg";
+const HERO = babyMediaPublicUrl("baby(41).jpeg");
 const CAT_GIRL = "/media/cat-girl.svg";
 const CAT_BOY = "/media/cat-boy.svg";
 const CAT_QURAN = "/media/cat-quran.svg";

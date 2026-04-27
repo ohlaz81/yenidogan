@@ -6,6 +6,17 @@ import { getStaticGuides } from "@/data/static-guide";
 import { getNameBySlug, getNamesByLetter } from "@/lib/queries/names";
 import { getAllNameSlugs } from "@/lib/static/names-store";
 import { genderLabels, styleLabels } from "@/lib/labels";
+import {
+  nameCtaOutlineButtonClass,
+  nameCtaStripClass,
+  nameDisplayTextClass,
+  nameGenderBadgeLgClass,
+  nameHeartHintClass,
+  nameHeroSectionClass,
+  nameMeaningCardBgClass,
+  nameSimilarPillClass,
+  nameTraitCheckClass,
+} from "@/lib/name-gender-styles";
 import { Breadcrumb } from "@/components/marketing/Breadcrumb";
 import { FavoriteHeart } from "@/components/marketing/FavoriteHeart";
 import { MediaImage } from "@/components/marketing/MediaImage";
@@ -63,20 +74,24 @@ export default async function NameDetailPage({ params }: Props) {
         ]}
       />
 
-      <section className="mt-8 grid gap-8 overflow-hidden rounded-3xl border border-border bg-accent-pink-soft/25 p-6 lg:grid-cols-[1fr_220px] lg:items-center">
+      <section
+        className={`mt-8 grid gap-8 overflow-hidden rounded-3xl border border-border p-6 lg:grid-cols-[1fr_220px] lg:items-center ${nameHeroSectionClass(name.gender)}`}
+      >
         <div className="space-y-4">
           <div className="flex flex-wrap items-center gap-3">
-            <h1 className="font-display text-4xl font-semibold text-accent-pink">{name.displayName}</h1>
+            <h1 className={`font-display text-4xl font-semibold ${nameDisplayTextClass(name.gender)}`}>{name.displayName}</h1>
             <FavoriteHeart slug={name.slug} />
           </div>
           <div className="flex flex-wrap gap-2 text-xs font-semibold">
-            <span className="rounded-full bg-accent-pink-soft px-3 py-1 text-accent-pink">{genderLabels[name.gender]}</span>
+            <span className={nameGenderBadgeLgClass(name.gender)}>{genderLabels[name.gender]}</span>
             <span className="rounded-full bg-violet-100 px-3 py-1 text-violet-800">{styleLabels[name.style]}</span>
             <span className="rounded-full bg-sky-100 px-3 py-1 text-sky-800">{name.origin}</span>
           </div>
           {name.intro && <p className="text-sm leading-relaxed text-muted">{name.intro}</p>}
           <div className="flex flex-wrap gap-3">
-            <span className="inline-flex items-center gap-2 rounded-2xl border border-border bg-white px-4 py-2 text-xs font-semibold text-accent-pink">
+            <span
+              className={`inline-flex items-center gap-2 rounded-2xl border border-border bg-white px-4 py-2 text-xs font-semibold ${nameHeartHintClass(name.gender)}`}
+            >
               ♥ Favorilere ekle için kalbe dokunun
             </span>
             <ShareButton title={name.displayName} text={name.meaning} url={canonical} />
@@ -94,7 +109,7 @@ export default async function NameDetailPage({ params }: Props) {
       </section>
 
       <section className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <div className="rounded-2xl border border-border bg-pink-50 p-4 shadow-sm">
+        <div className={`rounded-2xl border border-border p-4 shadow-sm ${nameMeaningCardBgClass(name.gender)}`}>
           <p className="text-xs font-bold uppercase tracking-wide text-muted">📖 Anlamı</p>
           <p className="mt-2 text-sm font-medium text-foreground">{name.meaning}</p>
         </div>
@@ -115,23 +130,25 @@ export default async function NameDetailPage({ params }: Props) {
         <div className="rounded-2xl border border-border bg-emerald-50 p-4 shadow-sm">
           <p className="text-xs font-bold uppercase tracking-wide text-muted">👥 Popülerlik</p>
           <div className="mt-2 text-sm font-medium text-foreground">
-            <Stars value={name.popularity} />
+            <Stars value={name.popularity} gender={name.gender} />
           </div>
         </div>
         <div className="rounded-2xl border border-border bg-purple-50 p-4 shadow-sm">
           <p className="text-xs font-bold uppercase tracking-wide text-muted">📅 Cinsiyeti</p>
-          <p className="mt-2 text-sm font-medium text-foreground">{genderLabels[name.gender]}</p>
+          <p className={`mt-2 text-sm font-medium ${nameDisplayTextClass(name.gender)}`}>{genderLabels[name.gender]}</p>
         </div>
       </section>
 
       <div className="mt-10 grid gap-10 lg:grid-cols-2">
         <section>
-          <h2 className="font-display text-xl font-semibold text-primary">{name.displayName} isminin özellikleri</h2>
+          <h2 className="font-display text-xl font-semibold text-primary">
+            <span className={nameDisplayTextClass(name.gender)}>{name.displayName}</span> isminin özellikleri
+          </h2>
           {traits.length > 0 ? (
             <ul className="mt-4 space-y-2 text-sm text-muted">
               {traits.map((t) => (
                 <li key={t} className="flex gap-2">
-                  <span className="text-accent-pink">✓</span>
+                  <span className={nameTraitCheckClass(name.gender)}>✓</span>
                   {t}
                 </li>
               ))}
@@ -146,11 +163,7 @@ export default async function NameDetailPage({ params }: Props) {
               <h2 className="font-display text-xl font-semibold text-primary">Benzer isimler</h2>
               <div className="mt-3 flex flex-wrap gap-2">
                 {similar.map((s) => (
-                  <Link
-                    key={s.id}
-                    href={`/isim/${s.slug}`}
-                    className="rounded-full bg-accent-pink-soft px-3 py-1 text-sm font-semibold text-accent-pink hover:underline"
-                  >
+                  <Link key={s.id} href={`/isim/${s.slug}`} className={nameSimilarPillClass(s.gender)}>
                     {s.displayName}
                   </Link>
                 ))}
@@ -188,7 +201,9 @@ export default async function NameDetailPage({ params }: Props) {
         </section>
       )}
 
-      <section className="mt-12 flex flex-col items-center gap-4 rounded-3xl border border-border bg-accent-pink-soft/40 p-8 text-center sm:flex-row sm:justify-between sm:text-left">
+      <section
+        className={`mt-12 flex flex-col items-center gap-4 rounded-3xl border border-border p-8 text-center sm:flex-row sm:justify-between sm:text-left ${nameCtaStripClass(name.gender)}`}
+      >
         <div>
           <p className="font-semibold text-primary">Bu isim hoşunuza gitti mi?</p>
           <p className="text-sm text-muted">Favorilerinize ekleyin veya diğer isimlere göz atın.</p>
@@ -196,7 +211,7 @@ export default async function NameDetailPage({ params }: Props) {
         <div className="flex flex-wrap gap-3">
           <Link
             href={genderPath}
-            className="rounded-2xl border border-accent-pink px-5 py-2 text-sm font-semibold text-accent-pink"
+            className={nameCtaOutlineButtonClass(name.gender)}
           >
             Diğer isimler
           </Link>

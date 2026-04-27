@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { site } from "@/lib/site";
@@ -39,8 +40,15 @@ export function SiteHeader() {
             onClick={() => setOpen(false)}
           >
             <span className="flex items-center gap-1.5">
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-accent-pink-soft to-violet-100 text-base font-bold text-primary shadow-inner sm:h-10 sm:w-10 sm:text-lg">
-                y
+              <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-2xl shadow-inner ring-1 ring-border/60 sm:h-10 sm:w-10">
+                <Image
+                  src="/logo/logo.jpeg"
+                  alt=""
+                  fill
+                  className="object-cover"
+                  sizes="40px"
+                  priority
+                />
               </span>
               <span className="font-display text-base font-semibold leading-tight text-primary sm:text-lg">
                 {site.name}

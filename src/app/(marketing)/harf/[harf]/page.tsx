@@ -6,16 +6,9 @@ import {
 } from "@/components/marketing/CategoryListAside";
 import { NameListTemplate, loadNameListTemplateData } from "@/components/marketing/NameListTemplate";
 import type { Gender } from "@/types/database";
+import { normalizeTrLetter } from "@/lib/text";
 
 type SP = Record<string, string | string[] | undefined>;
-
-function normalizeLetter(harf: string) {
-  try {
-    return decodeURIComponent(harf).trim().toLocaleUpperCase("tr-TR");
-  } catch {
-    return harf.trim().toLocaleUpperCase("tr-TR");
-  }
-}
 
 export async function generateMetadata({
   params,
@@ -23,7 +16,7 @@ export async function generateMetadata({
   params: Promise<{ harf: string }>;
 }): Promise<Metadata> {
   const { harf } = await params;
-  const L = normalizeLetter(harf);
+  const L = normalizeTrLetter(harf);
   return {
     title: `${L} harfi ile başlayan isimler`,
     description: `${L} harfiyle başlayan bebek isimleri.`,
@@ -38,7 +31,7 @@ export default async function Page({
   searchParams: Promise<SP>;
 }) {
   const { harf } = await params;
-  const L = normalizeLetter(harf);
+  const L = normalizeTrLetter(harf);
   if (!L || L.length > 3) notFound();
 
   const sp = await searchParams;

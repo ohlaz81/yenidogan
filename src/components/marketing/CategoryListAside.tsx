@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { NameWithImage } from "@/components/marketing/NameCard";
 import type { Gender } from "@/types/database";
 import { listNamesFromStore } from "@/lib/static/names-store";
+import { nameDisplayTextClass } from "@/lib/name-gender-styles";
 
 export type CategoryAsideVariant =
   | "popular"
@@ -56,7 +57,7 @@ export function CategoryListAside({ variant }: { variant: CategoryAsideVariant }
               <span className="w-5 shrink-0 text-muted tabular-nums">{i + 1}.</span>
               <Link
                 href={`/isim/${n.slug}`}
-                className="min-w-0 flex-1 truncate font-medium text-primary hover:text-accent-pink hover:underline"
+                className={`min-w-0 flex-1 truncate font-medium hover:underline ${nameDisplayTextClass(n.gender)}`}
               >
                 {n.displayName}
               </Link>
@@ -73,7 +74,7 @@ export function CategoryListAside({ variant }: { variant: CategoryAsideVariant }
               <span className="w-5 shrink-0 text-muted tabular-nums">{i + 1}.</span>
               <Link
                 href={`/isim/${n.slug}`}
-                className="min-w-0 flex-1 truncate font-medium text-primary hover:text-accent-pink hover:underline"
+                className={`min-w-0 flex-1 truncate font-medium hover:underline ${nameDisplayTextClass(n.gender)}`}
               >
                 {n.displayName}
               </Link>

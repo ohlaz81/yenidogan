@@ -1,6 +1,8 @@
 import { BABY_NAME_SEED, seedToName } from "@/data/baby-names";
 import type { Gender, Name, NameWithDetail, MediaAsset } from "@/types/database";
 import { DEFAULT_NAME_MEDIA } from "@/lib/static/default-name-media";
+import { genderForBabyMediaIndex, babyMediaAlt } from "@/lib/static/baby-media-gender";
+import { babyMediaPublicUrl } from "@/lib/static/baby-media-url";
 import type { NameListParams } from "@/lib/name-list-params";
 import fs from "node:fs";
 import path from "node:path";
@@ -11,10 +13,6 @@ type IndexedMedia = {
   index: number;
   asset: MediaAsset;
 };
-
-function toPublicMediaUrl(fileName: string) {
-  return `/media/babies/${encodeURIComponent(fileName)}`;
-}
 
 function readBabyMediaFromPublic(): IndexedMedia[] {
   try {
@@ -43,25 +41,26 @@ function readBabyMediaFromPublic(): IndexedMedia[] {
 
     return Array.from(picked.entries())
       .sort((a, b) => a[0] - b[0])
-      .map(([index, fileName]) => ({
-        index,
-        asset: {
-          id: `baby-media-${index}`,
-          url: toPublicMediaUrl(fileName),
-          alt: `Bebek görseli ${index}`,
-          createdAt: "2020-01-01T00:00:00.000Z",
-        },
-      }));
+      .map(([index, fileName]) => {
+        const g = genderForBabyMediaIndex(index);
+        return {
+          index,
+          asset: {
+            id: `baby-media-${index}`,
+            url: babyMediaPublicUrl(fileName),
+            alt: babyMediaAlt(index, g),
+            createdAt: "2020-01-01T00:00:00.000Z",
+          },
+        };
+      });
   } catch {
     return [];
   }
 }
 
 const allBabyMedia = readBabyMediaFromPublic();
-// Kiz/erkek ayrimi: tek index -> kiz, cift index -> erkek.
-// Ornek: baby (1), baby (3), baby (5) kiz havuzu; baby (2), baby (4) erkek havuzu.
-const girlMediaPool = allBabyMedia.filter((m) => m.index % 2 === 1);
-const boyMediaPool = allBabyMedia.filter((m) => m.index % 2 === 0);
+const girlMediaPool = allBabyMedia.filter((m) => genderForBabyMediaIndex(m.index) === "GIRL");
+const boyMediaPool = allBabyMedia.filter((m) => genderForBabyMediaIndex(m.index) === "BOY");
 
 function pickMediaForName(n: Name): MediaAsset {
   if (allBabyMedia.length === 0) return DEFAULT_NAME_MEDIA;
@@ -180,6 +179,15 @@ export function getFeaturedByGenderFromStore(gender: "GIRL" | "BOY", limit: numb
 
 export function countNamesByGender(gender: "GIRL" | "BOY") {
   return allWithImage.filter((n) => n.gender === gender).length;
+}
+
+/** Veri setinde bu cinsiyette en az bir ismi olan ilk harfler (A–Z Türkçe sıra). */
+export function getFirstLettersForGender(gender: "GIRL" | "BOY"): string[] {
+  const set = new Set<string>();
+  for (const n of allWithImage) {
+    if (n.gender === gender && n.firstLetter) set.add(n.firstLetter);
+  }
+  return Array.from(set).sort((a, b) => a.localeCompare(b, "tr-TR"));
 }
 
 export function getModernOrPopularTopByGenderFromStore(gender: "GIRL" | "BOY", limit: number) {

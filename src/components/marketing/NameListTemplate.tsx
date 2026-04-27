@@ -4,6 +4,7 @@ import { listNames, type NameListParams } from "@/lib/queries/names";
 import { Breadcrumb, type Crumb } from "./Breadcrumb";
 import { type NameWithImage } from "./NameCard";
 import { NameListRow } from "./NameListRow";
+import { AlphabetStrip } from "./AlphabetStrip";
 
 function buildPageHref(path: string, page: number, extra?: Record<string, string>) {
   const qs = new URLSearchParams();
@@ -102,6 +103,7 @@ export function NameListTemplate({
   take = DEFAULT_TAKE,
   aside,
   headerClassName,
+  alphabetStrip,
 }: {
   title: string;
   description: string;
@@ -115,6 +117,8 @@ export function NameListTemplate({
   aside?: ReactNode;
   /** Örn. erkek/kız sayfaları: gradient kutu */
   headerClassName?: string;
+  /** Kız / erkek listelerinde alfabetik harf şeridi */
+  alphabetStrip?: { letters: string[]; basePath: string; activeLetter: string | null; tone: "girl" | "boy" };
 }) {
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
@@ -142,6 +146,16 @@ export function NameListTemplate({
         }
       >
         <div className={aside ? "min-w-0" : "mt-8 min-w-0"}>
+          {alphabetStrip && (
+            <div className="sticky top-14 z-10 mb-3 bg-background/95 pb-1 pt-0.5 backdrop-blur-sm sm:top-16">
+              <AlphabetStrip
+                letters={alphabetStrip.letters}
+                basePath={alphabetStrip.basePath}
+                activeLetter={alphabetStrip.activeLetter}
+                tone={alphabetStrip.tone}
+              />
+            </div>
+          )}
           <div className="mt-0 overflow-hidden rounded-2xl border border-violet-100/80 bg-gradient-to-b from-white to-slate-50/40 p-0.5 shadow-sm ring-1 ring-violet-100/50 sm:px-0.5 sm:py-0.5 lg:mt-0">
             <ul className="px-0 pb-1.5 sm:px-0 sm:pb-2">
               {items.map((n, i) => (

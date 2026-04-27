@@ -4,6 +4,7 @@ import {
   NAME_LIST_CATEGORY_HEADER_CLASS,
 } from "@/components/marketing/CategoryListAside";
 import { NameListTemplate, loadNameListTemplateData } from "@/components/marketing/NameListTemplate";
+import { cinsiyetPaginationExtra, genderFromCinsiyetParam } from "@/lib/category-cinsiyet";
 
 export const metadata: Metadata = {
   title: "Modern isimler",
@@ -14,15 +15,30 @@ type SP = Record<string, string | string[] | undefined>;
 
 export default async function Page({ searchParams }: { searchParams: Promise<SP> }) {
   const sp = await searchParams;
-  const list = await loadNameListTemplateData({ searchParams: sp, query: { style: "MODERN" } });
+  const gender = genderFromCinsiyetParam(sp.cinsiyet);
+  const list = await loadNameListTemplateData({
+    searchParams: sp,
+    query: {
+      style: "MODERN",
+      orderBy: "alpha",
+      ...(gender ? { gender } : {}),
+    },
+  });
+  const titleTag =
+    gender === "GIRL" ? "Modern isimler (kız)" : gender === "BOY" ? "Modern isimler (erkek)" : "Modern isimler";
   return (
     <NameListTemplate
-      title="Modern isimler"
-      description="Kısa, akıcı ve günümüzde sık duyulan modern isim seçkisi."
+      title={titleTag}
+      description="Modern tarz etiketli isimler; A–Z alfabetik. Kız, erkek veya tümü."
       crumbs={[{ label: "Anasayfa", href: "/" }, { label: "Modern isimler" }]}
       path="/modern-isimler"
       headerClassName={NAME_LIST_CATEGORY_HEADER_CLASS}
-      aside={<CategoryListAside variant="modern" />}
+      paginationExtra={cinsiyetPaginationExtra(gender)}
+      genderFilter={{
+        basePath: "/modern-isimler",
+        active: gender === "GIRL" || gender === "BOY" ? gender : null,
+      }}
+      aside={<CategoryListAside variant="modern" gender={gender} />}
       {...list}
     />
   );

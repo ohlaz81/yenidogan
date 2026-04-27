@@ -15,15 +15,7 @@ export type CategoryAsideVariant =
   | "finder"
   | { kind: "letter"; letter: string; gender?: Gender };
 
-function top5ForVariant(v: CategoryAsideVariant): NameWithImage[] {
-  if (v === "popular") return listNamesFromStore({ orderBy: "popular", take: 5 }).items;
-  if (v === "quran") return listNamesFromStore({ inQuran: true, orderBy: "popular", take: 5 }).items;
-  if (v === "modern") return listNamesFromStore({ style: "MODERN", orderBy: "popular", take: 5 }).items;
-  if (v === "rare") return listNamesFromStore({ style: "RARE", orderBy: "popular", take: 5 }).items;
-  if (v === "short") return listNamesFromStore({ isShort: true, orderBy: "popular", take: 5 }).items;
-  if (v === "beautiful") return listNamesFromStore({ beautifulMeaning: true, orderBy: "popular", take: 5 }).items;
-  if (v === "all") return listNamesFromStore({ orderBy: "popular", take: 5 }).items;
-  if (v === "finder") return listNamesFromStore({ orderBy: "popular", take: 5 }).items;
+function top5ForVariant(v: CategoryAsideVariant, pageGender?: Gender): NameWithImage[] {
   if (typeof v === "object" && v.kind === "letter") {
     return listNamesFromStore({
       letter: v.letter.toLocaleUpperCase("tr-TR"),
@@ -32,19 +24,29 @@ function top5ForVariant(v: CategoryAsideVariant): NameWithImage[] {
       orderBy: "popular",
     }).items;
   }
+  const g = pageGender ? { gender: pageGender } : {};
+  if (v === "popular") return listNamesFromStore({ ...g, orderBy: "popular", take: 5 }).items;
+  if (v === "quran") return listNamesFromStore({ ...g, inQuran: true, orderBy: "popular", take: 5 }).items;
+  if (v === "modern") return listNamesFromStore({ ...g, style: "MODERN", orderBy: "popular", take: 5 }).items;
+  if (v === "rare") return listNamesFromStore({ ...g, style: "RARE", orderBy: "popular", take: 5 }).items;
+  if (v === "short") return listNamesFromStore({ ...g, isShort: true, orderBy: "popular", take: 5 }).items;
+  if (v === "beautiful") return listNamesFromStore({ ...g, beautifulMeaning: true, orderBy: "popular", take: 5 }).items;
+  if (v === "all") return listNamesFromStore({ ...g, orderBy: "popular", take: 5 }).items;
+  if (v === "finder") return listNamesFromStore({ ...g, orderBy: "popular", take: 5 }).items;
   return [];
 }
 
-function modernSpotlight(): NameWithImage[] {
-  return listNamesFromStore({ style: "MODERN", take: 5, orderBy: "popular" }).items;
+function modernSpotlight(gender?: Gender): NameWithImage[] {
+  const g = gender ? { gender } : {};
+  return listNamesFromStore({ style: "MODERN", take: 5, orderBy: "popular", ...g }).items;
 }
 
 /**
  * Kategori listeleri için kısa yan sütun (erkek/kız sayfalarındaki GenderListAside’tan daha sade).
  */
-export function CategoryListAside({ variant }: { variant: CategoryAsideVariant }) {
-  const top5 = top5ForVariant(variant);
-  const modern5 = modernSpotlight();
+export function CategoryListAside({ variant, gender }: { variant: CategoryAsideVariant; gender?: Gender }) {
+  const top5 = top5ForVariant(variant, gender);
+  const modern5 = modernSpotlight(gender);
 
   return (
     <div className="space-y-4 text-sm">

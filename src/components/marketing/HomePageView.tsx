@@ -463,33 +463,6 @@ export function HomePageView({
         </div>
       </section>
 
-      <section className="border-t border-border/80 bg-gradient-to-b from-violet-50/50 to-transparent py-8">
-        <div className="mx-auto grid max-w-6xl gap-4 px-4 sm:grid-cols-2 lg:grid-cols-4">
-          {[
-            { i: "📚", t: "Geniş arşiv", d: "Sürekli güncellenen isim listeleri ve kategoriler." },
-            { i: "✨", t: "Detaylı bilgi", d: "Köken, okunuş, anlam ve özellikler bir arada." },
-            { i: "🛡️", t: "Güvenilir kaynak", d: "Editoryal kontrol ve anlaşılır içerik dili." },
-            { i: "📱", t: "Kolay kullanım", d: "Mobil öncelikli, sade arayüz; hızlı filtreler." },
-          ].map((x) => (
-            <div
-              key={x.t}
-              className="flex gap-3 rounded-2xl border border-border/80 bg-white/90 p-4 shadow-sm"
-            >
-              <span
-                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-violet-100 text-xl"
-                aria-hidden
-              >
-                {x.i}
-              </span>
-              <div>
-                <p className="font-semibold text-primary">{x.t}</p>
-                <p className="mt-1 text-sm text-muted">{x.d}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
       <NewsletterBar />
     </div>
   );

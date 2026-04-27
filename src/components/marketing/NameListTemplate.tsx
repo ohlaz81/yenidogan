@@ -5,6 +5,7 @@ import { Breadcrumb, type Crumb } from "./Breadcrumb";
 import { type NameWithImage } from "./NameCard";
 import { NameListRow } from "./NameListRow";
 import { AlphabetStrip } from "./AlphabetStrip";
+import { CategoryGenderFilter } from "./CategoryGenderFilter";
 
 function buildPageHref(path: string, page: number, extra?: Record<string, string>) {
   const qs = new URLSearchParams();
@@ -104,6 +105,7 @@ export function NameListTemplate({
   aside,
   headerClassName,
   alphabetStrip,
+  genderFilter,
 }: {
   title: string;
   description: string;
@@ -119,6 +121,8 @@ export function NameListTemplate({
   headerClassName?: string;
   /** Kız / erkek listelerinde alfabetik harf şeridi */
   alphabetStrip?: { letters: string[]; basePath: string; activeLetter: string | null; tone: "girl" | "boy" };
+  /** Kur’an / popüler / modern / nadir / A–Z kategorilerinde cinsiyet sekmesi */
+  genderFilter?: { basePath: string; active: "GIRL" | "BOY" | null };
 }) {
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
@@ -146,6 +150,9 @@ export function NameListTemplate({
         }
       >
         <div className={aside ? "min-w-0" : "mt-8 min-w-0"}>
+          {genderFilter && (
+            <CategoryGenderFilter basePath={genderFilter.basePath} active={genderFilter.active} />
+          )}
           {alphabetStrip && (
             <div className="sticky top-14 z-10 mb-3 bg-background/95 pb-1 pt-0.5 backdrop-blur-sm sm:top-16">
               <AlphabetStrip

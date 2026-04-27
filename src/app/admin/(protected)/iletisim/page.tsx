@@ -1,10 +1,10 @@
 import { getSupabase } from "@/lib/supabase/admin";
 import { postgrestToError } from "@/lib/supabase/errors";
-import { requireAdminSession } from "@/lib/admin-auth";
+import { ADMIN_PERMISSIONS, requirePermission } from "@/lib/admin-permissions";
 import { markMessageRead } from "@/app/admin/actions/message";
 
 export default async function AdminInboxPage() {
-  await requireAdminSession();
+  await requirePermission(ADMIN_PERMISSIONS.contact);
   const s = getSupabase();
   const { data: msgs, error } = await s
     .from("ContactMessage")

@@ -1,5 +1,6 @@
 import { createId } from "@paralleldrive/cuid2";
 import { auth } from "@/auth";
+import { ADMIN_PERMISSIONS, getUserPermissions } from "@/lib/admin-permissions";
 import { getSupabase } from "@/lib/supabase/admin";
 import { mkdir, writeFile } from "fs/promises";
 import path from "path";
@@ -8,6 +9,11 @@ export async function POST(req: Request) {
   const session = await auth();
   if (!session?.user?.id) {
     return Response.json({ error: "Yetkisiz" }, { status: 401 });
+  }
+
+  const perms = await getUserPermissions(session.user.id);
+  if (!perms.has(ADMIN_PERMISSIONS.content)) {
+    return Response.json({ error: "Bu işlem için yetkiniz yok" }, { status: 403 });
   }
 
   const fd = await req.formData();

@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 import { createId } from "@paralleldrive/cuid2";
 import { getSupabase } from "@/lib/supabase/admin";
 import { postgrestToError } from "@/lib/supabase/errors";
-import { requireAdminSession } from "@/lib/admin-auth";
+import { ADMIN_PERMISSIONS, requirePermission } from "@/lib/admin-permissions";
 
 const schema = z.object({
   id: z.string().optional(),
@@ -16,7 +16,7 @@ const schema = z.object({
 });
 
 export async function saveFaq(formData: FormData) {
-  await requireAdminSession();
+  await requirePermission(ADMIN_PERMISSIONS.content);
   const parsed = schema.safeParse({
     id: formData.get("id") || undefined,
     question: formData.get("question"),
@@ -49,7 +49,7 @@ export async function saveFaq(formData: FormData) {
 }
 
 export async function deleteFaqAction(formData: FormData) {
-  await requireAdminSession();
+  await requirePermission(ADMIN_PERMISSIONS.content);
   const id = z.string().parse(formData.get("id"));
   const { error } = await getSupabase().from("FAQ").delete().eq("id", id);
   if (error) throw postgrestToError(error, "deleteFaqAction");

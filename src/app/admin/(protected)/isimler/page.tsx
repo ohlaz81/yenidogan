@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { getSupabase } from "@/lib/supabase/admin";
 import { postgrestToError } from "@/lib/supabase/errors";
-import { requireAdminSession } from "@/lib/admin-auth";
+import { ADMIN_PERMISSIONS, requirePermission } from "@/lib/admin-permissions";
 import { deleteNameAction } from "@/app/admin/actions/name";
 
 export default async function AdminNamesPage() {
-  await requireAdminSession();
+  await requirePermission(ADMIN_PERMISSIONS.names);
   const s = getSupabase();
   const { data: names, error } = await s
     .from("Name")

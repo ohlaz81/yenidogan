@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { requireAdminSession } from "@/lib/admin-auth";
-import { adminNavGroups } from "@/lib/admin-nav";
+import { getUserPermissions } from "@/lib/admin-permissions";
+import { adminNavGroups, filterNavGroupsByPermissions } from "@/lib/admin-nav";
 import { AdminSignOut } from "@/components/admin/AdminSignOut";
 import { AdminMobileNav } from "@/components/admin/AdminMobileNav";
 
@@ -9,6 +10,10 @@ export const dynamic = "force-dynamic";
 export default async function AdminProtectedLayout({ children }: { children: React.ReactNode }) {
   const session = await requireAdminSession();
   const email = session.user?.email ?? null;
+  const userId = session.user!.id!;
+  const perms = await getUserPermissions(userId);
+  const navGroups = filterNavGroupsByPermissions(adminNavGroups, perms);
+  const mobileNavItems = navGroups.flatMap((g) => g.items);
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -19,7 +24,7 @@ export default async function AdminProtectedLayout({ children }: { children: Rea
         <AdminSignOut email={email} />
       </header>
 
-      <AdminMobileNav />
+        <AdminMobileNav items={mobileNavItems} />
 
       <div className="flex flex-1">
         <aside className="hidden w-56 shrink-0 border-r border-zinc-200 bg-white lg:block">
@@ -27,7 +32,7 @@ export default async function AdminProtectedLayout({ children }: { children: Rea
             Menü
           </div>
           <nav className="flex flex-col gap-4 p-3 text-sm">
-            {adminNavGroups.map((group) => (
+            {navGroups.map((group) => (
               <div key={group.title}>
                 <p className="px-2 pb-1.5 text-[0.65rem] font-bold uppercase tracking-wide text-zinc-400">{group.title}</p>
                 <ul className="space-y-0.5">

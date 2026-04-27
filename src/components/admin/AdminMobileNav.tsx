@@ -1,14 +1,14 @@
 import Link from "next/link";
-import { adminNavFlat } from "@/lib/admin-nav";
+import type { AdminNavItem } from "@/lib/admin-nav";
 
 /** Küçük ekranda yatay kaydırmalı hızlı menü */
-export function AdminMobileNav() {
+export function AdminMobileNav({ items }: { items: AdminNavItem[] }) {
   return (
     <nav
       className="flex gap-1 overflow-x-auto border-b border-zinc-200 bg-zinc-50/90 px-2 py-2 lg:hidden"
       aria-label="Admin menü"
     >
-      {adminNavFlat.map((item) => (
+      {items.map((item) => (
         <Link
           key={item.href}
           href={item.href}

@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { getSupabase } from "@/lib/supabase/admin";
 import { postgrestToError } from "@/lib/supabase/errors";
-import { requireAdminSession } from "@/lib/admin-auth";
+import { ADMIN_PERMISSIONS, requirePermission } from "@/lib/admin-permissions";
 import { deleteGuideAction } from "@/app/admin/actions/guide";
 
 export default async function AdminGuideListPage() {
-  await requireAdminSession();
+  await requirePermission(ADMIN_PERMISSIONS.content);
   const s = getSupabase();
   const { data: items, error } = await s.from("GuideArticle").select("*").order("updatedAt", { ascending: false });
   if (error) throw postgrestToError(error, "admin/rehber:GuideArticle");

@@ -1,14 +1,14 @@
 import { notFound } from "next/navigation";
 import { getSupabase } from "@/lib/supabase/admin";
 import { postgrestToError } from "@/lib/supabase/errors";
-import { requireAdminSession } from "@/lib/admin-auth";
+import { ADMIN_PERMISSIONS, requirePermission } from "@/lib/admin-permissions";
 import { NameForm } from "@/components/admin/NameForm";
 import type { Name } from "@/types/database";
 
 type Props = { params: Promise<{ id: string }> };
 
 export default async function EditNamePage({ params }: Props) {
-  await requireAdminSession();
+  await requirePermission(ADMIN_PERMISSIONS.names);
   const { id } = await params;
   const s = getSupabase();
   const { data: row, error } = await s.from("Name").select("*").eq("id", id).maybeSingle();

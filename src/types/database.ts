@@ -21,6 +21,13 @@ export type User = {
   updatedAt: string;
 };
 
+/** `public."UserPermission"` — admin paneli ince yetkileri. */
+export type UserPermission = {
+  userId: string;
+  permission: string;
+  createdAt: string;
+};
+
 export type Name = {
   id: string;
   slug: string;

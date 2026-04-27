@@ -1,11 +1,11 @@
 import { getSupabase } from "@/lib/supabase/admin";
 import { postgrestToError } from "@/lib/supabase/errors";
-import { requireAdminSession } from "@/lib/admin-auth";
+import { ADMIN_PERMISSIONS, requirePermission } from "@/lib/admin-permissions";
 import { FaqForm } from "@/components/admin/FaqForm";
 import { deleteFaqAction } from "@/app/admin/actions/faq";
 
 export default async function AdminFaqPage() {
-  await requireAdminSession();
+  await requirePermission(ADMIN_PERMISSIONS.content);
   const s = getSupabase();
   const { data: faqs, error } = await s.from("FAQ").select("*").order("sortOrder", { ascending: true });
   if (error) throw postgrestToError(error, "admin/sss-faq:FAQ");

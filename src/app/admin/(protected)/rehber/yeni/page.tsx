@@ -1,10 +1,10 @@
 import { getSupabase } from "@/lib/supabase/admin";
 import { postgrestToError } from "@/lib/supabase/errors";
-import { requireAdminSession } from "@/lib/admin-auth";
+import { ADMIN_PERMISSIONS, requirePermission } from "@/lib/admin-permissions";
 import { GuideForm } from "@/components/admin/GuideForm";
 
 export default async function NewGuidePage() {
-  await requireAdminSession();
+  await requirePermission(ADMIN_PERMISSIONS.content);
   const s = getSupabase();
   const { data: mediaOptions, error } = await s
     .from("MediaAsset")

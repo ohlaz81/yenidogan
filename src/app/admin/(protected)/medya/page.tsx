@@ -1,11 +1,11 @@
 import Image from "next/image";
 import { getSupabase } from "@/lib/supabase/admin";
 import { postgrestToError } from "@/lib/supabase/errors";
-import { requireAdminSession } from "@/lib/admin-auth";
+import { ADMIN_PERMISSIONS, requirePermission } from "@/lib/admin-permissions";
 import { MediaUpload } from "@/components/admin/MediaUpload";
 
 export default async function AdminMediaPage() {
-  await requireAdminSession();
+  await requirePermission(ADMIN_PERMISSIONS.content);
   const s = getSupabase();
   const { data: items, error } = await s
     .from("MediaAsset")

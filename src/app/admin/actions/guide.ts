@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 import { createId } from "@paralleldrive/cuid2";
 import { getSupabase } from "@/lib/supabase/admin";
 import { postgrestToError } from "@/lib/supabase/errors";
-import { requireAdminSession } from "@/lib/admin-auth";
+import { ADMIN_PERMISSIONS, requirePermission } from "@/lib/admin-permissions";
 import { slugify } from "@/lib/slug";
 
 const schema = z.object({
@@ -20,7 +20,7 @@ const schema = z.object({
 });
 
 export async function saveGuide(formData: FormData) {
-  await requireAdminSession();
+  await requirePermission(ADMIN_PERMISSIONS.content);
   const parsed = schema.safeParse({
     id: formData.get("id") || undefined,
     title: formData.get("title"),
@@ -66,7 +66,7 @@ export async function saveGuide(formData: FormData) {
 }
 
 export async function deleteGuideAction(formData: FormData) {
-  await requireAdminSession();
+  await requirePermission(ADMIN_PERMISSIONS.content);
   const id = z.string().parse(formData.get("id"));
   const { error } = await getSupabase().from("GuideArticle").delete().eq("id", id);
   if (error) throw postgrestToError(error, "deleteGuideAction");

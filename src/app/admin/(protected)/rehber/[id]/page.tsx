@@ -1,14 +1,14 @@
 import { notFound } from "next/navigation";
 import { getSupabase } from "@/lib/supabase/admin";
 import { postgrestToError } from "@/lib/supabase/errors";
-import { requireAdminSession } from "@/lib/admin-auth";
+import { ADMIN_PERMISSIONS, requirePermission } from "@/lib/admin-permissions";
 import { GuideForm } from "@/components/admin/GuideForm";
 import type { GuideArticle } from "@/types/database";
 
 type Props = { params: Promise<{ id: string }> };
 
 export default async function EditGuidePage({ params }: Props) {
-  await requireAdminSession();
+  await requirePermission(ADMIN_PERMISSIONS.content);
   const { id } = await params;
   const s = getSupabase();
   const { data: article, error } = await s.from("GuideArticle").select("*").eq("id", id).maybeSingle();

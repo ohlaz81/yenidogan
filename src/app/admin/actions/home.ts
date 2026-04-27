@@ -4,10 +4,10 @@ import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { getSupabase } from "@/lib/supabase/admin";
 import { postgrestToError } from "@/lib/supabase/errors";
-import { requireAdminSession } from "@/lib/admin-auth";
+import { ADMIN_PERMISSIONS, requirePermission } from "@/lib/admin-permissions";
 
 export async function updateFeaturedSlot(formData: FormData) {
-  await requireAdminSession();
+  await requirePermission(ADMIN_PERMISSIONS.homeFeatured);
   const id = z.string().parse(formData.get("slotId"));
   const nameIdRaw = formData.get("nameId");
   const nameId = nameIdRaw && String(nameIdRaw).length ? String(nameIdRaw) : null;

@@ -5,7 +5,7 @@ import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getSupabase } from "@/lib/supabase/admin";
-import { requireAdminSession } from "@/lib/admin-auth";
+import { ADMIN_PERMISSIONS, requirePermission } from "@/lib/admin-permissions";
 import { slugify } from "@/lib/slug";
 import { firstLetterTr } from "@/lib/text";
 
@@ -36,7 +36,7 @@ const base = z.object({
 export type NameSaveState = { ok?: boolean; error?: string; slug?: string };
 
 export async function saveName(_: NameSaveState, formData: FormData): Promise<NameSaveState> {
-  await requireAdminSession();
+  await requirePermission(ADMIN_PERMISSIONS.names);
   const parsed = base.safeParse({
     id: formData.get("id") || undefined,
     displayName: formData.get("displayName"),
@@ -142,7 +142,7 @@ export async function saveName(_: NameSaveState, formData: FormData): Promise<Na
 }
 
 export async function deleteNameAction(formData: FormData) {
-  await requireAdminSession();
+  await requirePermission(ADMIN_PERMISSIONS.names);
   const id = z.string().parse(formData.get("id"));
   const s = getSupabase();
   await s.from("SimilarName").delete().eq("sourceId", id);

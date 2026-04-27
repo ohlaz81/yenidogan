@@ -119,8 +119,14 @@ export function NameListTemplate({
   aside?: ReactNode;
   /** Örn. erkek/kız sayfaları: gradient kutu */
   headerClassName?: string;
-  /** Kız / erkek listelerinde alfabetik harf şeridi */
-  alphabetStrip?: { letters: string[]; basePath: string; activeLetter: string | null; tone: "girl" | "boy" };
+  /** Kategori ve kız/erkek listelerinde ilk harf şeridi */
+  alphabetStrip?: {
+    letters: string[];
+    basePath: string;
+    activeLetter: string | null;
+    tone: "girl" | "boy" | "neutral";
+    preserveQuery?: Record<string, string>;
+  };
   /** Kur’an / popüler / modern / nadir / A–Z kategorilerinde cinsiyet sekmesi */
   genderFilter?: { basePath: string; active: "GIRL" | "BOY" | null };
 }) {
@@ -160,6 +166,7 @@ export function NameListTemplate({
                 basePath={alphabetStrip.basePath}
                 activeLetter={alphabetStrip.activeLetter}
                 tone={alphabetStrip.tone}
+                preserveQuery={alphabetStrip.preserveQuery}
               />
             </div>
           )}

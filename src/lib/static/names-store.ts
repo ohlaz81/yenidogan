@@ -190,6 +190,18 @@ export function getFirstLettersForGender(gender: "GIRL" | "BOY"): string[] {
   return Array.from(set).sort((a, b) => a.localeCompare(b, "tr-TR"));
 }
 
+/** `letter` dışındaki filtrelerle eşleşen isimlerde geçen ilk harfler (kategori + isteğe bağlı cinsiyet). */
+export function getFirstLettersForNameListFilters(
+  p: Omit<NameListParams, "letter" | "skip" | "take" | "orderBy" | "search">,
+): string[] {
+  const set = new Set<string>();
+  for (const n of allWithImage) {
+    if (!matchFilters(n, { ...p, letter: undefined })) continue;
+    if (n.firstLetter) set.add(n.firstLetter);
+  }
+  return Array.from(set).sort((a, b) => a.localeCompare(b, "tr-TR"));
+}
+
 export function getModernOrPopularTopByGenderFromStore(gender: "GIRL" | "BOY", limit: number) {
   const { items: modern } = listNamesFromStore({
     gender,

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { GenderListAside } from "@/components/marketing/GenderListAside";
 import { NameListTemplate, loadNameListTemplateData } from "@/components/marketing/NameListTemplate";
+import { categoryListPaginationExtra, harfFromSearchParams } from "@/lib/category-cinsiyet";
 import { getFirstLettersForGender } from "@/lib/static/names-store";
-import { normalizeTrLetter } from "@/lib/text";
 
 export const metadata: Metadata = {
   title: "Kız isimleri",
@@ -13,8 +13,7 @@ type SP = Record<string, string | string[] | undefined>;
 
 export default async function Page({ searchParams }: { searchParams: Promise<SP> }) {
   const sp = await searchParams;
-  const rawHarf = Array.isArray(sp.harf) ? sp.harf[0] : sp.harf;
-  const letter = rawHarf?.trim() ? normalizeTrLetter(rawHarf) : undefined;
+  const letter = harfFromSearchParams(sp);
   const list = await loadNameListTemplateData({
     searchParams: sp,
     query: {
@@ -24,7 +23,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<SP>
     },
   });
   const letters = getFirstLettersForGender("GIRL");
-  const paginationExtra = letter ? { harf: letter } : undefined;
+  const paginationExtra = categoryListPaginationExtra(undefined, letter);
 
   return (
     <NameListTemplate

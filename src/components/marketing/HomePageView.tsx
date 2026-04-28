@@ -244,7 +244,7 @@ export function HomePageView({
           <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
             <div className="flex items-center justify-between bg-primary px-2.5 py-2 text-white sm:px-3 sm:py-2.5">
               <span className="text-[0.65rem] font-semibold uppercase tracking-wide sm:text-sm">İsim Rehberi</span>
-              <Link href="/isim-rehberi" className="hidden text-[0.6rem] font-semibold uppercase sm:inline sm:text-xs">
+              <Link href="/isim-rehberi" className="text-[0.6rem] font-semibold uppercase sm:text-xs">
                 Tümü
               </Link>
             </div>

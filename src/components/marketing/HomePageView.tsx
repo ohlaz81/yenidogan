@@ -56,7 +56,7 @@ export function HomePageView({
   const boyNames = data.featuredBoySlots
     .map((s) => s.name)
     .filter((n): n is NonNullable<typeof n> => n != null);
-  const popularNames = [...girlNames, ...boyNames].slice(0, 10);
+  const popularNames = [...girlNames, ...boyNames].slice(0, 3);
   const noPopularNames = girlNames.length === 0 && boyNames.length === 0;
   const popularTickerSeed =
     popularNames.length > 0
@@ -93,6 +93,8 @@ export function HomePageView({
     shortMeaning: n.meaning.length > 72 ? `${n.meaning.slice(0, 72).trim()}...` : n.meaning,
   }));
   const popularTickerLoop = [...popularTickerItems, ...popularTickerItems];
+  const guideTopItems = data.guideArticles.slice(0, 4);
+  const guideMoreItems = data.guideArticles.slice(4);
 
   return (
     <div className="space-y-6 pb-8 sm:space-y-10">
@@ -242,12 +244,12 @@ export function HomePageView({
           <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
             <div className="flex items-center justify-between bg-primary px-2.5 py-2 text-white sm:px-3 sm:py-2.5">
               <span className="text-[0.65rem] font-semibold uppercase tracking-wide sm:text-sm">İsim Rehberi</span>
-              <Link href="/isim-rehberi" className="text-[0.6rem] font-semibold uppercase sm:text-xs">
+              <Link href="/isim-rehberi" className="hidden text-[0.6rem] font-semibold uppercase sm:inline sm:text-xs">
                 Tümü
               </Link>
             </div>
             <div className="divide-y divide-border/80">
-              {data.guideArticles.slice(0, 4).map((a) => (
+              {guideTopItems.map((a) => (
                 <Link
                   key={a.id}
                   href={`/isim-rehberi/${a.slug}`}
@@ -260,6 +262,27 @@ export function HomePageView({
                 </Link>
               ))}
             </div>
+            {guideMoreItems.length > 0 ? (
+              <details className="sm:hidden">
+                <summary className="cursor-pointer border-t border-border/80 px-2.5 py-2 text-[0.68rem] font-semibold uppercase tracking-wide text-primary">
+                  Tümü
+                </summary>
+                <div className="divide-y divide-border/80 border-t border-border/80">
+                  {guideMoreItems.map((a) => (
+                    <Link
+                      key={a.id}
+                      href={`/isim-rehberi/${a.slug}`}
+                      className="flex min-h-0 items-center justify-between px-2 py-1.5 text-[0.7rem] hover:bg-accent-pink-soft/40 min-[500px]:text-xs"
+                    >
+                      <span className="line-clamp-1 pr-1">{a.title}</span>
+                      <span className="shrink-0" aria-hidden>
+                        ›
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </details>
+            ) : null}
             <div className="mt-auto grid gap-2 border-t border-border/80 p-2.5 sm:p-3">
               <Link
                 href="/populer-isimler"

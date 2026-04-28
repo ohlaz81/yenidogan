@@ -27,9 +27,9 @@ export default async function AdminHomeSettingsPage() {
       <div className="space-y-2">
         <h1 className="font-display text-2xl font-semibold text-primary">Türkiye&apos;deki popüler isim şeridi</h1>
         <p className="text-sm text-zinc-600">
-          Aşağıdaki slotlar ana sayfadaki «Türkiye&apos;de En Popüler İsimler» kayan şeridine gider — önce kız, sonra erkek
-          slotlarındaki sırayla ilk 10 isim kullanılır. İsimler Supabase&apos;teki yayınlı kayıtlardan seçilir. Kayıttan sonra
-          ana sayfayı yenileyerek kontrol edin.
+          Buradaki alanlar ana sayfadaki «Türkiye&apos;de En Popüler İsimler» bölümünde görünen isimleri belirler. Şu an
+          ön yüzde ilk 3 isim gösterilir; devamını bu panelden düzenleyebilirsiniz. İsimler Supabase&apos;teki yayınlı
+          kayıtlardan seçilir. Kayıttan sonra ana sayfayı yenileyerek kontrol edin.
         </p>
       </div>
 
@@ -39,10 +39,10 @@ export default async function AdminHomeSettingsPage() {
         return (
           <section key={col} className="space-y-3 rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm">
             <h2 className="font-display text-lg font-semibold text-primary">
-              {col === "girl" ? "Kız öne çıkan slotları" : "Erkek öne çıkan slotları"}
+              {col === "girl" ? "Kız isimleri (görünüm sırası)" : "Erkek isimleri (görünüm sırası)"}
             </h2>
             {colSlots.length === 0 ? (
-              <p className="text-sm text-zinc-600">Bu kolon için slot bulunamadı. Migration seed’i çalıştırılmalı.</p>
+              <p className="text-sm text-zinc-600">Bu kolon için kayıt bulunamadı. Migration seed&apos;i çalıştırılmalı.</p>
             ) : (
               <div className="space-y-3">
                 {colSlots.map((slot) => {
@@ -50,7 +50,7 @@ export default async function AdminHomeSettingsPage() {
                   return (
                     <form key={slot.id} action={updateFeaturedSlot} className="grid gap-2 rounded-xl border border-zinc-100 p-3 sm:grid-cols-[8rem_1fr_auto] sm:items-center">
                       <input type="hidden" name="slotId" value={slot.id} />
-                      <p className="text-sm font-semibold text-zinc-700">Slot {slot.position + 1}</p>
+                      <p className="text-sm font-semibold text-zinc-700">Sıra {slot.position + 1}</p>
                       <select
                         name="nameId"
                         defaultValue={slot.nameId ?? ""}

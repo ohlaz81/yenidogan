@@ -15,4 +15,5 @@ export async function updateFeaturedSlot(formData: FormData) {
   const { error } = await s.from("HomeFeaturedName").update({ nameId } as never).eq("id", id);
   if (error) throw postgrestToError(error, "updateFeaturedSlot:HomeFeaturedName");
   revalidatePath("/");
+  revalidatePath("/admin/anasayfa");
 }

@@ -137,6 +137,9 @@ export async function saveName(_: NameSaveState, formData: FormData): Promise<Na
   revalidatePath("/kiz-isimleri");
   revalidatePath("/erkek-isimleri");
   revalidatePath(`/isim/${slug}`);
+  revalidatePath("/admin/isimler");
+  revalidatePath("/admin/isimler/yeni");
+  revalidatePath("/admin/isimler/[id]", "page");
 
   return { ok: true, slug };
 }
@@ -150,5 +153,7 @@ export async function deleteNameAction(formData: FormData) {
   await s.from("HomeFeaturedName").update({ nameId: null } as never).eq("nameId", id);
   await s.from("Name").delete().eq("id", id);
   revalidatePath("/");
+  revalidatePath("/admin/isimler");
+  revalidatePath("/admin/isimler/[id]", "page");
   redirect("/admin/isimler");
 }

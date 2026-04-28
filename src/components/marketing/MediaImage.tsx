@@ -20,7 +20,8 @@ export function MediaImage({
   const hasNoOrganic = (className ?? "").includes("no-organic");
   const mergedClassName = `${hasNoOrganic ? "" : "site-organic-image"} ${className ?? ""}`.trim();
   const isSvg = src.endsWith(".svg");
-  if (isSvg) {
+  const isRemote = /^https?:\/\//i.test(src);
+  if (isSvg || isRemote) {
     const cls = fill
       ? `absolute inset-0 h-full w-full object-cover ${mergedClassName}`.trim()
       : mergedClassName;

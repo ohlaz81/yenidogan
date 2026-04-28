@@ -33,6 +33,12 @@ const quickIconBg: Record<string, string> = {
   heart: "bg-rose-100 text-rose-600",
 };
 
+function pickImageUrl(url: string | null | undefined, fallback = "/media/placeholder.svg") {
+  if (typeof url !== "string") return fallback;
+  const trimmed = url.trim();
+  return trimmed.length > 0 ? trimmed : fallback;
+}
+
 export function HomePageView({
   data,
   faqs,
@@ -372,7 +378,7 @@ export function HomePageView({
                 <Link key={`${name.id}-${index}`} href={`/isim/${name.slug}`} className="popular-mini-card group">
                   <div className="soft-photo-frame relative h-14 w-14 shrink-0">
                     <MediaImage
-                      src={name.image?.url ?? "/media/placeholder.svg"}
+                      src={pickImageUrl(name.image?.url)}
                       alt={name.image?.alt ?? name.displayName}
                       fill
                       className="soft-photo-image object-cover"
@@ -409,7 +415,7 @@ export function HomePageView({
             <div className="mt-2 flex items-start gap-3">
               <div className="relative h-20 w-20 overflow-hidden rounded-xl">
                 <MediaImage
-                  src={data.randomName?.image?.url ?? "/media/hero-soft.svg"}
+                  src={pickImageUrl(data.randomName?.image?.url, "/media/hero-soft.svg")}
                   alt={data.randomName?.displayName ?? "Bugünün ismi"}
                   fill
                   className="object-cover"

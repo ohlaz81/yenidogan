@@ -29,7 +29,7 @@ export function GenderListAside({ gender }: { gender: "BOY" | "GIRL" }) {
       </div>
 
       <div className="rounded-2xl border border-border/70 bg-white p-4 shadow-sm">
-        <h2 className="font-display text-base font-semibold text-primary">2024’te öne çıkan tınılar</h2>
+        <h2 className="font-display text-base font-semibold text-primary">2026 öne çıkan tınılar</h2>
         <p className="mt-0.5 text-xs text-muted">Modern türe ve popülerlik skoruna göre örnek seçim.</p>
         <ol className="mt-2 space-y-1.5">
           {rising5.map((n, i) => (

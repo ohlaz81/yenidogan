@@ -4,14 +4,20 @@ import { postgrestToError } from "@/lib/supabase/errors";
 import { ADMIN_PERMISSIONS, requirePermission } from "@/lib/admin-permissions";
 import { deleteNameAction, importSeedNamesAction } from "@/app/admin/actions/name";
 
-export default async function AdminNamesPage() {
+type Props = {
+  searchParams?: Promise<{ q?: string }>;
+};
+
+export default async function AdminNamesPage({ searchParams }: Props) {
   await requirePermission(ADMIN_PERMISSIONS.names);
+  const sp = (await searchParams) ?? {};
+  const q = (sp.q ?? "").trim();
   const s = getSupabase();
-  const { data: names, error } = await s
-    .from("Name")
-    .select("*")
-    .order("updatedAt", { ascending: false })
-    .limit(200);
+  let query = s.from("Name").select("*").order("displayName", { ascending: true }).limit(200);
+  if (q.length > 0) {
+    query = query.or(`displayName.ilike.%${q}%,slug.ilike.%${q}%`);
+  }
+  const { data: names, error } = await query;
   if (error) throw postgrestToError(error, "admin/isimler:Name");
 
   return (
@@ -19,7 +25,7 @@ export default async function AdminNamesPage() {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="font-display text-2xl font-semibold text-primary">İsimler</h1>
-          <p className="text-sm text-zinc-600">Son güncellenen kayıtlar</p>
+          <p className="text-sm text-zinc-600">Alfabetik liste</p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <form action={importSeedNamesAction}>
@@ -32,6 +38,23 @@ export default async function AdminNamesPage() {
           </Link>
         </div>
       </div>
+      <form action="/admin/isimler" className="flex flex-wrap items-center gap-2">
+        <input
+          type="text"
+          name="q"
+          defaultValue={q}
+          placeholder="İsim veya slug ile ara"
+          className="h-10 w-full max-w-sm rounded-xl border border-zinc-300 bg-white px-3 text-sm outline-none ring-primary focus:ring-2"
+        />
+        <button type="submit" className="h-10 rounded-xl bg-primary px-4 text-sm font-semibold text-white">
+          Ara
+        </button>
+        {q ? (
+          <Link href="/admin/isimler" className="text-sm font-medium text-zinc-600 hover:text-primary">
+            Temizle
+          </Link>
+        ) : null}
+      </form>
       {(names ?? []).length === 0 ? (
         <div className="rounded-2xl border border-dashed border-zinc-300 bg-white p-6 text-sm text-zinc-600">
           Henüz veritabanında isim yok. Yukarıdaki <strong>Mevcut isimleri içe aktar</strong> butonuna basarak önyüzdeki

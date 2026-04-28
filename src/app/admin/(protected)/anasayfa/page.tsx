@@ -3,7 +3,14 @@ import { postgrestToError } from "@/lib/supabase/errors";
 import { ADMIN_PERMISSIONS, requirePermission } from "@/lib/admin-permissions";
 import { updateFeaturedSlot } from "@/app/admin/actions/home";
 
-type NameLite = { id: string; displayName: string; slug: string; gender: "GIRL" | "BOY" | "UNISEX"; popularScore: number };
+type NameLite = {
+  id: string;
+  displayName: string;
+  slug: string;
+  gender: "GIRL" | "BOY" | "UNISEX";
+  popularScore: number;
+  published: boolean;
+};
 type Slot = { id: string; column: "girl" | "boy"; position: number; nameId: string | null };
 
 export default async function AdminHomeSettingsPage() {
@@ -11,7 +18,12 @@ export default async function AdminHomeSettingsPage() {
   const s = getSupabase();
   const [{ data: rows, error: slotsErr }, { data: names, error: namesErr }] = await Promise.all([
     s.from("HomeFeaturedName").select("id,column,position,nameId").order("column").order("position"),
-    s.from("Name").select("id,displayName,slug,gender,popularScore").eq("published", true).order("popularScore", { ascending: false }).limit(500),
+    s
+      .from("Name")
+      .select("id,displayName,slug,gender,popularScore,published")
+      .order("published", { ascending: false })
+      .order("popularScore", { ascending: false })
+      .limit(500),
   ]);
   if (slotsErr) throw postgrestToError(slotsErr, "admin/anasayfa:HomeFeaturedName");
   if (namesErr) throw postgrestToError(namesErr, "admin/anasayfa:Name");
@@ -59,7 +71,7 @@ export default async function AdminHomeSettingsPage() {
                         <option value="">— Boş bırak —</option>
                         {options.map((n) => (
                           <option key={n.id} value={n.id}>
-                            {n.displayName} ({n.slug})
+                            {n.displayName} ({n.slug}){n.published ? "" : " [Yayında değil]"}
                           </option>
                         ))}
                       </select>

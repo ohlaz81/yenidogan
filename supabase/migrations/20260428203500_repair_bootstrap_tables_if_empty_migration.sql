@@ -1,9 +1,9 @@
 -- =============================================================================
--- Bootstrap: public uygulama tablolari (admin icerik, iletisim, bulten, isimler)
+-- Repair: bos/bozuk bootstrap migration sonrasi public tablolari garanti et
 -- =============================================================================
--- Bu migration, canli veritabaninda sadece "User" ve "UserPermission" oldugu
--- durumda eksik tablolari guvenli sekilde (IF NOT EXISTS) olusturur.
--- Idempotenttir: tekrar calistirilabilir.
+-- Not: 20260428191500 migration dosyasi bir sure bos kalmis olabilecegi icin
+-- bu migration ayni CREATE IF NOT EXISTS bloklarini tekrarlar.
+-- Guvenlidir ve tekrar calistirilabilir.
 -- =============================================================================
 
 CREATE TABLE IF NOT EXISTS public."MediaAsset" (
@@ -104,7 +104,6 @@ CREATE TABLE IF NOT EXISTS public."NewsletterSubscriber" (
   "createdAt" timestamptz NOT NULL DEFAULT now()
 );
 
--- Admin ana sayfa slot guncellemeleri icin temel satirlar (idempotent)
 INSERT INTO public."HomeFeaturedName" (id, "column", position, "nameId")
 SELECT x.id, x.col, x.pos, NULL
 FROM (
@@ -121,10 +120,3 @@ FROM (
     ('slot_boy_4', 'boy', 4)
 ) AS x(id, col, pos)
 ON CONFLICT ("column", position) DO NOTHING;
-
-COMMENT ON TABLE public."Name" IS 'Isim kayitlari (admin CRUD + listeleme filtreleri).';
-COMMENT ON TABLE public."GuideArticle" IS 'Isim rehberi icerikleri.';
-COMMENT ON TABLE public."FAQ" IS 'Sik sorulan sorular.';
-COMMENT ON TABLE public."MediaAsset" IS 'Yuklenen medya varliklari.';
-COMMENT ON TABLE public."ContactMessage" IS 'Iletisim formundan gelen mesajlar.';
-COMMENT ON TABLE public."NewsletterSubscriber" IS 'Bulten aboneleri.';

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getSupabase } from "@/lib/supabase/admin";
 import { postgrestToError } from "@/lib/supabase/errors";
 import { ADMIN_PERMISSIONS, requirePermission } from "@/lib/admin-permissions";
-import { deleteNameAction } from "@/app/admin/actions/name";
+import { deleteNameAction, importSeedNamesAction } from "@/app/admin/actions/name";
 
 export default async function AdminNamesPage() {
   await requirePermission(ADMIN_PERMISSIONS.names);
@@ -21,10 +21,23 @@ export default async function AdminNamesPage() {
           <h1 className="font-display text-2xl font-semibold text-primary">İsimler</h1>
           <p className="text-sm text-zinc-600">Son güncellenen kayıtlar</p>
         </div>
-        <Link href="/admin/isimler/yeni" className="rounded-2xl bg-primary px-4 py-2 text-sm font-bold text-white">
-          Yeni isim
-        </Link>
+        <div className="flex flex-wrap items-center gap-2">
+          <form action={importSeedNamesAction}>
+            <button type="submit" className="rounded-2xl border border-primary px-4 py-2 text-sm font-bold text-primary hover:bg-violet-50">
+              Mevcut isimleri içe aktar
+            </button>
+          </form>
+          <Link href="/admin/isimler/yeni" className="rounded-2xl bg-primary px-4 py-2 text-sm font-bold text-white">
+            Yeni isim
+          </Link>
+        </div>
       </div>
+      {(names ?? []).length === 0 ? (
+        <div className="rounded-2xl border border-dashed border-zinc-300 bg-white p-6 text-sm text-zinc-600">
+          Henüz veritabanında isim yok. Yukarıdaki <strong>Mevcut isimleri içe aktar</strong> butonuna basarak önyüzdeki
+          isimleri admin düzenlemeye açabilirsiniz.
+        </div>
+      ) : null}
       <div className="overflow-x-auto rounded-2xl border border-zinc-200 bg-white shadow-sm">
         <table className="min-w-full text-left text-sm">
           <thead className="border-b border-zinc-100 bg-zinc-50 text-xs uppercase text-zinc-500">

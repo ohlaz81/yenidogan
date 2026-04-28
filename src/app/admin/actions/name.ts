@@ -8,6 +8,7 @@ import { getSupabase } from "@/lib/supabase/admin";
 import { ADMIN_PERMISSIONS, requirePermission } from "@/lib/admin-permissions";
 import { slugify } from "@/lib/slug";
 import { firstLetterTr } from "@/lib/text";
+import { BABY_NAME_SEED, seedToName } from "@/data/baby-names";
 
 const genderZ = z.enum(["GIRL", "BOY", "UNISEX"]);
 const styleZ = z.enum(["MODERN", "CLASSIC", "RARE", "POPULAR"]);
@@ -155,5 +156,44 @@ export async function deleteNameAction(formData: FormData) {
   revalidatePath("/");
   revalidatePath("/admin/isimler");
   revalidatePath("/admin/isimler/[id]", "page");
+  redirect("/admin/isimler");
+}
+
+export async function importSeedNamesAction() {
+  await requirePermission(ADMIN_PERMISSIONS.names);
+  const s = getSupabase();
+  const now = new Date().toISOString();
+  const rows = BABY_NAME_SEED.map((seed) => {
+    const n = seedToName(seed);
+    return {
+      id: n.id,
+      slug: n.slug,
+      displayName: n.displayName,
+      gender: n.gender,
+      meaning: n.meaning,
+      origin: n.origin,
+      pronunciation: n.pronunciation,
+      popularity: n.popularity,
+      popularScore: n.popularScore,
+      inQuran: n.inQuran,
+      style: n.style,
+      isShort: n.isShort,
+      beautifulMeaning: n.beautifulMeaning,
+      firstLetter: n.firstLetter,
+      intro: n.intro,
+      traits: n.traits,
+      published: true,
+      imageId: null,
+      createdAt: n.createdAt ?? now,
+      updatedAt: now,
+    };
+  });
+
+  const { error } = await s.from("Name").upsert(rows as never[], { onConflict: "id" });
+  if (error) throw new Error(`İsim içe aktarma başarısız: ${error.message}`);
+
+  revalidatePath("/");
+  revalidatePath("/admin/isimler");
+  revalidatePath("/admin/anasayfa");
   redirect("/admin/isimler");
 }

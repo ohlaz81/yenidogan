@@ -2,6 +2,7 @@ import { getSupabase } from "@/lib/supabase/admin";
 import { postgrestToError } from "@/lib/supabase/errors";
 import { ADMIN_PERMISSIONS, requirePermission } from "@/lib/admin-permissions";
 import { updateFeaturedSlot } from "@/app/admin/actions/home";
+import { importSeedNamesAction } from "@/app/admin/actions/name";
 
 type NameLite = {
   id: string;
@@ -43,6 +44,13 @@ export default async function AdminHomeSettingsPage() {
           ön yüzde ilk 3 isim gösterilir; devamını bu panelden düzenleyebilirsiniz. İsimler Supabase&apos;teki yayınlı
           kayıtlardan seçilir. Kayıttan sonra ana sayfayı yenileyerek kontrol edin.
         </p>
+        {allNames.length === 0 ? (
+          <form action={importSeedNamesAction}>
+            <button type="submit" className="mt-2 rounded-xl border border-primary px-3 py-2 text-sm font-semibold text-primary hover:bg-violet-50">
+              Seçim listesi için mevcut isimleri içe aktar
+            </button>
+          </form>
+        ) : null}
       </div>
 
       {(["girl", "boy"] as const).map((col) => {

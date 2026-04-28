@@ -132,14 +132,22 @@ export function getAllNameSlugs(): string[] {
   return BABY_NAME_SEED.map((s) => s.slug);
 }
 
-export function listNamesFromStore(p: NameListParams) {
+/** `Name` + görsel ile aynı filtre/sıralama/sayfalama (Supabase ile paylaşılır). */
+export function applyNameListParams(
+  all: readonly NameWithImage[],
+  p: NameListParams,
+): { items: NameWithImage[]; total: number } {
   const skip = p.skip ?? 0;
   const take = p.take ?? 24;
-  let list = allWithImage.filter((n) => matchFilters(n, p));
+  let list = [...all].filter((n) => matchFilters(n, p));
   list = sortList(list, p.orderBy);
   const total = list.length;
   const items = list.slice(skip, skip + take);
   return { items, total };
+}
+
+export function listNamesFromStore(p: NameListParams) {
+  return applyNameListParams(allWithImage, p);
 }
 
 export function getNameBySlugFromStore(slug: string): NameWithDetail | null {

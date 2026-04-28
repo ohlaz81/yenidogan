@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { NameWithImage } from "@/components/marketing/NameCard";
 import type { Gender } from "@/types/database";
-import { listNamesFromStore } from "@/lib/static/names-store";
+import { listNames } from "@/lib/queries/names";
 import { nameDisplayTextClass } from "@/lib/name-gender-styles";
 
 export type CategoryAsideVariant =
@@ -15,38 +15,41 @@ export type CategoryAsideVariant =
   | "finder"
   | { kind: "letter"; letter: string; gender?: Gender };
 
-function top5ForVariant(v: CategoryAsideVariant, pageGender?: Gender): NameWithImage[] {
+async function top5ForVariant(v: CategoryAsideVariant, pageGender?: Gender): Promise<NameWithImage[]> {
   if (typeof v === "object" && v.kind === "letter") {
-    return listNamesFromStore({
-      letter: v.letter.toLocaleUpperCase("tr-TR"),
-      gender: v.gender,
-      take: 5,
-      orderBy: "popular",
-    }).items;
+    return (
+      await listNames({
+        letter: v.letter.toLocaleUpperCase("tr-TR"),
+        gender: v.gender,
+        take: 5,
+        orderBy: "popular",
+      })
+    ).items;
   }
   const g = pageGender ? { gender: pageGender } : {};
-  if (v === "popular") return listNamesFromStore({ ...g, orderBy: "popular", take: 5 }).items;
-  if (v === "quran") return listNamesFromStore({ ...g, inQuran: true, orderBy: "popular", take: 5 }).items;
-  if (v === "modern") return listNamesFromStore({ ...g, style: "MODERN", orderBy: "popular", take: 5 }).items;
-  if (v === "rare") return listNamesFromStore({ ...g, style: "RARE", orderBy: "popular", take: 5 }).items;
-  if (v === "short") return listNamesFromStore({ ...g, isShort: true, orderBy: "popular", take: 5 }).items;
-  if (v === "beautiful") return listNamesFromStore({ ...g, beautifulMeaning: true, orderBy: "popular", take: 5 }).items;
-  if (v === "all") return listNamesFromStore({ ...g, orderBy: "popular", take: 5 }).items;
-  if (v === "finder") return listNamesFromStore({ ...g, orderBy: "popular", take: 5 }).items;
+  if (v === "popular") return (await listNames({ ...g, orderBy: "popular", take: 5 })).items;
+  if (v === "quran") return (await listNames({ ...g, inQuran: true, orderBy: "popular", take: 5 })).items;
+  if (v === "modern") return (await listNames({ ...g, style: "MODERN", orderBy: "popular", take: 5 })).items;
+  if (v === "rare") return (await listNames({ ...g, style: "RARE", orderBy: "popular", take: 5 })).items;
+  if (v === "short") return (await listNames({ ...g, isShort: true, orderBy: "popular", take: 5 })).items;
+  if (v === "beautiful")
+    return (await listNames({ ...g, beautifulMeaning: true, orderBy: "popular", take: 5 })).items;
+  if (v === "all") return (await listNames({ ...g, orderBy: "popular", take: 5 })).items;
+  if (v === "finder") return (await listNames({ ...g, orderBy: "popular", take: 5 })).items;
   return [];
 }
 
-function modernSpotlight(gender?: Gender): NameWithImage[] {
+async function modernSpotlight(gender?: Gender): Promise<NameWithImage[]> {
   const g = gender ? { gender } : {};
-  return listNamesFromStore({ style: "MODERN", take: 5, orderBy: "popular", ...g }).items;
+  return (await listNames({ style: "MODERN", take: 5, orderBy: "popular", ...g })).items;
 }
 
 /**
  * Kategori listeleri için kısa yan sütun (erkek/kız sayfalarındaki GenderListAside’tan daha sade).
  */
-export function CategoryListAside({ variant, gender }: { variant: CategoryAsideVariant; gender?: Gender }) {
-  const top5 = top5ForVariant(variant, gender);
-  const modern5 = modernSpotlight(gender);
+export async function CategoryListAside({ variant, gender }: { variant: CategoryAsideVariant; gender?: Gender }) {
+  const top5 = await top5ForVariant(variant, gender);
+  const modern5 = await modernSpotlight(gender);
 
   return (
     <div className="space-y-4 text-sm">

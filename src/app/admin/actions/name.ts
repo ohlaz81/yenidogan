@@ -95,7 +95,10 @@ export async function saveName(_: NameSaveState, formData: FormData): Promise<Na
 
   const s = getSupabase();
   let id = d.id;
+  let previousSlug: string | undefined;
   if (id) {
+    const { data: prevRow } = await s.from("Name").select("slug").eq("id", id).maybeSingle();
+    previousSlug = (prevRow as { slug?: string } | null)?.slug;
     const up = await s
       .from("Name")
       .update({ ...row, updatedAt: new Date().toISOString() } as never)
@@ -138,6 +141,9 @@ export async function saveName(_: NameSaveState, formData: FormData): Promise<Na
   revalidatePath("/kiz-isimleri");
   revalidatePath("/erkek-isimleri");
   revalidatePath(`/isim/${slug}`);
+  if (previousSlug && previousSlug !== slug) {
+    revalidatePath(`/isim/${previousSlug}`);
+  }
   revalidatePath("/admin/isimler");
   revalidatePath("/admin/isimler/yeni");
   revalidatePath("/admin/isimler/[id]", "page");

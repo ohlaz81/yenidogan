@@ -1,11 +1,20 @@
 import Link from "next/link";
-import { getFeaturedByGenderFromStore, getModernOrPopularTopByGenderFromStore } from "@/lib/static/names-store";
+import { listNames } from "@/lib/queries/names";
 import { nameDisplayTextClass } from "@/lib/name-gender-styles";
 
-export function GenderListAside({ gender }: { gender: "BOY" | "GIRL" }) {
+export async function GenderListAside({ gender }: { gender: "BOY" | "GIRL" }) {
   const isBoy = gender === "BOY";
-  const pop5 = getFeaturedByGenderFromStore(gender, 5);
-  const rising5 = getModernOrPopularTopByGenderFromStore(gender, 5);
+  const pop5 = (await listNames({ gender, take: 5, orderBy: "popular" })).items;
+  const modern = await listNames({
+    gender,
+    style: "MODERN",
+    take: 200,
+    orderBy: "popular",
+  });
+  const rising5 =
+    modern.items.length >= 5
+      ? modern.items.slice(0, 5)
+      : (await listNames({ gender, take: 5, orderBy: "popular" })).items;
   const gLabel = isBoy ? "erkek" : "kız";
   const gLabelCap = isBoy ? "Erkek" : "Kız";
 

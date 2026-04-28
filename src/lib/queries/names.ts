@@ -4,19 +4,30 @@ import {
   getNamesByLetterFromStore,
   listNamesFromStore,
 } from "@/lib/static/names-store";
+import {
+  getNameBySlugFromDb,
+  getNamesByLetterFromDb,
+  listNamesFromDb,
+} from "@/lib/queries/names-from-db";
 import type { NameListParams } from "@/lib/name-list-params";
 
 export type { NameListParams } from "@/lib/name-list-params";
 
-/** Tüm isim listeleri ve detay sayfaları `src/data/baby-names.ts` kaynağından beslenir. */
-export function listNames(p: NameListParams) {
-  return Promise.resolve(listNamesFromStore(p));
+/** Canlı içerik: Supabase’de yayınlanmış isimler öncelikli; eksik ortamda `baby-names` seed kullanılır. */
+export async function listNames(p: NameListParams) {
+  const fromDb = await listNamesFromDb(p);
+  if (fromDb !== null) return fromDb;
+  return listNamesFromStore(p);
 }
 
-export function getNameBySlug(slug: string): Promise<NameWithDetail | null> {
-  return Promise.resolve(getNameBySlugFromStore(slug));
+export async function getNameBySlug(slug: string): Promise<NameWithDetail | null> {
+  const fromDb = await getNameBySlugFromDb(slug);
+  if (fromDb) return fromDb;
+  return getNameBySlugFromStore(slug);
 }
 
-export function getNamesByLetter(letter: string, gender?: Gender, take = 12) {
-  return Promise.resolve(getNamesByLetterFromStore(letter, gender, take));
+export async function getNamesByLetter(letter: string, gender?: Gender, take = 12) {
+  const fromDb = await getNamesByLetterFromDb(letter, gender, take);
+  if (fromDb !== null) return fromDb;
+  return getNamesByLetterFromStore(letter, gender, take);
 }

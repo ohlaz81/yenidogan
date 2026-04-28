@@ -4,6 +4,7 @@ import { postgrestToError } from "@/lib/supabase/errors";
 import { ADMIN_PERMISSIONS, requirePermission } from "@/lib/admin-permissions";
 import { NameForm } from "@/components/admin/NameForm";
 import type { Name } from "@/types/database";
+import { getPublicMediaOptions, mergeMediaOptions } from "@/lib/static/public-media-options";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -30,11 +31,12 @@ export default async function EditNamePage({ params }: Props) {
     .order("createdAt", { ascending: false })
     .limit(200);
   if (mErr) throw postgrestToError(mErr, "admin/isimler/[id]:MediaAsset");
+  const mergedMediaOptions = mergeMediaOptions(mediaOptions ?? [], getPublicMediaOptions());
 
   return (
     <div className="space-y-6">
       <h1 className="font-display text-2xl font-semibold text-primary">İsim düzenle: {name.displayName}</h1>
-      <NameForm name={name} mediaOptions={mediaOptions ?? []} />
+      <NameForm name={name} mediaOptions={mergedMediaOptions} />
     </div>
   );
 }

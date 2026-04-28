@@ -58,9 +58,9 @@ export const adminNavGroups: AdminNavGroup[] = [
     items: [
       {
         href: "/admin/anasayfa",
-        label: "Ana sayfa (kod)",
-        description: "Vitrin kodda; bu sayfa bilgilendirme",
-        permission: null,
+        label: "Ana sayfa slotları",
+        description: "Popüler isim şeridi (kız/erkek) slotları",
+        permission: ADMIN_PERMISSIONS.homeFeatured,
       },
     ],
   },

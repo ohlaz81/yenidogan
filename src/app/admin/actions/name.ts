@@ -170,6 +170,8 @@ export async function importSeedNamesAction() {
   const rows = BABY_NAME_SEED.map((seed) => {
     const n = seedToName(seed);
     const existingId = existingBySlug.get(n.slug);
+    // Name.popularity kolonu integer; seed verisindeki ondalik degerleri guvenli araliga normalize et.
+    const popularityInt = Math.min(5, Math.max(1, Math.round(Number(n.popularity) || 1)));
     return {
       id: existingId ?? n.id,
       slug: n.slug,
@@ -178,7 +180,7 @@ export async function importSeedNamesAction() {
       meaning: n.meaning,
       origin: n.origin,
       pronunciation: n.pronunciation,
-      popularity: n.popularity,
+      popularity: popularityInt,
       popularScore: n.popularScore,
       inQuran: n.inQuran,
       style: n.style,

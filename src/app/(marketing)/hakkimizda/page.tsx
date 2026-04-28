@@ -9,7 +9,7 @@ export default function AboutPage() {
     <div className="mx-auto max-w-3xl px-4 py-10">
       <h1 className="font-display text-3xl font-semibold text-primary">Hakkımızda</h1>
       <p className="mt-4 text-lg leading-relaxed text-muted">
-        yenidoğan.net, bebek isimlerini anlam, köken ve kategori bazında keşfetmeniz için tasarlanmıştır. İçerik,
+        yenidogan.net, bebek isimlerini anlam, köken ve kategori bazında keşfetmeniz için tasarlanmıştır. İçerik,
         sitede gösterilen sayfalarda yayımlanır; düzenlemeler kod deposu veya içerik ekipleri tarafından
         sürümlerle yönetilebilir.
       </p>

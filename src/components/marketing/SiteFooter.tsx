@@ -34,7 +34,7 @@ export function SiteFooter() {
           <p className="mt-2 text-sm text-zinc-400">{site.tagline}</p>
           <p className="mt-3 text-sm text-zinc-400">{site.description}</p>
         </div>
-        <div>
+        <div className="hidden sm:block">
           <p className="text-xs font-bold uppercase tracking-wider text-zinc-500">Keşfet</p>
           <ul className="mt-3 space-y-2 text-sm">
             {discover.map((l) => (

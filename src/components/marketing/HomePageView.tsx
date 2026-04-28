@@ -3,7 +3,6 @@ import type { HomePageData } from "@/lib/queries/home";
 import { genderLabels, styleLabels } from "@/lib/labels";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { MediaImage } from "@/components/marketing/MediaImage";
-import { NewsletterBar } from "@/components/marketing/NewsletterBar";
 import { RefreshButton } from "@/components/marketing/RefreshButton";
 import { FavoriteHeart } from "@/components/marketing/FavoriteHeart";
 import type { FAQ } from "@/types/database";
@@ -357,7 +356,7 @@ export function HomePageView({
 
       <section className="mx-auto max-w-6xl space-y-2.5 px-4 sm:space-y-3">
         <div className="flex items-center justify-between">
-          <h2 className="font-display text-xl font-semibold text-primary">Turkiyede En Populer Isimler</h2>
+          <h2 className="font-display text-xl font-semibold text-primary">Türkiye&apos;de En Popüler İsimler</h2>
           <Link href="/populer-isimler" className="text-xs font-semibold text-muted hover:text-primary">
             Tümünü Gör →
           </Link>
@@ -479,7 +478,6 @@ export function HomePageView({
         </div>
       </section>
 
-      <NewsletterBar />
     </div>
   );
 }

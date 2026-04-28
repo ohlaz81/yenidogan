@@ -30,7 +30,7 @@ export function LoginForm() {
     <div className="mx-auto flex min-h-screen max-w-md flex-col justify-center px-4">
       <div className="rounded-3xl border border-zinc-200 bg-white p-8 shadow-sm">
         <h1 className="font-display text-2xl font-semibold text-primary">Yönetici girişi</h1>
-        <p className="mt-2 text-sm text-zinc-600">yenidoğan.net içerik paneli</p>
+        <p className="mt-2 text-sm text-zinc-600">yenidogan.net içerik paneli</p>
         <form onSubmit={onSubmit} className="mt-8 space-y-4">
           <div>
             <label className="text-sm font-semibold">E-posta</label>

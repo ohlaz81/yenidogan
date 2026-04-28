@@ -1,7 +1,7 @@
 import { babyMediaPublicUrl } from "@/lib/static/baby-media-url";
 
 export const site = {
-  name: "yenidoğan.net",
+  name: "yenidogan.net",
   url: "https://yenidogan.net",
   tagline: "En güzel başlangıç, en özel isimle…",
   defaultTitle: "En güzel bebek isimleri, anlamları ve isim rehberi",

@@ -25,10 +25,11 @@ export default async function AdminHomeSettingsPage() {
   return (
     <div className="space-y-8">
       <div className="space-y-2">
-        <h1 className="font-display text-2xl font-semibold text-primary">Ana sayfa öne çıkan isimler</h1>
+        <h1 className="font-display text-2xl font-semibold text-primary">Türkiye&apos;deki popüler isim şeridi</h1>
         <p className="text-sm text-zinc-600">
-          Buradaki slotlar ana sayfadaki popüler isim şeridini besler. Değişiklikten sonra ana sayfayı yenileyip sonucu
-          kontrol edebilirsiniz.
+          Aşağıdaki slotlar ana sayfadaki «Türkiye&apos;de En Popüler İsimler» kayan şeridine gider — önce kız, sonra erkek
+          slotlarındaki sırayla ilk 10 isim kullanılır. İsimler Supabase&apos;teki yayınlı kayıtlardan seçilir. Kayıttan sonra
+          ana sayfayı yenileyerek kontrol edin.
         </p>
       </div>
 

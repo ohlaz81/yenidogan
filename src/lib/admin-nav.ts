@@ -54,12 +54,13 @@ export const adminNavGroups: AdminNavGroup[] = [
     ],
   },
   {
-    title: "Notlar",
+    title: "Ana sayfa",
     items: [
       {
         href: "/admin/anasayfa",
-        label: "Ana sayfa slotları",
-        description: "Popüler isim şeridi (kız/erkek) slotları",
+        label: "Türkiye popüler şeridi",
+        description:
+          "Ana sayfadaki «Türkiye'de En Popüler İsimler» kayan alanı — kız ve erkek slotlarından seçim",
         permission: ADMIN_PERMISSIONS.homeFeatured,
       },
     ],

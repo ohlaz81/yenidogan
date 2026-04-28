@@ -163,10 +163,15 @@ export async function importSeedNamesAction() {
   await requirePermission(ADMIN_PERMISSIONS.names);
   const s = getSupabase();
   const now = new Date().toISOString();
+  const seedSlugs = BABY_NAME_SEED.map((seed) => seed.slug);
+  const { data: existingRows, error: existingErr } = await s.from("Name").select("id,slug").in("slug", seedSlugs);
+  if (existingErr) throw new Error(`Mevcut isimler okunamadı: ${existingErr.message}`);
+  const existingBySlug = new Map((existingRows ?? []).map((r) => [String((r as { slug: string }).slug), String((r as { id: string }).id)]));
   const rows = BABY_NAME_SEED.map((seed) => {
     const n = seedToName(seed);
+    const existingId = existingBySlug.get(n.slug);
     return {
-      id: n.id,
+      id: existingId ?? n.id,
       slug: n.slug,
       displayName: n.displayName,
       gender: n.gender,

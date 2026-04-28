@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useMemo, useState } from "react";
 import Link from "next/link";
 import { saveName, type NameSaveState } from "@/app/admin/actions/name";
 import type { Name } from "@/types/database";
@@ -22,6 +22,11 @@ function traitsToText(traits: unknown): string {
 export function NameForm({ name, mediaOptions }: Props) {
   const [state, action, pending] = useActionState(saveName, initial);
   const similarDefault = name?.similarFrom?.map((s) => s.target.slug).join(", ") ?? "";
+  const [selectedImageId, setSelectedImageId] = useState(name?.imageId ?? "");
+  const selectedImage = useMemo(
+    () => mediaOptions.find((m) => m.id === selectedImageId) ?? null,
+    [mediaOptions, selectedImageId],
+  );
 
   if (state.ok && state.slug) {
     return (
@@ -139,7 +144,12 @@ export function NameForm({ name, mediaOptions }: Props) {
         </div>
         <div className="sm:col-span-2">
           <label className="text-sm font-semibold">Kapak görseli</label>
-          <select name="imageId" defaultValue={name?.imageId ?? ""} className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 text-sm">
+          <select
+            name="imageId"
+            value={selectedImageId}
+            onChange={(e) => setSelectedImageId(e.currentTarget.value)}
+            className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 text-sm"
+          >
             <option value="">(Yok)</option>
             {mediaOptions.map((m) => (
               <option key={m.id} value={m.id}>
@@ -147,6 +157,41 @@ export function NameForm({ name, mediaOptions }: Props) {
               </option>
             ))}
           </select>
+          {selectedImage ? (
+            <div className="mt-3 rounded-xl border border-zinc-200 bg-zinc-50 p-3">
+              <p className="text-xs font-semibold text-zinc-700">Seçilen görsel önizleme</p>
+              <div className="mt-2 flex items-center gap-3">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={selectedImage.url}
+                  alt={selectedImage.alt ?? "Kapak görseli"}
+                  className="h-20 w-20 rounded-lg border border-zinc-200 object-cover bg-white"
+                />
+                <p className="text-xs text-zinc-600 break-all">{selectedImage.alt ?? selectedImage.url}</p>
+              </div>
+            </div>
+          ) : null}
+          {mediaOptions.length > 0 ? (
+            <details className="mt-3">
+              <summary className="cursor-pointer text-xs font-semibold text-primary">Görselleri galeride gör</summary>
+              <div className="mt-2 grid grid-cols-4 gap-2 sm:grid-cols-6">
+                {mediaOptions.slice(0, 30).map((m) => (
+                  <button
+                    key={m.id}
+                    type="button"
+                    onClick={() => setSelectedImageId(m.id)}
+                    className={`overflow-hidden rounded-lg border ${
+                      selectedImageId === m.id ? "border-primary ring-2 ring-primary/30" : "border-zinc-200"
+                    }`}
+                    title={m.alt ?? m.url}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={m.url} alt={m.alt ?? "Görsel"} className="h-16 w-full object-cover" />
+                  </button>
+                ))}
+              </div>
+            </details>
+          ) : null}
         </div>
         <div className="sm:col-span-2">
           <label className="text-sm font-semibold">Kısa tanıtım</label>

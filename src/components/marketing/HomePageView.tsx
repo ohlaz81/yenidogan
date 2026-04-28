@@ -93,8 +93,8 @@ export function HomePageView({
     shortMeaning: n.meaning.length > 72 ? `${n.meaning.slice(0, 72).trim()}...` : n.meaning,
   }));
   const popularTickerLoop = [...popularTickerItems, ...popularTickerItems];
-  const guideTopItems = data.guideArticles.slice(0, 4);
-  const guideMoreItems = data.guideArticles.slice(4);
+  const guideMobileTopItems = data.guideArticles.slice(0, 4);
+  const guideDesktopItems = data.guideArticles.slice(0, 7);
 
   return (
     <div className="space-y-6 pb-8 sm:space-y-10">
@@ -248,8 +248,8 @@ export function HomePageView({
                 Tümü
               </Link>
             </div>
-            <div className="divide-y divide-border/80">
-              {guideTopItems.map((a) => (
+            <div className="divide-y divide-border/80 sm:hidden">
+              {guideMobileTopItems.map((a) => (
                 <Link
                   key={a.id}
                   href={`/isim-rehberi/${a.slug}`}
@@ -262,42 +262,19 @@ export function HomePageView({
                 </Link>
               ))}
             </div>
-            {guideMoreItems.length > 0 ? (
-              <details className="sm:hidden">
-                <summary className="cursor-pointer border-t border-border/80 px-2.5 py-2 text-[0.68rem] font-semibold uppercase tracking-wide text-primary">
-                  Tümü
-                </summary>
-                <div className="divide-y divide-border/80 border-t border-border/80">
-                  {guideMoreItems.map((a) => (
-                    <Link
-                      key={a.id}
-                      href={`/isim-rehberi/${a.slug}`}
-                      className="flex min-h-0 items-center justify-between px-2 py-1.5 text-[0.7rem] hover:bg-accent-pink-soft/40 min-[500px]:text-xs"
-                    >
-                      <span className="line-clamp-1 pr-1">{a.title}</span>
-                      <span className="shrink-0" aria-hidden>
-                        ›
-                      </span>
-                    </Link>
-                  ))}
-                </div>
-              </details>
-            ) : null}
-            <div className="mt-auto grid gap-2 border-t border-border/80 p-2.5 sm:p-3">
-              <Link
-                href="/populer-isimler"
-                className="flex min-h-14 items-center justify-between rounded-xl border border-border/80 bg-accent-pink-soft/40 px-3 text-xs font-semibold text-primary hover:bg-accent-pink-soft/60 sm:text-sm"
-              >
-                <span>Popüler İsimler</span>
-                <span aria-hidden>↗</span>
-              </Link>
-              <Link
-                href="/kuranda-gecen-isimler"
-                className="flex min-h-14 items-center justify-between rounded-xl border border-border/80 bg-accent-blue-soft/35 px-3 text-xs font-semibold text-primary hover:bg-accent-blue-soft/55 sm:text-sm"
-              >
-                <span>Kur&apos;an&apos;da Geçen İsimler</span>
-                <span aria-hidden>↗</span>
-              </Link>
+            <div className="hidden divide-y divide-border/80 sm:block">
+              {guideDesktopItems.map((a) => (
+                <Link
+                  key={a.id}
+                  href={`/isim-rehberi/${a.slug}`}
+                  className="flex min-h-0 items-center justify-between px-2 py-1.5 text-[0.7rem] hover:bg-accent-pink-soft/40 min-[500px]:text-xs sm:px-2.5 sm:py-2 sm:text-sm"
+                >
+                  <span className="line-clamp-1 pr-1">{a.title}</span>
+                  <span className="shrink-0" aria-hidden>
+                    ›
+                  </span>
+                </Link>
+              ))}
             </div>
           </div>
           <div className="h-full overflow-hidden rounded-2xl border border-border/80 bg-white shadow-sm">

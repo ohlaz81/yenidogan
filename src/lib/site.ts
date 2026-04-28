@@ -5,5 +5,5 @@ export const site = {
   defaultTitle: "Bebek İsimleri, Anlamları ve En Güzel İsim Rehberi",
   description:
     "Kız ve erkek bebek isimleri, anlamları, kökenleri ve isim rehberi içerikleriyle modern bir isim keşif platformu.",
-  ogImage: "/rehber/rehber1.jpeg",
+  ogImage: "https://yenidogan.net/rehber/rehber1.jpeg",
 } as const;

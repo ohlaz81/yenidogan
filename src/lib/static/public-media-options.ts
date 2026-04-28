@@ -1,5 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
+import { createHash } from "node:crypto";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
 type MediaOption = { id: string; url: string; alt: string | null };
 
@@ -36,4 +38,32 @@ export function mergeMediaOptions(
     if (!byUrl.has(m.url)) byUrl.set(m.url, m);
   }
   return Array.from(byUrl.values());
+}
+
+function stablePublicMediaId(url: string) {
+  const h = createHash("sha1").update(url).digest("hex").slice(0, 20);
+  return `public-${h}`;
+}
+
+export async function ensurePublicMediaAssets(
+  s: SupabaseClient,
+  dbOptions: { id: string; url: string; alt: string | null }[],
+): Promise<{ id: string; url: string; alt: string | null }[]> {
+  const publicOptions = getPublicMediaOptions();
+  const dbByUrl = new Map(dbOptions.map((m) => [m.url, m]));
+  const missing = publicOptions.filter((m) => !dbByUrl.has(m.url));
+
+  if (missing.length > 0) {
+    const now = new Date().toISOString();
+    const rows = missing.map((m) => ({
+      id: stablePublicMediaId(m.url),
+      url: m.url,
+      alt: m.alt,
+      createdAt: now,
+    }));
+    await s.from("MediaAsset").upsert(rows as never[], { onConflict: "id" });
+  }
+
+  const { data: refreshed } = await s.from("MediaAsset").select("id,url,alt").order("createdAt", { ascending: false }).limit(600);
+  return mergeMediaOptions((refreshed ?? []) as { id: string; url: string; alt: string | null }[], publicOptions);
 }

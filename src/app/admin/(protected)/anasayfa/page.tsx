@@ -31,8 +31,10 @@ export default async function AdminHomeSettingsPage() {
 
   const slots = (rows ?? []) as Slot[];
   const allNames = (names ?? []) as NameLite[];
-  const girlNames = allNames.filter((n) => n.gender !== "BOY");
-  const boyNames = allNames.filter((n) => n.gender !== "GIRL");
+  const byNameAsc = (a: NameLite, b: NameLite) =>
+    a.displayName.localeCompare(b.displayName, "tr-TR", { sensitivity: "base" });
+  const girlNames = allNames.filter((n) => n.gender !== "BOY").sort(byNameAsc);
+  const boyNames = allNames.filter((n) => n.gender !== "GIRL").sort(byNameAsc);
   const byId = new Map(allNames.map((n) => [n.id, n]));
 
   return (

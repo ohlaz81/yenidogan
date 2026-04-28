@@ -4,7 +4,7 @@ import {
   defaultShowcasesIfEmpty,
 } from "@/lib/queries/home-fallbacks";
 import { getStaticGuides, type GuideWithCover } from "@/data/static-guide";
-import { getFeaturedByGenderFromStore, pickRandomNameFromStore } from "@/lib/static/names-store";
+import { getFeaturedByGenderFromStore, pickDailyNameFromStore } from "@/lib/static/names-store";
 import { getSupabase } from "@/lib/supabase/admin";
 import type {
   HomeFeaturedName,
@@ -39,7 +39,7 @@ export async function getHomePageData() {
   const showcases: Showcase[] = defaultShowcasesIfEmpty() as Showcase[];
   const quickLinks = defaultQuickLinksIfEmpty();
   const guideArticles: GuideWithCover[] = getStaticGuides();
-  const randomName = pickRandomNameFromStore() as NWithImg | null;
+  const randomName = pickDailyNameFromStore({ timeZone: "Europe/Istanbul" }) as NWithImg | null;
   let featuredGirlSlots = toFeaturedSlots(getFeaturedByGenderFromStore("GIRL", 5), "girl");
   let featuredBoySlots = toFeaturedSlots(getFeaturedByGenderFromStore("BOY", 5), "boy");
 

@@ -172,6 +172,37 @@ export function pickRandomNameFromStore(): NameWithImage | null {
   return allWithImage[i] ?? null;
 }
 
+function dailySeedKey(date: Date, timeZone: string) {
+  const f = new Intl.DateTimeFormat("en-CA", {
+    timeZone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+  return f.format(date); // YYYY-MM-DD
+}
+
+function hashString(input: string) {
+  let h = 0;
+  for (let i = 0; i < input.length; i += 1) {
+    h = (h * 31 + input.charCodeAt(i)) >>> 0;
+  }
+  return h;
+}
+
+/**
+ * "Bugünün İsmi": verilen timezone gününe göre 24 saatte bir değişen deterministik seçim.
+ * Varsayılan timezone: Europe/Istanbul.
+ */
+export function pickDailyNameFromStore(opts?: { date?: Date; timeZone?: string }): NameWithImage | null {
+  if (allWithImage.length === 0) return null;
+  const date = opts?.date ?? new Date();
+  const tz = opts?.timeZone ?? "Europe/Istanbul";
+  const key = dailySeedKey(date, tz);
+  const i = hashString(`bugunun-ismi:${key}`) % allWithImage.length;
+  return allWithImage[i] ?? null;
+}
+
 export function getFeaturedByGenderFromStore(gender: "GIRL" | "BOY", limit: number) {
   const { items } = listNamesFromStore({ gender, take: 200, orderBy: "popular" });
   return items.slice(0, limit);

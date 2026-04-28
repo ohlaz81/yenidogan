@@ -1,5 +1,3 @@
-import { babyMediaPublicUrl } from "@/lib/static/baby-media-url";
-
 export const site = {
   name: "Yenidogan.net",
   url: "https://yenidogan.net",
@@ -7,5 +5,5 @@ export const site = {
   defaultTitle: "Bebek İsimleri, Anlamları ve En Güzel İsim Rehberi",
   description:
     "Kız ve erkek bebek isimleri, anlamları, kökenleri ve isim rehberi içerikleriyle modern bir isim keşif platformu.",
-  ogImage: babyMediaPublicUrl("baby (5).jpeg"),
+  ogImage: "/rehber/rehber1.jpeg",
 } as const;

@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     locale: "tr_TR",
     url: site.url,
     siteName: site.name,
-    title: `${site.name} | ${site.defaultTitle}`,
+    title: site.defaultTitle,
     description: "En güzel bebek isimleri, anlamları, kökenleri ve rehber içerikleri bir arada.",
     images: [
       {
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `${site.name} | ${site.defaultTitle}`,
+    title: site.defaultTitle,
     description: "Kız ve erkek bebek isimleri, anlamları ve isim seçimi rehberi.",
     images: [site.ogImage],
   },

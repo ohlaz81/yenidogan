@@ -39,6 +39,12 @@ function pickImageUrl(url: string | null | undefined, fallback = "/media/placeho
   return trimmed.length > 0 ? trimmed : fallback;
 }
 
+function popularFallbackByGender(gender: "GIRL" | "BOY" | "UNISEX") {
+  if (gender === "BOY") return babyMediaPublicUrl("baby (3).jpeg");
+  if (gender === "UNISEX") return babyMediaPublicUrl("baby (4).jpeg");
+  return babyMediaPublicUrl("baby (5).jpeg");
+}
+
 export function HomePageView({
   data,
   faqs,
@@ -378,7 +384,7 @@ export function HomePageView({
                 <Link key={`${name.id}-${index}`} href={`/isim/${name.slug}`} className="popular-mini-card group">
                   <div className="soft-photo-frame relative h-14 w-14 shrink-0">
                     <MediaImage
-                      src={pickImageUrl(name.image?.url)}
+                      src={pickImageUrl(name.image?.url, popularFallbackByGender(name.gender))}
                       alt={name.image?.alt ?? name.displayName}
                       fill
                       className="soft-photo-image object-cover"

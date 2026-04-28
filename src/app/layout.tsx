@@ -48,6 +48,12 @@ export const metadata: Metadata = {
     description: "Kız ve erkek bebek isimleri, anlamları ve isim seçimi rehberi.",
     images: [site.ogImage],
   },
+  other: {
+    "og:image:secure_url": site.ogImage,
+    "og:image:type": "image/jpeg",
+    "og:image:width": "1200",
+    "og:image:height": "630",
+  },
 };
 
 export default function RootLayout({

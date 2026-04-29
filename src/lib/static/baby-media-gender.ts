@@ -1,18 +1,19 @@
 import type { Gender } from "@/types/database";
 
 /**
- * `baby (N).jpeg` görsellerinin kız / erkek havuzlarına ayrımı (görsellere göre).
- * Yeni numaralı görsel eklendiğinde burayı güncelleyin; tanımsız index için eski tek/çift yedek kullanılır.
+ * `public/media/babies` içindeki `baby (N)` / `baby(N)` dosya numaralarının kız / erkek havuzları.
+ * Tüm mevcut görseller iki gruba bölünmüştür; yeni numara eklendiğinde kümelere ekleyin.
+ * Admin’de isme özel kapak (`Name.imageId`) seçilirse o görsel kullanılır — bu tablo yalnızca otomatik atama içindir.
  */
 const GIRL_INDICES = new Set<number>([
-  2, 4, 5, 6, 11, 19, 20, 22, 24, 26, 29, 32, 34, 35,
+  2, 4, 5, 6, 11, 19, 20, 22, 24, 26, 28, 29, 32, 34, 35, 41,
 ]);
 
 const BOY_INDICES = new Set<number>([
-  1, 3, 12, 21, 23, 25, 27, 28, 30, 31, 33, 36, 37, 38, 39, 40,
+  1, 3, 12, 21, 23, 25, 27, 30, 31, 33, 36, 37, 38, 39, 40, 42,
 ]);
 
-/** Kız veya erkek bebek stok görseli; UNISEX isimlerde kullanılmaz. */
+/** Kız veya erkek stok görseli; UNISEX’te index çift/tek ile yedeklenir. */
 export function genderForBabyMediaIndex(index: number): "GIRL" | "BOY" {
   if (GIRL_INDICES.has(index)) return "GIRL";
   if (BOY_INDICES.has(index)) return "BOY";

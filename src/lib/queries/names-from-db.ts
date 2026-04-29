@@ -1,4 +1,5 @@
 import { getSupabase } from "@/lib/supabase/admin";
+import { ensureNameDisplayImage } from "@/lib/name-display-image";
 import { applyNameListParams, pickDailyFromNameList } from "@/lib/static/names-store";
 import type { NameListParams } from "@/lib/name-list-params";
 import type { Gender, MediaAsset, Name, NameWithDetail } from "@/types/database";
@@ -65,7 +66,7 @@ export async function fetchPublishedNamesRows(): Promise<Array<Name & { image: M
   if (error) return null;
   if (!data?.length) return [];
 
-  return (data as RowWithImg[]).map(mapNameRow);
+  return (data as RowWithImg[]).map(mapNameRow).map((row) => ensureNameDisplayImage(row));
 }
 
 export async function listNamesFromDb(p: NameListParams) {

@@ -144,6 +144,10 @@ export function NameForm({ name, mediaOptions }: Props) {
         </div>
         <div className="sm:col-span-2">
           <label className="text-sm font-semibold">Kapak görseli</label>
+          <p className="mt-0.5 text-xs text-zinc-500">
+            Boş bırakırsanız sitede cinsiyete göre <code className="rounded bg-zinc-100 px-1">public/media/babies</code> içinden otomatik
+            atanır; buradan seçerseniz o görsel tüm kartlarda ve detayda kullanılır.
+          </p>
           <select
             name="imageId"
             value={selectedImageId}

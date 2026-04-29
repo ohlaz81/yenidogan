@@ -22,6 +22,7 @@ function readBabyMediaFromPublic(): IndexedMedia[] {
     const ranked = files
       .filter((f) => f.isFile())
       .map((f) => {
+        // "baby (12).jpeg", "baby(41).jpeg", "baby (1).jpg"
         const m = /^baby\s*\((\d+)\)\.(jpg|jpeg|png|webp)$/i.exec(f.name);
         if (!m) return null;
         const idx = Number(m[1]);
@@ -62,10 +63,28 @@ const allBabyMedia = readBabyMediaFromPublic();
 const girlMediaPool = allBabyMedia.filter((m) => genderForBabyMediaIndex(m.index) === "GIRL");
 const boyMediaPool = allBabyMedia.filter((m) => genderForBabyMediaIndex(m.index) === "BOY");
 
-/** Kapak görseli yokken id + cinsiyete göre `public/media/babies` havuzu (isim detayıyla uyumlu). */
+function stableNumericBucketFromId(id: string): number {
+  const fromSeed = Number(String(id).replace(/^n-/, ""));
+  if (Number.isFinite(fromSeed) && fromSeed > 0) return fromSeed;
+  let h = 0;
+  for (let i = 0; i < id.length; i += 1) {
+    h = (h * 31 + id.charCodeAt(i)) >>> 0;
+  }
+  return (h % 899) + 1;
+}
+
+/** Cinsiyete göre ilk stok görseli (UI yedeği; liste havuzuyla uyumlu). */
+export function getBabyStockImageFallbackUrl(gender: Gender): string {
+  if (allBabyMedia.length === 0) return DEFAULT_NAME_MEDIA.url;
+  if (gender === "GIRL" && girlMediaPool.length > 0) return girlMediaPool[0].asset.url;
+  if (gender === "BOY" && boyMediaPool.length > 0) return boyMediaPool[0].asset.url;
+  return allBabyMedia[0].asset.url;
+}
+
+/** Kapak görseli yokken id + cinsiyete göre `public/media/babies` havuzu (liste, kart, ana sayfa, detay ile aynı). */
 export function pickMediaForName(n: Name): MediaAsset {
   if (allBabyMedia.length === 0) return DEFAULT_NAME_MEDIA;
-  const idNumber = Number(n.id.replace("n-", "")) || 1;
+  const idNumber = stableNumericBucketFromId(n.id);
 
   if (n.gender === "GIRL" && girlMediaPool.length > 0) {
     return girlMediaPool[(idNumber - 1) % girlMediaPool.length]?.asset ?? DEFAULT_NAME_MEDIA;

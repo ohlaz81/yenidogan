@@ -5,6 +5,7 @@ import { MediaImage } from "@/components/marketing/MediaImage";
 import { DiscoverRastgeleCard } from "@/components/marketing/DiscoverRastgeleCard";
 import type { FAQ } from "@/types/database";
 import { babyMediaPublicUrl } from "@/lib/static/baby-media-url";
+import { getBabyStockImageFallbackUrl } from "@/lib/static/names-store";
 import { nameDisplayTextClass, nameMarqueeCategoryClass, nameMarqueeTitleClass } from "@/lib/name-gender-styles";
 
 const quickIcon: Record<string, string> = {
@@ -31,12 +32,6 @@ function pickImageUrl(url: string | null | undefined, fallback = "/media/placeho
   return trimmed.length > 0 ? trimmed : fallback;
 }
 
-function popularFallbackByGender(gender: "GIRL" | "BOY" | "UNISEX") {
-  if (gender === "BOY") return babyMediaPublicUrl("baby (3).jpeg");
-  if (gender === "UNISEX") return babyMediaPublicUrl("baby (4).jpeg");
-  return babyMediaPublicUrl("baby (5).jpeg");
-}
-
 export function HomePageView({
   data,
   faqs,
@@ -44,6 +39,12 @@ export function HomePageView({
   data: HomePageData;
   faqs: FAQ[];
 }) {
+  const stockFb = {
+    GIRL: getBabyStockImageFallbackUrl("GIRL"),
+    BOY: getBabyStockImageFallbackUrl("BOY"),
+    UNISEX: getBabyStockImageFallbackUrl("UNISEX"),
+  };
+
   const hero = data.heroSlides[0];
   const heroRotatingImages = [babyMediaPublicUrl("baby(41).jpeg"), babyMediaPublicUrl("baby(42).jpeg")];
 
@@ -281,7 +282,7 @@ export function HomePageView({
               ))}
             </div>
           </div>
-          <DiscoverRastgeleCard initial={data.discoverName} />
+          <DiscoverRastgeleCard initial={data.discoverName} fallbacks={stockFb} />
         </div>
       </section>
 
@@ -303,7 +304,7 @@ export function HomePageView({
                 <Link key={`${name.id}-${index}`} href={`/isim/${name.slug}`} className="popular-mini-card group">
                   <div className="soft-photo-frame relative h-14 w-14 shrink-0">
                     <MediaImage
-                      src={pickImageUrl(name.image?.url, popularFallbackByGender(name.gender))}
+                      src={pickImageUrl(name.image?.url, stockFb[name.gender])}
                       alt={name.image?.alt ?? name.displayName}
                       fill
                       className="soft-photo-image object-cover"
@@ -338,7 +339,7 @@ export function HomePageView({
             <div className="mt-2 flex items-start gap-3">
               <div className="relative h-20 w-20 overflow-hidden rounded-xl">
                 <MediaImage
-                  src={pickImageUrl(data.dailyName?.image?.url, popularFallbackByGender(data.dailyName?.gender ?? "GIRL"))}
+                  src={pickImageUrl(data.dailyName?.image?.url, stockFb[data.dailyName?.gender ?? "GIRL"])}
                   alt={data.dailyName?.image?.alt ?? data.dailyName?.displayName ?? "Bugünün ismi"}
                   fill
                   className="object-cover"

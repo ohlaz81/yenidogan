@@ -4,6 +4,7 @@ import {
   getNamesByLetterFromStore,
   listNamesFromStore,
 } from "@/lib/static/names-store";
+import { ensureNameDetailDisplayImage } from "@/lib/name-display-image";
 import {
   getNameBySlugFromDb,
   getNamesByLetterFromDb,
@@ -22,7 +23,7 @@ export async function listNames(p: NameListParams) {
 
 export async function getNameBySlug(slug: string): Promise<NameWithDetail | null> {
   const fromDb = await getNameBySlugFromDb(slug);
-  if (fromDb) return fromDb;
+  if (fromDb) return ensureNameDetailDisplayImage(fromDb);
   return getNameBySlugFromStore(slug);
 }
 

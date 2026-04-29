@@ -1,19 +1,11 @@
 import Link from "next/link";
 import type { HomePageData } from "@/lib/queries/home";
-import { genderLabels, styleLabels } from "@/lib/labels";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { MediaImage } from "@/components/marketing/MediaImage";
-import { RefreshButton } from "@/components/marketing/RefreshButton";
-import { FavoriteHeart } from "@/components/marketing/FavoriteHeart";
+import { DiscoverRastgeleCard } from "@/components/marketing/DiscoverRastgeleCard";
 import type { FAQ } from "@/types/database";
 import { babyMediaPublicUrl } from "@/lib/static/baby-media-url";
-import {
-  nameDisplayTextClass,
-  nameGenderBadgeSmClass,
-  nameMarqueeCategoryClass,
-  nameMarqueeTitleClass,
-  nameRandomCardHeaderGradientClass,
-} from "@/lib/name-gender-styles";
+import { nameDisplayTextClass, nameMarqueeCategoryClass, nameMarqueeTitleClass } from "@/lib/name-gender-styles";
 
 const quickIcon: Record<string, string> = {
   girl: "👧🏻",
@@ -289,80 +281,7 @@ export function HomePageView({
               ))}
             </div>
           </div>
-          <div className="h-full overflow-hidden rounded-2xl border border-border/80 bg-white shadow-sm">
-            <div
-              className={`flex items-center justify-between px-2.5 py-2 text-white sm:px-3 sm:py-2.5 ${
-                data.randomName
-                  ? nameRandomCardHeaderGradientClass(data.randomName.gender)
-                  : "bg-gradient-to-r from-primary to-accent-pink"
-              }`}
-            >
-              <span className="text-[0.65rem] font-semibold uppercase tracking-wide sm:text-sm">Rastgele İsim Keşfet</span>
-              <RefreshButton />
-            </div>
-            {data.randomName ? (
-              <div>
-                {/* Her zaman yarım-yarım: sol metin, sağ görsel (alt-üst değil) */}
-                <div className="grid min-h-[10.5rem] grid-cols-2 grid-rows-1 gap-0 min-[500px]:min-h-[12.5rem]">
-                  <div className="flex min-w-0 flex-col justify-center gap-1 border-r border-border/50 p-2 pr-1.5 min-[420px]:gap-1.5 min-[420px]:p-2.5 min-[500px]:gap-2 min-[500px]:p-3 min-[500px]:pr-3">
-                    <div className="flex min-w-0 items-center gap-0.5 min-[420px]:gap-1.5">
-                      <h3
-                        className={`font-display text-sm font-semibold leading-tight min-[420px]:text-base min-[500px]:text-lg sm:text-xl sm:leading-tight sm:text-2xl ${nameDisplayTextClass(
-                          data.randomName.gender,
-                        )}`}
-                      >
-                        {data.randomName.displayName}
-                      </h3>
-                      <FavoriteHeart slug={data.randomName.slug} />
-                    </div>
-                    <div className="flex min-w-0 flex-wrap gap-0.5 min-[420px]:gap-1 min-[500px]:gap-1.5 min-[500px]:text-sm">
-                      <span className={nameGenderBadgeSmClass(data.randomName.gender)}>
-                        {genderLabels[data.randomName.gender]}
-                      </span>
-                      <span className="rounded-full bg-violet-100 px-1.5 py-0.5 text-[0.58rem] font-medium text-violet-800 min-[420px]:px-2 min-[420px]:text-xs">
-                        {styleLabels[data.randomName.style]}
-                      </span>
-                      <span className="max-w-full truncate rounded-full bg-amber-100 px-1.5 py-0.5 text-[0.58rem] font-medium text-amber-900 min-[420px]:px-2 min-[420px]:text-xs">
-                        {data.randomName.origin}
-                      </span>
-                    </div>
-                    <p className="line-clamp-4 min-w-0 text-[0.62rem] leading-snug text-muted min-[420px]:line-clamp-5 min-[420px]:text-xs min-[500px]:text-sm min-[500px]:leading-tight">
-                      <span className="font-semibold text-foreground">Anlamı:</span> {data.randomName.meaning}
-                    </p>
-                  </div>
-                  <div className="relative min-h-[10.5rem] w-full min-w-0 min-[500px]:min-h-0 min-[500px]:self-stretch">
-                    <MediaImage
-                      src={data.randomName.image?.url ?? "/media/placeholder.svg"}
-                      alt={data.randomName.image?.alt ?? data.randomName.displayName}
-                      fill
-                      className="no-organic object-cover"
-                      sizes="(max-width: 500px) 50vw, 25vw"
-                    />
-                    <div
-                      className="pointer-events-none absolute inset-0 bg-gradient-to-l from-black/10 to-transparent to-40%"
-                      aria-hidden
-                    />
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-2 border-t border-border/50 p-2.5 sm:gap-2.5 sm:p-3">
-                  <button
-                    type="button"
-                    className="h-8 rounded-lg border border-border text-xs font-semibold text-muted min-[400px]:text-sm sm:rounded-xl"
-                  >
-                    Favorilere ekle
-                  </button>
-                  <Link
-                    href={`/isim/${data.randomName.slug}`}
-                    className="inline-flex h-8 items-center justify-center rounded-lg bg-primary text-xs font-semibold text-white min-[400px]:text-sm sm:rounded-xl"
-                  >
-                    Detayı gör
-                  </Link>
-                </div>
-              </div>
-            ) : (
-              <p className="p-3 text-sm text-muted">Henüz yayınlanmış isim yok.</p>
-            )}
-          </div>
+          <DiscoverRastgeleCard initial={data.discoverName} />
         </div>
       </section>
 
@@ -408,35 +327,39 @@ export function HomePageView({
         <div className="grid gap-4 rounded-2xl border border-border/80 bg-white p-3 shadow-sm lg:grid-cols-[1.1fr_1fr]">
           <div
             className={`rounded-2xl p-3 ${
-              data.randomName?.gender === "BOY"
+              data.dailyName?.gender === "BOY"
                 ? "bg-gradient-to-br from-violet-50 to-sky-50"
-                : data.randomName?.gender === "UNISEX"
+                : data.dailyName?.gender === "UNISEX"
                   ? "bg-gradient-to-br from-violet-50 to-zinc-100"
                   : "bg-gradient-to-br from-violet-50 to-pink-50"
             }`}
           >
-            <p className={`text-xs font-semibold ${nameDisplayTextClass(data.randomName?.gender ?? "GIRL")}`}>
+            <p className={`text-xs font-semibold ${nameDisplayTextClass(data.dailyName?.gender ?? "GIRL")}`}>
               Bugünün İsmi
+              <span className="ml-1 block font-normal text-muted sm:ml-1.5 sm:inline">
+                — İstanbul’a göre her gece 00:00’da güncellenir.
+              </span>
             </p>
             <div className="mt-2 flex items-start gap-3">
               <div className="relative h-20 w-20 overflow-hidden rounded-xl">
                 <MediaImage
-                  src={pickImageUrl(data.randomName?.image?.url, "/media/hero-soft.svg")}
-                  alt={data.randomName?.displayName ?? "Bugünün ismi"}
+                  src={pickImageUrl(data.dailyName?.image?.url, "/media/hero-soft.svg")}
+                  alt={data.dailyName?.displayName ?? "Bugünün ismi"}
                   fill
                   className="object-cover"
                   sizes="80px"
                 />
               </div>
               <div className="min-w-0">
-                <p className={`font-display text-3xl ${nameDisplayTextClass(data.randomName?.gender ?? "GIRL")}`}>
-                  {data.randomName?.displayName ?? "Elif"}
+                <p className={`font-display text-3xl ${nameDisplayTextClass(data.dailyName?.gender ?? "GIRL")}`}>
+                  {data.dailyName?.displayName ?? "Elif"}
                 </p>
                 <p className="mt-1 text-xs text-muted">
-                  <span className="font-semibold text-foreground">Anlam:</span> {data.randomName?.meaning ?? "Nazik, başlangıç"}
+                  <span className="font-semibold text-foreground">Anlam:</span>{" "}
+                  {data.dailyName?.meaning ?? "Nazik, başlangıç"}
                 </p>
                 <Link
-                  href={data.randomName ? `/isim/${data.randomName.slug}` : "/isim-bulucu"}
+                  href={data.dailyName ? `/isim/${data.dailyName.slug}` : "/isim-bulucu"}
                   className="mt-2 inline-flex rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-white"
                 >
                   Detayı Gör →

@@ -1,5 +1,5 @@
 import { getSupabase } from "@/lib/supabase/admin";
-import { applyNameListParams } from "@/lib/static/names-store";
+import { applyNameListParams, pickDailyFromNameList } from "@/lib/static/names-store";
 import type { NameListParams } from "@/lib/name-list-params";
 import type { Gender, MediaAsset, Name, NameWithDetail } from "@/types/database";
 
@@ -124,4 +124,20 @@ export async function getNamesByLetterFromDb(letter: string, gender?: Gender, ta
   const r = await listNamesFromDb(p);
   if (!r) return null;
   return r.items.slice(0, take);
+}
+
+/** Yukarıda `fetchPublishedNamesRows` ile uyumlu: İstanbul takvim gününe göre günde bir kez (gece yarısı) değişen seçim. */
+export async function pickDailyNameFromPublishedDb(opts?: { date?: Date; timeZone?: string }) {
+  const rows = await fetchPublishedNamesRows();
+  if (!rows?.length) return null;
+  return pickDailyFromNameList(rows, opts);
+}
+
+export async function pickRandomPublishedFromDb(excludeSlugs: string[]): Promise<(Name & { image: MediaAsset | null }) | null> {
+  const rows = await fetchPublishedNamesRows();
+  if (!rows?.length) return null;
+  let pool = rows.filter((r) => !excludeSlugs.includes(r.slug));
+  if (pool.length === 0) pool = rows;
+  const i = Math.floor(Math.random() * pool.length);
+  return pool[i] ?? null;
 }

@@ -175,9 +175,7 @@ export function getNamesByLetterFromStore(letter: string, gender?: Gender, take 
 }
 
 export function pickRandomNameFromStore(): NameWithImage | null {
-  if (allWithImage.length === 0) return null;
-  const i = Math.floor(Math.random() * allWithImage.length);
-  return allWithImage[i] ?? null;
+  return pickRandomNameFromStoreExcluding([]);
 }
 
 function dailySeedKey(date: Date, timeZone: string) {
@@ -199,16 +197,33 @@ function hashString(input: string) {
 }
 
 /**
- * "Bugünün İsmi": verilen timezone gününe göre 24 saatte bir değişen deterministik seçim.
- * Varsayılan timezone: Europe/Istanbul.
+ * Aynı gün için her zaman aynı indeksi verir (`YYYY-MM-DD` takvim günü, örn. Europe/Istanbul’da gece 00:00 ile değişir).
+ * Supabase listesi ile de paylaşılır.
  */
-export function pickDailyNameFromStore(opts?: { date?: Date; timeZone?: string }): NameWithImage | null {
-  if (allWithImage.length === 0) return null;
+export function pickDailyFromNameList<T>(list: readonly T[], opts?: { date?: Date; timeZone?: string }): T | null {
+  if (list.length === 0) return null;
   const date = opts?.date ?? new Date();
   const tz = opts?.timeZone ?? "Europe/Istanbul";
   const key = dailySeedKey(date, tz);
-  const i = hashString(`bugunun-ismi:${key}`) % allWithImage.length;
-  return allWithImage[i] ?? null;
+  const i = hashString(`bugunun-ismi:${key}`) % list.length;
+  return list[i] ?? null;
+}
+
+/**
+ * "Bugünün İsmi": verilen timezone gününe göre 24 saatte bir değişen deterministik seçim.
+ * Varsayılan timezone: Europe/Istanbul (gece yarısı itibarıyla yeni seçim).
+ */
+export function pickDailyNameFromStore(opts?: { date?: Date; timeZone?: string }): NameWithImage | null {
+  return pickDailyFromNameList(allWithImage, opts);
+}
+
+/** Rastgele; `excludeSlugs` boş kümede ise tüm listeden seçer (tek isim bile olsa döner). */
+export function pickRandomNameFromStoreExcluding(excludeSlugs: string[]): NameWithImage | null {
+  if (allWithImage.length === 0) return null;
+  let pool = allWithImage.filter((n) => !excludeSlugs.includes(n.slug));
+  if (pool.length === 0) pool = allWithImage;
+  const i = Math.floor(Math.random() * pool.length);
+  return pool[i] ?? null;
 }
 
 export function getFeaturedByGenderFromStore(gender: "GIRL" | "BOY", limit: number) {

@@ -5,6 +5,7 @@ import { MediaImage } from "@/components/marketing/MediaImage";
 import { DiscoverRastgeleCard } from "@/components/marketing/DiscoverRastgeleCard";
 import type { FAQ } from "@/types/database";
 import { babyMediaPublicUrl } from "@/lib/static/baby-media-url";
+import { resolveTickerBabyImageUrl } from "@/lib/name-display-image";
 import { getBabyStockImageFallbackUrl } from "@/lib/static/names-store";
 import { nameDisplayTextClass, nameMarqueeCategoryClass, nameMarqueeTitleClass } from "@/lib/name-gender-styles";
 
@@ -61,7 +62,8 @@ export function HomePageView({
   const boyNames = data.featuredBoySlots
     .map((s) => s.name)
     .filter((n): n is NonNullable<typeof n> => n != null);
-  const popularNames = [...girlNames, ...boyNames].slice(0, 3);
+  /** Öne çıkarılmış tüm slotlar (admin’de seçilenler); her biri kendi görsel kurallarıyla gelir */
+  const popularNames = [...girlNames, ...boyNames];
   const noPopularNames = girlNames.length === 0 && boyNames.length === 0;
   const popularTickerSeed =
     popularNames.length > 0
@@ -72,7 +74,7 @@ export function HomePageView({
             slug: "asel",
             displayName: "Asel",
             meaning: "Bal gibi tatlı ve zarif bir isim.",
-            image: { url: "/media/hero-soft.svg", alt: "Asel" },
+            image: null,
             gender: "GIRL" as const,
           },
           {
@@ -80,7 +82,7 @@ export function HomePageView({
             slug: "yusuf",
             displayName: "Yusuf",
             meaning: "Güzelliği ve ahlakı simgeleyen güçlü bir isim.",
-            image: { url: "/media/cat-boy.svg", alt: "Yusuf" },
+            image: null,
             gender: "BOY" as const,
           },
           {
@@ -88,7 +90,7 @@ export function HomePageView({
             slug: "lina",
             displayName: "Lina",
             meaning: "Işık saçan, nazik ve sevgi dolu bir isim.",
-            image: { url: "/media/cat-girl.svg", alt: "Lina" },
+            image: null,
             gender: "GIRL" as const,
           },
         ];
@@ -304,7 +306,11 @@ export function HomePageView({
                 <Link key={`${name.id}-${index}`} href={`/isim/${name.slug}`} className="popular-mini-card group">
                   <div className="soft-photo-frame relative h-14 w-14 shrink-0">
                     <MediaImage
-                      src={pickImageUrl(name.image?.url, stockFb[name.gender])}
+                      src={resolveTickerBabyImageUrl({
+                        id: name.id,
+                        gender: name.gender,
+                        image: name.image ?? null,
+                      })}
                       alt={name.image?.alt ?? name.displayName}
                       fill
                       className="soft-photo-image object-cover"

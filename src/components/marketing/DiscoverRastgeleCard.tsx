@@ -11,6 +11,18 @@ import {
 } from "@/lib/name-gender-styles";
 import { FavoriteHeart } from "@/components/marketing/FavoriteHeart";
 import { MediaImage } from "@/components/marketing/MediaImage";
+import { babyMediaPublicUrl } from "@/lib/static/baby-media-url";
+
+function popularFallbackByGender(gender: "GIRL" | "BOY" | "UNISEX") {
+  if (gender === "BOY") return babyMediaPublicUrl("baby (3).jpeg");
+  if (gender === "UNISEX") return babyMediaPublicUrl("baby (4).jpeg");
+  return babyMediaPublicUrl("baby (5).jpeg");
+}
+
+function pickImg(url: string | null | undefined, fallback: string) {
+  if (typeof url === "string" && url.trim().length > 0) return url.trim();
+  return fallback;
+}
 
 type Props = { initial: NameWithImage | null };
 
@@ -82,7 +94,7 @@ export function DiscoverRastgeleCard({ initial }: Props) {
             </div>
             <div className="relative min-h-[10.5rem] w-full min-w-0 min-[500px]:min-h-0 min-[500px]:self-stretch">
               <MediaImage
-                src={name.image?.url ?? "/media/placeholder.svg"}
+                src={pickImg(name.image?.url, popularFallbackByGender(name.gender))}
                 alt={name.image?.alt ?? name.displayName}
                 fill
                 className="no-organic object-cover"

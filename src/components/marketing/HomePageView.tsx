@@ -334,17 +334,12 @@ export function HomePageView({
                   : "bg-gradient-to-br from-violet-50 to-pink-50"
             }`}
           >
-            <p className={`text-xs font-semibold ${nameDisplayTextClass(data.dailyName?.gender ?? "GIRL")}`}>
-              Bugünün İsmi
-              <span className="ml-1 block font-normal text-muted sm:ml-1.5 sm:inline">
-                — İstanbul’a göre her gece 00:00’da güncellenir.
-              </span>
-            </p>
+            <p className={`text-xs font-semibold ${nameDisplayTextClass(data.dailyName?.gender ?? "GIRL")}`}>Bugünün İsmi</p>
             <div className="mt-2 flex items-start gap-3">
               <div className="relative h-20 w-20 overflow-hidden rounded-xl">
                 <MediaImage
-                  src={pickImageUrl(data.dailyName?.image?.url, "/media/hero-soft.svg")}
-                  alt={data.dailyName?.displayName ?? "Bugünün ismi"}
+                  src={pickImageUrl(data.dailyName?.image?.url, popularFallbackByGender(data.dailyName?.gender ?? "GIRL"))}
+                  alt={data.dailyName?.image?.alt ?? data.dailyName?.displayName ?? "Bugünün ismi"}
                   fill
                   className="object-cover"
                   sizes="80px"

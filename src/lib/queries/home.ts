@@ -10,6 +10,7 @@ import {
   pickRandomNameFromStore,
 } from "@/lib/static/names-store";
 import { pickDailyNameFromPublishedDb, pickRandomPublishedFromDb } from "@/lib/queries/names-from-db";
+import { ensureNameDisplayImage } from "@/lib/name-display-image";
 import { getSupabase } from "@/lib/supabase/admin";
 import type {
   HomeFeaturedName,
@@ -52,7 +53,7 @@ async function resolveDiscoverSeed(): Promise<NWithImg | null> {
 
 /**
  * Ana sayfa tamamen koddan: hero, kategoriler, hızlı linkler, öne çıkan isimler, rehber.
- * Günlük isim İstanbul’a göre tarih kullanır (gece 00:00’da başka “gün” sayılır).
+ * Günlük isim İstanbul takvimine göre her gün değişir.
  * Öne çıkan slotlar için Supabase; hata olursa statik fallback kullanılır.
  */
 export async function getHomePageData() {
@@ -60,7 +61,9 @@ export async function getHomePageData() {
   const showcases: Showcase[] = defaultShowcasesIfEmpty() as Showcase[];
   const quickLinks = defaultQuickLinksIfEmpty();
   const guideArticles: GuideWithCover[] = getStaticGuides();
-  const [dailyName, discoverName] = await Promise.all([resolveDailyName(), resolveDiscoverSeed()]);
+  const [rawDaily, rawDiscover] = await Promise.all([resolveDailyName(), resolveDiscoverSeed()]);
+  const dailyName = rawDaily ? ensureNameDisplayImage(rawDaily) : null;
+  const discoverName = rawDiscover ? ensureNameDisplayImage(rawDiscover) : null;
   let featuredGirlSlots = toFeaturedSlots(getFeaturedByGenderFromStore("GIRL", 5), "girl");
   let featuredBoySlots = toFeaturedSlots(getFeaturedByGenderFromStore("BOY", 5), "boy");
 

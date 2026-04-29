@@ -62,7 +62,8 @@ const allBabyMedia = readBabyMediaFromPublic();
 const girlMediaPool = allBabyMedia.filter((m) => genderForBabyMediaIndex(m.index) === "GIRL");
 const boyMediaPool = allBabyMedia.filter((m) => genderForBabyMediaIndex(m.index) === "BOY");
 
-function pickMediaForName(n: Name): MediaAsset {
+/** Kapak görseli yokken id + cinsiyete göre `public/media/babies` havuzu (isim detayıyla uyumlu). */
+export function pickMediaForName(n: Name): MediaAsset {
   if (allBabyMedia.length === 0) return DEFAULT_NAME_MEDIA;
   const idNumber = Number(n.id.replace("n-", "")) || 1;
 

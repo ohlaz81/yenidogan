@@ -18,6 +18,11 @@ const display = DM_Serif_Display({
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
+  icons: {
+    icon: [{ url: "/sayfa.png", type: "image/png" }],
+    apple: [{ url: "/sayfa.png" }],
+    shortcut: ["/sayfa.png"],
+  },
   title: {
     default: `${site.name} | ${site.defaultTitle}`,
     template: `%s | ${site.name}`,

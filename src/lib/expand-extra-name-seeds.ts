@@ -27,6 +27,28 @@ const KURAN_SLUGS = new Set(
   ].map((s) => s.toLowerCase()),
 );
 
+/** `KURAN_SLUGS` ile işaretlenen genişletilmiş isimler için kısa Kur’an geçiş notu. */
+const QURAN_REFERENCE_BY_SLUG: Record<string, string> = {
+  yusuf: "Yusuf suresi (12); Bakara, Kasas vb. birçok surede Hz. Yusuf kıssası anlatılır.",
+  meryem: "Meryem suresi (19); Âl-i İmrân, İsâ vb. surelerde Hz. Meryem anılır.",
+  elif: "Bakara ve benzeri sure başlarındaki müstakil harf gruplarında elif harfi geçer.",
+  hafsa: "Nisâ ve Ahzâb vb. surelerde peygamber ailesi ve müminlere yönelik ayetlerle ümmü'l-mü'minîn geleneğinde anılır.",
+  musa: "Bakara, Araf, Kasas, Tâ-Hâ vb. birçok surede Hz. Musa kıssaları yer alır.",
+  harun: "Tâ-Hâ, A'raf vb. surelerde Hz. Harun, Hz. Musa ile birlikte anılır.",
+  ismail: "Bakara, İbrâhîm, Saffât vb. surelerde Hz. İsmail anlatılır.",
+  ibrahim: "İbrâhîm suresi (14) ile Bakara, Neml vb. birçok surede Hz. İbrahim kıssası bulunur.",
+  adem: "Bakara, A'raf, İsrâ vb. surelerde ilk insan Hz. Âdem anlatılır.",
+  yunus: "Yunus suresi (10) ve Saffât, Enbiyâ vb. surelerde Hz. Yunus anılır.",
+  yahya: "Meryem ve Âl-i İmrân surelerinde Hz. Yahya'nın doğumu anlatılır.",
+  isa: "Meryem, Nisâ, Âl-i İmrân vb. surelerde Hz. İsa (Kelimetullah) geçer.",
+  nuh: "Nuh suresi (71) ve Hûd, Şuarâ vb. surelerde Hz. Nuh kıssası yer alır.",
+  zeynep: "Kur'an metninde çeşitli isimler geçer; ümmü'l-mü'minîn ve sahâbe geleneğinde yaygın bir addır.",
+  ahmet: "Saff suresi (61), 6. ayette gelecek peygambere işaret eden ifadelerde Ahmed adı geçer.",
+  ali: "Yücelik kökünden 'a'lâ / alî' kullanımları birçok ayette bulunur; Hz. Ali ismi bu kök ve siyer geleneğiyle ilişkilendirilir.",
+  hasan: "Hüsn, ihsân, muhsin kökleri Kur'an'da sıkça geçer.",
+  omer: "Emir/iş kökünden 'amr' ayetlerde yer alır; sahâbe ismi olarak Hz. Ömer geleneğiyle anılır.",
+};
+
 function trSlugify(displayName: string): string {
   const t = displayName
     .trim()
@@ -72,6 +94,7 @@ export function expandExtraNameSeeds(core: BabyNameSeed[], boyPipe: string, girl
     taken.add(slug);
     const o = ORIG[out.length % ORIG.length];
     const st = STYLES[out.length % STYLES.length];
+    const inQuran = KURAN_SLUGS.has(slug);
     out.push({
       id: `n-${n++}`,
       slug,
@@ -82,7 +105,8 @@ export function expandExtraNameSeeds(core: BabyNameSeed[], boyPipe: string, girl
       pronunciation: displayName.replaceAll(/\s+/g, " ").slice(0, 48),
       popularity: Math.min(4.8, 2.6 + (out.length % 23) / 20),
       popularScore: 88 - (out.length % 55),
-      inQuran: KURAN_SLUGS.has(slug),
+      inQuran,
+      quranReference: inQuran ? (QURAN_REFERENCE_BY_SLUG[slug] ?? null) : undefined,
       style: st,
       isShort: displayName.length <= 5,
       beautifulMeaning: out.length % 2 === 0,

@@ -22,6 +22,7 @@ function traitsToText(traits: unknown): string {
 export function NameForm({ name, mediaOptions }: Props) {
   const [state, action, pending] = useActionState(saveName, initial);
   const similarDefault = name?.similarFrom?.map((s) => s.target.slug).join(", ") ?? "";
+  const [inQuranChoice, setInQuranChoice] = useState(name?.inQuran ? "true" : "false");
   const [selectedImageId, setSelectedImageId] = useState(name?.imageId ?? "");
   const selectedImage = useMemo(
     () => mediaOptions.find((m) => m.id === selectedImageId) ?? null,
@@ -112,11 +113,31 @@ export function NameForm({ name, mediaOptions }: Props) {
         </div>
         <div>
           <label className="text-sm font-semibold">Kur’an’da geçiyor</label>
-          <select name="inQuran" defaultValue={name?.inQuran ? "true" : "false"} className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 text-sm">
+          <select
+            name="inQuran"
+            value={inQuranChoice}
+            onChange={(e) => setInQuranChoice(e.target.value)}
+            className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 text-sm"
+          >
             <option value="true">Evet</option>
             <option value="false">Hayır</option>
           </select>
         </div>
+        {inQuranChoice === "true" ? (
+          <div className="sm:col-span-2">
+            <label className="text-sm font-semibold">Kur’an’da geçtiği yer (kısa not)</label>
+            <p className="mt-0.5 text-xs text-zinc-500">
+              Örn. sure/ayet veya kısa açıklama. Boş bırakılabilir; sitede yine de alan gösterilir.
+            </p>
+            <textarea
+              name="quranReference"
+              rows={2}
+              defaultValue={name?.quranReference ?? ""}
+              className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 text-sm"
+              placeholder="Örn. Bakara 2:31 civarı; Hz. Musa kıssalarında geçer."
+            />
+          </div>
+        ) : null}
         <div>
           <label className="text-sm font-semibold">Kısa isim</label>
           <select name="isShort" defaultValue={name?.isShort ? "true" : "false"} className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 text-sm">

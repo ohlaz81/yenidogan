@@ -122,6 +122,14 @@ export default async function NameDetailPage({ params }: Props) {
           <p className="mt-2 text-sm font-medium text-foreground">
             {name.inQuran ? "Evet" : "Hayır, geçmemektedir"}
           </p>
+          {name.inQuran ? (
+            <>
+              <p className="mt-3 text-xs font-bold uppercase tracking-wide text-muted">Nerede / kısa not</p>
+              <p className="mt-1 text-sm text-foreground/90">
+                {name.quranReference?.trim() ? name.quranReference.trim() : "—"}
+              </p>
+            </>
+          ) : null}
         </div>
         <div className="rounded-2xl border border-border bg-sky-50 p-4 shadow-sm">
           <p className="text-xs font-bold uppercase tracking-wide text-muted">🔤 Okunuşu</p>

@@ -13,6 +13,7 @@ function minimalNameForStock(id: string, gender: Gender): Name {
     popularity: 1,
     popularScore: 0,
     inQuran: false,
+    quranReference: null,
     style: "MODERN",
     isShort: false,
     beautifulMeaning: false,

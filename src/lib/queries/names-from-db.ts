@@ -35,6 +35,10 @@ function mapNameRow(row: RowWithImg): Name & { image: MediaAsset | null } {
     popularity: Number(row.popularity) || 1,
     popularScore: Number(row.popularScore) ?? 0,
     inQuran: Boolean(row.inQuran),
+    quranReference:
+      row.quranReference === null || row.quranReference === undefined
+        ? null
+        : String(row.quranReference).trim() || null,
     style: row.style as Name["style"],
     isShort: Boolean(row.isShort),
     beautifulMeaning: Boolean(row.beautifulMeaning),

@@ -39,6 +39,8 @@ export type Name = {
   popularity: number;
   popularScore: number;
   inQuran: boolean;
+  /** Kur'an'da nerede geçtiği (kısa not); yalnızca inQuran true iken anlamlı. */
+  quranReference: string | null;
   style: NameStyle;
   isShort: boolean;
   beautifulMeaning: boolean;

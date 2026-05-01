@@ -24,6 +24,7 @@ const base = z.object({
   popularity: z.coerce.number().min(1).max(5),
   popularScore: z.coerce.number().min(0).max(1000),
   inQuran: z.enum(["true", "false"]),
+  quranReference: z.string().optional(),
   style: styleZ,
   isShort: z.enum(["true", "false"]),
   beautifulMeaning: z.enum(["true", "false"]),
@@ -49,6 +50,7 @@ export async function saveName(_: NameSaveState, formData: FormData): Promise<Na
     popularity: formData.get("popularity"),
     popularScore: formData.get("popularScore"),
     inQuran: formData.get("inQuran"),
+    quranReference: formData.get("quranReference") ?? undefined,
     style: formData.get("style"),
     isShort: formData.get("isShort"),
     beautifulMeaning: formData.get("beautifulMeaning"),
@@ -73,6 +75,10 @@ export async function saveName(_: NameSaveState, formData: FormData): Promise<Na
         .filter(Boolean)
     : [];
 
+  const inQuranTrue = d.inQuran === "true";
+  const quranRefTrim = d.quranReference?.trim() ?? "";
+  const quranReference = inQuranTrue && quranRefTrim.length > 0 ? quranRefTrim : null;
+
   const row: Record<string, unknown> = {
     slug,
     displayName: d.displayName.trim(),
@@ -82,7 +88,8 @@ export async function saveName(_: NameSaveState, formData: FormData): Promise<Na
     pronunciation: d.pronunciation.trim(),
     popularity: d.popularity,
     popularScore: d.popularScore,
-    inQuran: d.inQuran === "true",
+    inQuran: inQuranTrue,
+    quranReference,
     style: d.style,
     isShort: d.isShort === "true",
     beautifulMeaning: d.beautifulMeaning === "true",
@@ -189,6 +196,7 @@ export async function importSeedNamesAction() {
       popularity: popularityInt,
       popularScore: n.popularScore,
       inQuran: n.inQuran,
+      quranReference: n.quranReference,
       style: n.style,
       isShort: n.isShort,
       beautifulMeaning: n.beautifulMeaning,

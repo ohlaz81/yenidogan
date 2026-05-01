@@ -11,6 +11,8 @@ export type BabyNameSeed = {
   popularity: number;
   popularScore: number;
   inQuran: boolean;
+  /** Seed/DB ile uyum; Kur'an geçiş notu (opsiyonel). */
+  quranReference?: string | null;
   style: NameStyle;
   isShort: boolean;
   beautifulMeaning: boolean;

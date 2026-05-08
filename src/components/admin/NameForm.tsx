@@ -19,6 +19,16 @@ function traitsToText(traits: unknown): string {
   return "";
 }
 
+function fileNameFromMediaUrl(url: string, alt: string | null): string {
+  if (alt?.trim()) return alt.trim();
+  try {
+    const seg = url.split("/").pop() ?? url;
+    return decodeURIComponent(seg);
+  } catch {
+    return url;
+  }
+}
+
 export function NameForm({ name, mediaOptions }: Props) {
   const [state, action, pending] = useActionState(saveName, initial);
   const similarDefault = name?.similarFrom?.map((s) => s.target.slug).join(", ") ?? "";
@@ -28,6 +38,11 @@ export function NameForm({ name, mediaOptions }: Props) {
     () => mediaOptions.find((m) => m.id === selectedImageId) ?? null,
     [mediaOptions, selectedImageId],
   );
+  const { babyMediaOptions, otherMediaOptions } = useMemo(() => {
+    const baby = mediaOptions.filter((m) => m.url.startsWith("/media/babies/"));
+    const other = mediaOptions.filter((m) => !m.url.startsWith("/media/babies/"));
+    return { babyMediaOptions: baby, otherMediaOptions: other };
+  }, [mediaOptions]);
 
   if (state.ok && state.slug) {
     return (
@@ -176,11 +191,24 @@ export function NameForm({ name, mediaOptions }: Props) {
             className="mt-1 w-full rounded-xl border border-zinc-200 px-3 py-2 text-sm"
           >
             <option value="">(Yok)</option>
-            {mediaOptions.map((m) => (
-              <option key={m.id} value={m.id}>
-                {m.alt ?? m.url}
-              </option>
-            ))}
+            {babyMediaOptions.length > 0 ? (
+              <optgroup label="public/media/babies">
+                {babyMediaOptions.map((m) => (
+                  <option key={m.id} value={m.id}>
+                    {fileNameFromMediaUrl(m.url, m.alt)}
+                  </option>
+                ))}
+              </optgroup>
+            ) : null}
+            {otherMediaOptions.length > 0 ? (
+              <optgroup label="Yüklenen / diğer medya">
+                {otherMediaOptions.map((m) => (
+                  <option key={m.id} value={m.id}>
+                    {fileNameFromMediaUrl(m.url, m.alt)}
+                  </option>
+                ))}
+              </optgroup>
+            ) : null}
           </select>
           {selectedImage ? (
             <div className="mt-3 rounded-xl border border-zinc-200 bg-zinc-50 p-3">
@@ -192,30 +220,63 @@ export function NameForm({ name, mediaOptions }: Props) {
                   alt={selectedImage.alt ?? "Kapak görseli"}
                   className="h-20 w-20 rounded-lg border border-zinc-200 object-cover bg-white"
                 />
-                <p className="text-xs text-zinc-600 break-all">{selectedImage.alt ?? selectedImage.url}</p>
+                <p className="text-xs text-zinc-600 break-all">{fileNameFromMediaUrl(selectedImage.url, selectedImage.alt)}</p>
               </div>
             </div>
           ) : null}
-          {mediaOptions.length > 0 ? (
-            <details className="mt-3">
-              <summary className="cursor-pointer text-xs font-semibold text-primary">Görselleri galeride gör</summary>
-              <div className="mt-2 grid grid-cols-4 gap-2 sm:grid-cols-6">
-                {mediaOptions.slice(0, 30).map((m) => (
-                  <button
-                    key={m.id}
-                    type="button"
-                    onClick={() => setSelectedImageId(m.id)}
-                    className={`overflow-hidden rounded-lg border ${
-                      selectedImageId === m.id ? "border-primary ring-2 ring-primary/30" : "border-zinc-200"
-                    }`}
-                    title={m.alt ?? m.url}
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={m.url} alt={m.alt ?? "Görsel"} className="h-16 w-full object-cover" />
-                  </button>
-                ))}
+          {babyMediaOptions.length > 0 ? (
+            <div className="mt-3">
+              <p className="text-xs font-semibold text-zinc-700">public/media/babies — tıklayarak seçin</p>
+              <div className="mt-2 max-h-80 overflow-y-auto rounded-xl border border-zinc-200 bg-zinc-50/90 p-2">
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+                  {babyMediaOptions.map((m) => {
+                    const label = fileNameFromMediaUrl(m.url, m.alt);
+                    return (
+                      <button
+                        key={m.id}
+                        type="button"
+                        onClick={() => setSelectedImageId(m.id)}
+                        className={`flex flex-col overflow-hidden rounded-lg border bg-white text-left shadow-sm transition ${
+                          selectedImageId === m.id ? "border-primary ring-2 ring-primary/35" : "border-zinc-200 hover:border-zinc-400"
+                        }`}
+                        title={label}
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={m.url} alt="" className="aspect-square h-20 w-full object-cover sm:h-24" loading="lazy" />
+                        <span className="line-clamp-2 break-all px-1.5 py-1 text-[10px] leading-tight text-zinc-600">{label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-            </details>
+            </div>
+          ) : null}
+          {otherMediaOptions.length > 0 ? (
+            <div className="mt-4">
+              <p className="text-xs font-semibold text-zinc-700">Yüklenen / diğer medya</p>
+              <div className="mt-2 max-h-52 overflow-y-auto rounded-xl border border-zinc-200 bg-white p-2">
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
+                  {otherMediaOptions.map((m) => {
+                    const label = fileNameFromMediaUrl(m.url, m.alt);
+                    return (
+                      <button
+                        key={m.id}
+                        type="button"
+                        onClick={() => setSelectedImageId(m.id)}
+                        className={`flex flex-col overflow-hidden rounded-lg border bg-zinc-50 text-left shadow-sm transition ${
+                          selectedImageId === m.id ? "border-primary ring-2 ring-primary/35" : "border-zinc-200 hover:border-zinc-400"
+                        }`}
+                        title={label}
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={m.url} alt="" className="aspect-square h-16 w-full object-cover sm:h-20" loading="lazy" />
+                        <span className="line-clamp-2 break-all px-1.5 py-1 text-[10px] leading-tight text-zinc-600">{label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
           ) : null}
         </div>
         <div className="sm:col-span-2">

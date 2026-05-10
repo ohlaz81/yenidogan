@@ -54,7 +54,7 @@ export default async function AdminNamesPage({ searchParams }: Props) {
       </form>
       {(names ?? []).length === 0 ? (
         <div className="rounded-2xl border border-dashed border-zinc-300 bg-white p-6 text-sm text-zinc-600">
-          Henüz veritabanında isim yok. Yukarıdaki <strong>Toplu JSON / Excel</strong> ile geçerli bir isim listesi
+          Henüz veritabanında isim yok. Yukarıdaki <strong>Toplu isim yükle</strong> ile geçerli bir isim listesi
           yükleyebilir veya tek tek <Link href="/admin/isimler/yeni" className="font-semibold text-primary underline">Yeni isim</Link> ekleyebilirsiniz.
         </div>
       ) : null}

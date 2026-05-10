@@ -5,6 +5,7 @@ import {
   previewBulkNamesImportAction,
   type PreviewBulkNamesImportResult,
 } from "@/app/admin/actions/name-bulk-import";
+import { excelFileToNamesJsonText } from "@/lib/admin/excel-to-names-json";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 
@@ -44,7 +45,7 @@ export function BulkJsonImportNamesButton() {
     resetOutcome();
   };
 
-  const onPickFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onPickJsonFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
     e.target.value = "";
     if (!f) return;
@@ -54,6 +55,20 @@ export function BulkJsonImportNamesButton() {
       onTextChange(t);
     };
     reader.readAsText(f, "UTF-8");
+  };
+
+  const onPickExcelFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0];
+    e.target.value = "";
+    if (!f) return;
+    resetOutcome();
+    const r = await excelFileToNamesJsonText(f);
+    if (!r.ok) {
+      setApplyError(r.error);
+      setPreview(null);
+      return;
+    }
+    onTextChange(r.json);
   };
 
   const runPreview = async () => {
@@ -118,7 +133,7 @@ export function BulkJsonImportNamesButton() {
         }}
         className="rounded-2xl border border-zinc-300 bg-white px-4 py-2 text-sm font-bold text-zinc-800 shadow-sm hover:bg-zinc-50"
       >
-        Toplu JSON İçe Aktar
+        Toplu JSON / Excel
       </button>
 
       {open ? (
@@ -135,16 +150,18 @@ export function BulkJsonImportNamesButton() {
             onClick={(e) => e.stopPropagation()}
           >
             <h2 id="bulk-json-import-title" className="font-display text-lg font-semibold text-zinc-900">
-              Toplu JSON İçe Aktar
+              Toplu JSON / Excel içe aktar
             </h2>
             <p className="mt-2 text-sm text-zinc-600">
-              JSON dosyası seçin veya metni yapıştırın. Önce önizleyin; onayladığınızda yalnızca geçerli satırlar{" "}
-              <strong>slug</strong> üzerinden upsert edilir (mevcut kayıtlar silinmez). Dosyada hatalı veya yinelenen
-              satır varsa içe aktarma yapılmaz; önce tüm satırları düzeltin.
+              <strong>Excel (.xlsx):</strong> ilk sayfa, ilk satır sütun başlıkları (ör. <code className="rounded bg-zinc-100 px-1">slug</code>,{" "}
+              <code className="rounded bg-zinc-100 px-1">displayName</code> veya <code className="rounded bg-zinc-100 px-1">İsim</code>,{" "}
+              <code className="rounded bg-zinc-100 px-1">Cinsiyet</code> …). Dosya seçilince tablo otomatik JSON’a çevrilir; ardından{" "}
+              <strong>Önizle ve doğrula</strong> ile devam edin. <strong>JSON:</strong> metin yapıştırın veya .json dosyası seçin. Onayda{" "}
+              <strong>slug</strong> ile upsert yapılır (mevcut kayıtlar silinmez). Hatalı veya yinelenen satır varsa içe aktarma yapılmaz.
             </p>
 
             <div className="mt-4 space-y-3">
-              <label className="block text-xs font-semibold uppercase text-zinc-500">JSON</label>
+              <label className="block text-xs font-semibold uppercase text-zinc-500">JSON (Excel sonrası otomatik doldurulur)</label>
               <textarea
                 value={jsonText}
                 onChange={(e) => onTextChange(e.target.value)}
@@ -154,8 +171,17 @@ export function BulkJsonImportNamesButton() {
               />
               <div className="flex flex-wrap items-center gap-2">
                 <label className="cursor-pointer rounded-xl border border-zinc-300 bg-white px-3 py-2 text-sm font-semibold text-zinc-700 hover:bg-zinc-50">
-                  Dosya seç
-                  <input type="file" accept=".json,application/json" className="sr-only" onChange={onPickFile} />
+                  JSON dosyası
+                  <input type="file" accept=".json,application/json" className="sr-only" onChange={onPickJsonFile} />
+                </label>
+                <label className="cursor-pointer rounded-xl border border-emerald-600/40 bg-emerald-50 px-3 py-2 text-sm font-semibold text-emerald-900 hover:bg-emerald-100">
+                  Excel (.xlsx)
+                  <input
+                    type="file"
+                    accept=".xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
+                    className="sr-only"
+                    onChange={(e) => void onPickExcelFile(e)}
+                  />
                 </label>
                 <button
                   type="button"

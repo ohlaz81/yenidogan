@@ -2,7 +2,8 @@ import Link from "next/link";
 import { getSupabase } from "@/lib/supabase/admin";
 import { postgrestToError } from "@/lib/supabase/errors";
 import { ADMIN_PERMISSIONS, requirePermission } from "@/lib/admin-permissions";
-import { deleteNameAction, importSeedNamesAction } from "@/app/admin/actions/name";
+import { DeleteNameButton } from "@/components/admin/DeleteNameButton";
+import { ImportSeedNamesButton } from "@/components/admin/ImportSeedNamesButton";
 
 type Props = {
   searchParams?: Promise<{ q?: string }>;
@@ -28,11 +29,7 @@ export default async function AdminNamesPage({ searchParams }: Props) {
           <p className="text-sm text-zinc-600">Alfabetik liste</p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          <form action={importSeedNamesAction}>
-            <button type="submit" className="rounded-2xl border border-primary px-4 py-2 text-sm font-bold text-primary hover:bg-violet-50">
-              Mevcut isimleri içe aktar
-            </button>
-          </form>
+          <ImportSeedNamesButton />
           <Link href="/admin/isimler/yeni" className="rounded-2xl bg-primary px-4 py-2 text-sm font-bold text-white">
             Yeni isim
           </Link>
@@ -83,12 +80,7 @@ export default async function AdminNamesPage({ searchParams }: Props) {
                   <Link href={`/admin/isimler/${n.id}`} className="font-semibold text-primary hover:underline">
                     Düzenle
                   </Link>
-                  <form className="mt-1 block" action={deleteNameAction}>
-                    <input type="hidden" name="id" value={n.id} />
-                    <button type="submit" className="text-xs text-red-600 hover:underline">
-                      Sil
-                    </button>
-                  </form>
+                  <DeleteNameButton nameId={n.id} displayName={n.displayName} />
                 </td>
               </tr>
             ))}

@@ -5,6 +5,12 @@ import { revalidatePath } from "next/cache";
 import { getSupabase } from "@/lib/supabase/admin";
 import { ADMIN_PERMISSIONS, requirePermission } from "@/lib/admin-permissions";
 import {
+  fetchAllNameSlugs,
+  fetchAllNamesForBackup,
+  fetchExistingNamesBySlugs,
+  upsertNamesInChunks,
+} from "@/lib/admin/name-db-pagination";
+import {
   countInsertVsUpdate,
   extractNamesArray,
   parseNamesImportJsonString,
@@ -51,10 +57,8 @@ export async function previewBulkNamesImportAction(jsonText: string): Promise<Pr
 
   const { rows, errors } = validateAndNormalizeNamesImport(arr);
   const s = getSupabase();
-  const { data: existing, error: eErr } = await s.from("Name").select("slug");
-  if (eErr) return { ok: false, error: `Veritabanı okunamadı: ${eErr.message}` };
-
-  const slugSet = new Set((existing ?? []).map((r: { slug: string }) => String(r.slug)));
+  const { slugs: slugSet, error: eErr } = await fetchAllNameSlugs(s);
+  if (eErr) return { ok: false, error: `Veritabanı okunamadı: ${eErr}` };
   const { toInsert, toUpdate } = countInsertVsUpdate(rows, slugSet);
 
   const errorsTruncated = errors.length > MAX_ERROR_SAMPLES;
@@ -148,22 +152,20 @@ export async function applyBulkNamesImportAction(jsonText: string): Promise<Appl
   const s = getSupabase();
   const now = new Date().toISOString();
 
-  const { data: backupRows, error: bErr } = await s.from("Name").select("*").order("slug", { ascending: true });
-  if (bErr) return { ok: false, error: `Yedek alınamadı: ${bErr.message}`, phase: "backup" };
+  const { rows: backupRows, error: bErr } = await fetchAllNamesForBackup(s);
+  if (bErr) return { ok: false, error: `Yedek alınamadı: ${bErr}`, phase: "backup" };
 
   const backupJson = JSON.stringify(
-    { exportedAt: now, source: "Name table full backup before bulk JSON import", rows: backupRows ?? [] },
+    { exportedAt: now, source: "Name table full backup before bulk JSON import", rows: backupRows },
     null,
     2,
   );
 
   const slugs = rows.map((r) => r.slug);
-  const { data: existingForSlugs, error: exErr } = await s.from("Name").select("id,slug,createdAt").in("slug", slugs);
-  if (exErr) return { ok: false, error: `Mevcut kayıtlar okunamadı: ${exErr.message}`, phase: "backup" };
+  const { rows: existingForSlugs, error: exErr } = await fetchExistingNamesBySlugs(s, slugs);
+  if (exErr) return { ok: false, error: `Mevcut kayıtlar okunamadı: ${exErr}`, phase: "backup" };
 
-  const bySlug = new Map(
-    (existingForSlugs ?? []).map((row: { id: string; slug: string; createdAt: string }) => [row.slug, row]),
-  );
+  const bySlug = new Map(existingForSlugs.map((row) => [row.slug, row]));
 
   let toInsert = 0;
   let toUpdate = 0;
@@ -179,11 +181,11 @@ export async function applyBulkNamesImportAction(jsonText: string): Promise<Appl
     return normalizedToDbRow(r, id, createdAt, now);
   });
 
-  const { error: upErr } = await s.from("Name").upsert(dbRows as never[], { onConflict: "slug" });
+  const { error: upErr } = await upsertNamesInChunks(s, dbRows);
   if (upErr) {
     return {
       ok: false,
-      error: upErr.message,
+      error: upErr,
       phase: "upsert",
       backupJson,
     };
@@ -194,7 +196,7 @@ export async function applyBulkNamesImportAction(jsonText: string): Promise<Appl
   return {
     ok: true,
     backupJson,
-    backupRowCount: (backupRows ?? []).length,
+    backupRowCount: backupRows.length,
     appliedValid: rows.length,
     toInsert,
     toUpdate,

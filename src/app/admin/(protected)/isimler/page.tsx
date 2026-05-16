@@ -2,7 +2,6 @@ import Link from "next/link";
 import { getSupabase } from "@/lib/supabase/admin";
 import { postgrestToError } from "@/lib/supabase/errors";
 import { ADMIN_PERMISSIONS, requirePermission } from "@/lib/admin-permissions";
-import { BulkJsonImportNamesButton } from "@/components/admin/BulkJsonImportNamesButton";
 import { DeleteNameButton } from "@/components/admin/DeleteNameButton";
 
 type Props = {
@@ -29,7 +28,6 @@ export default async function AdminNamesPage({ searchParams }: Props) {
           <p className="text-sm text-zinc-600">Alfabetik liste</p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          <BulkJsonImportNamesButton />
           <Link href="/admin/isimler/yeni" className="rounded-2xl bg-primary px-4 py-2 text-sm font-bold text-white">
             Yeni isim
           </Link>
@@ -54,8 +52,8 @@ export default async function AdminNamesPage({ searchParams }: Props) {
       </form>
       {(names ?? []).length === 0 ? (
         <div className="rounded-2xl border border-dashed border-zinc-300 bg-white p-6 text-sm text-zinc-600">
-          Henüz veritabanında isim yok. Yukarıdaki <strong>Toplu isim yükle</strong> ile geçerli bir isim listesi
-          yükleyebilir veya tek tek <Link href="/admin/isimler/yeni" className="font-semibold text-primary underline">Yeni isim</Link> ekleyebilirsiniz.
+          Henüz veritabanında isim yok. <Link href="/admin/isimler/yeni" className="font-semibold text-primary underline">Yeni isim</Link> ile
+          ekleyebilirsiniz.
         </div>
       ) : null}
       <div className="overflow-x-auto rounded-2xl border border-zinc-200 bg-white shadow-sm">

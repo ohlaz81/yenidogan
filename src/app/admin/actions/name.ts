@@ -8,6 +8,7 @@ import { getSupabase } from "@/lib/supabase/admin";
 import { ADMIN_PERMISSIONS, requirePermission } from "@/lib/admin-permissions";
 import { slugify } from "@/lib/slug";
 import { firstLetterTr } from "@/lib/text";
+import { revalidatePublicNamePages } from "@/lib/revalidate-public-names";
 import { BABY_NAME_SEED, seedToName } from "@/data/baby-names";
 
 const genderZ = z.enum(["GIRL", "BOY", "UNISEX"]);
@@ -144,13 +145,7 @@ export async function saveName(_: NameSaveState, formData: FormData): Promise<Na
     }
   }
 
-  revalidatePath("/");
-  revalidatePath("/kiz-isimleri");
-  revalidatePath("/erkek-isimleri");
-  revalidatePath(`/isim/${slug}`);
-  if (previousSlug && previousSlug !== slug) {
-    revalidatePath(`/isim/${previousSlug}`);
-  }
+  revalidatePublicNamePages({ slug, previousSlug });
   revalidatePath("/admin/isimler");
   revalidatePath("/admin/isimler/yeni");
   revalidatePath("/admin/isimler/[id]", "page");
@@ -166,7 +161,7 @@ export async function deleteNameAction(formData: FormData) {
   await s.from("SimilarName").delete().eq("targetId", id);
   await s.from("HomeFeaturedName").update({ nameId: null } as never).eq("nameId", id);
   await s.from("Name").delete().eq("id", id);
-  revalidatePath("/");
+  revalidatePublicNamePages();
   revalidatePath("/admin/isimler");
   revalidatePath("/admin/isimler/[id]", "page");
   redirect("/admin/isimler");

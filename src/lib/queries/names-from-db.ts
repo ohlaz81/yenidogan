@@ -53,24 +53,40 @@ function mapNameRow(row: RowWithImg): Name & { image: MediaAsset | null } {
   };
 }
 
+const PUBLISHED_PAGE_SIZE = 1000;
+
 /**
  * Yayında tüm isimler (filtre için bellek içi kullanım).
+ * PostgREST tek istekte ~1000 satır döndürür; sayfalı okunur.
  * Başarısız veya env yoksa null.
  */
 export async function fetchPublishedNamesRows(): Promise<Array<Name & { image: MediaAsset | null }> | null> {
   const s = tryGetSupabase();
   if (!s) return null;
 
-  const { data, error } = await s
-    .from("Name")
-    .select("*, image:imageId(id,url,alt,createdAt)")
-    .eq("published", true)
-    .limit(8000);
+  const all: RowWithImg[] = [];
+  let from = 0;
 
-  if (error) return null;
-  if (!data?.length) return [];
+  while (true) {
+    const { data, error } = await s
+      .from("Name")
+      .select("*, image:imageId(id,url,alt,createdAt)")
+      .eq("published", true)
+      .order("popularScore", { ascending: false })
+      .order("displayName", { ascending: true })
+      .range(from, from + PUBLISHED_PAGE_SIZE - 1);
 
-  return (data as RowWithImg[]).map(mapNameRow).map((row) => ensureNameDisplayImage(row));
+    if (error) return all.length > 0 ? all.map(mapNameRow).map((row) => ensureNameDisplayImage(row)) : null;
+
+    const batch = (data ?? []) as RowWithImg[];
+    all.push(...batch);
+    if (batch.length < PUBLISHED_PAGE_SIZE) break;
+    from += PUBLISHED_PAGE_SIZE;
+  }
+
+  if (!all.length) return [];
+
+  return all.map(mapNameRow).map((row) => ensureNameDisplayImage(row));
 }
 
 export async function listNamesFromDb(p: NameListParams) {

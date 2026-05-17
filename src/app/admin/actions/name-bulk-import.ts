@@ -2,6 +2,7 @@
 
 import { createId } from "@paralleldrive/cuid2";
 import { revalidatePath } from "next/cache";
+import { revalidatePublicNamePages } from "@/lib/revalidate-public-names";
 import { getSupabase } from "@/lib/supabase/admin";
 import { ADMIN_PERMISSIONS, requirePermission } from "@/lib/admin-permissions";
 import {
@@ -22,9 +23,7 @@ import {
 const MAX_ERROR_SAMPLES = 100;
 
 function revalidateNamePaths() {
-  revalidatePath("/");
-  revalidatePath("/kiz-isimleri");
-  revalidatePath("/erkek-isimleri");
+  revalidatePublicNamePages();
   revalidatePath("/admin/isimler");
   revalidatePath("/admin/anasayfa");
   revalidatePath("/admin/isimler/yeni");

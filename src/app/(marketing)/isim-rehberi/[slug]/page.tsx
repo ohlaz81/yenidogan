@@ -4,6 +4,13 @@ import { getStaticGuides, getStaticGuideBySlug } from "@/data/static-guide";
 import { Breadcrumb } from "@/components/marketing/Breadcrumb";
 import { MediaImage } from "@/components/marketing/MediaImage";
 import { canonicalUrl } from "@/lib/site";
+import {
+  JsonLd,
+  articleSchema,
+  breadcrumbListSchema,
+  schemaGraph,
+  webPageSchema,
+} from "@/lib/json-ld";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -26,16 +33,29 @@ export default async function GuideArticlePage({ params }: Props) {
   const { slug } = await params;
   const article = getStaticGuideBySlug(slug);
   if (!article) notFound();
+  const url = canonicalUrl(`/isim-rehberi/${article.slug}`);
+  const breadcrumbItems = [
+    { label: "Anasayfa", href: "/" },
+    { label: "İsim rehberi", href: "/isim-rehberi" },
+    { label: article.title },
+  ];
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-10">
-      <Breadcrumb
-        items={[
-          { label: "Anasayfa", href: "/" },
-          { label: "İsim rehberi", href: "/isim-rehberi" },
-          { label: article.title },
-        ]}
+      <JsonLd
+        data={schemaGraph([
+          webPageSchema({
+            url,
+            name: article.title,
+            description: article.excerpt,
+            breadcrumbId: `${url}#breadcrumb`,
+            aboutId: `${url}#article`,
+          }),
+          breadcrumbListSchema(breadcrumbItems, url),
+          articleSchema(article, url),
+        ])}
       />
+      <Breadcrumb items={breadcrumbItems} />
       <header className="mt-8">
         <p className="text-xs font-bold uppercase tracking-wide text-accent-pink">İsim rehberi</p>
         <h1 className="mt-2 font-display text-3xl font-semibold text-primary">{article.title}</h1>

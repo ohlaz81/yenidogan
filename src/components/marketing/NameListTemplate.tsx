@@ -6,6 +6,8 @@ import { type NameWithImage } from "./NameCard";
 import { NameListRow } from "./NameListRow";
 import { AlphabetStrip } from "./AlphabetStrip";
 import { CategoryGenderFilter } from "./CategoryGenderFilter";
+import { JsonLd, collectionPageSchema } from "@/lib/json-ld";
+import { canonicalUrl } from "@/lib/site";
 
 function buildPageHref(path: string, page: number, extra?: Record<string, string>) {
   const qs = new URLSearchParams();
@@ -130,62 +132,67 @@ export function NameListTemplate({
   /** Kur’an / popüler / modern / nadir / A–Z kategorilerinde cinsiyet sekmesi */
   genderFilter?: { basePath: string; active: "GIRL" | "BOY" | null };
 }) {
+  const url = canonicalUrl(path);
+
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10">
-      <Breadcrumb items={crumbs} />
-      <header
-        className={headerClassName ? `mt-6 ${headerClassName}` : "mt-6 space-y-3"}
-      >
-        {headerClassName ? (
-          <div className="space-y-2">
-            <h1 className="font-display text-2xl font-bold text-primary sm:text-3xl md:text-4xl">{title}</h1>
-            <p className="max-w-2xl text-sm text-muted sm:text-base">{description}</p>
-          </div>
-        ) : (
-          <>
-            <h1 className="font-display text-3xl font-semibold text-primary sm:text-4xl">{title}</h1>
-            <p className="max-w-2xl text-muted">{description}</p>
-          </>
-        )}
-      </header>
-      <div
-        className={
-          aside
-            ? "mt-6 grid grid-cols-1 gap-8 lg:mt-8 lg:grid-cols-[1fr_17.5rem] lg:items-start"
-            : "contents"
-        }
-      >
-        <div className={aside ? "min-w-0" : "mt-8 min-w-0"}>
-          {genderFilter && (
-            <CategoryGenderFilter basePath={genderFilter.basePath} active={genderFilter.active} />
-          )}
-          {alphabetStrip && (
-            <div className="sticky top-14 z-10 mb-3 bg-background/95 pb-1 pt-0.5 backdrop-blur-sm sm:top-16">
-              <AlphabetStrip
-                letters={alphabetStrip.letters}
-                basePath={alphabetStrip.basePath}
-                activeLetter={alphabetStrip.activeLetter}
-                tone={alphabetStrip.tone}
-                preserveQuery={alphabetStrip.preserveQuery}
-              />
+    <>
+      <JsonLd data={collectionPageSchema({ url, name: title, description, items })} />
+      <div className="mx-auto max-w-6xl px-4 py-10">
+        <Breadcrumb items={crumbs} />
+        <header
+          className={headerClassName ? `mt-6 ${headerClassName}` : "mt-6 space-y-3"}
+        >
+          {headerClassName ? (
+            <div className="space-y-2">
+              <h1 className="font-display text-2xl font-bold text-primary sm:text-3xl md:text-4xl">{title}</h1>
+              <p className="max-w-2xl text-sm text-muted sm:text-base">{description}</p>
             </div>
+          ) : (
+            <>
+              <h1 className="font-display text-3xl font-semibold text-primary sm:text-4xl">{title}</h1>
+              <p className="max-w-2xl text-muted">{description}</p>
+            </>
           )}
-          <div className="mt-0 overflow-hidden rounded-2xl border border-violet-100/80 bg-gradient-to-b from-white to-slate-50/40 p-0.5 shadow-sm ring-1 ring-violet-100/50 sm:px-0.5 sm:py-0.5 lg:mt-0">
-            <ul className="px-0 pb-1.5 sm:px-0 sm:pb-2">
-              {items.map((n, i) => (
-                <NameListRow key={n.id} name={n} rank={(page - 1) * take + i + 1} />
-              ))}
-            </ul>
+        </header>
+        <div
+          className={
+            aside
+              ? "mt-6 grid grid-cols-1 gap-8 lg:mt-8 lg:grid-cols-[1fr_17.5rem] lg:items-start"
+              : "contents"
+          }
+        >
+          <div className={aside ? "min-w-0" : "mt-8 min-w-0"}>
+            {genderFilter && (
+              <CategoryGenderFilter basePath={genderFilter.basePath} active={genderFilter.active} />
+            )}
+            {alphabetStrip && (
+              <div className="sticky top-14 z-10 mb-3 bg-background/95 pb-1 pt-0.5 backdrop-blur-sm sm:top-16">
+                <AlphabetStrip
+                  letters={alphabetStrip.letters}
+                  basePath={alphabetStrip.basePath}
+                  activeLetter={alphabetStrip.activeLetter}
+                  tone={alphabetStrip.tone}
+                  preserveQuery={alphabetStrip.preserveQuery}
+                />
+              </div>
+            )}
+            <div className="mt-0 overflow-hidden rounded-2xl border border-violet-100/80 bg-gradient-to-b from-white to-slate-50/40 p-0.5 shadow-sm ring-1 ring-violet-100/50 sm:px-0.5 sm:py-0.5 lg:mt-0">
+              <ul className="px-0 pb-1.5 sm:px-0 sm:pb-2">
+                {items.map((n, i) => (
+                  <NameListRow key={n.id} name={n} rank={(page - 1) * take + i + 1} />
+                ))}
+              </ul>
+            </div>
+            {items.length === 0 && <p className="mt-10 text-center text-muted">Bu kritere uygun isim bulunamadı.</p>}
+            <Pagination page={page} pages={pages} path={path} extra={paginationExtra} />
           </div>
-          {items.length === 0 && <p className="mt-10 text-center text-muted">Bu kritere uygun isim bulunamadı.</p>}
-          <Pagination page={page} pages={pages} path={path} extra={paginationExtra} />
+          {aside && (
+            <aside className="w-full min-w-0 space-y-4 lg:sticky lg:top-6 lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto">
+              {aside}
+            </aside>
+          )}
         </div>
-        {aside && (
-          <aside className="w-full min-w-0 space-y-4 lg:sticky lg:top-6 lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto">
-            {aside}
-          </aside>
-        )}
       </div>
-    </div>
+    </>
   );
 }

@@ -23,6 +23,13 @@ import { MediaImage } from "@/components/marketing/MediaImage";
 import { NameCard } from "@/components/marketing/NameCard";
 import { ShareButton } from "@/components/marketing/ShareButton";
 import { Stars } from "@/components/marketing/Stars";
+import {
+  JsonLd,
+  breadcrumbListSchema,
+  nameEntitySchema,
+  schemaGraph,
+  webPageSchema,
+} from "@/lib/json-ld";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -61,16 +68,30 @@ export default async function NameDetailPage({ params }: Props) {
   const genderPath = name.gender === "GIRL" ? "/kiz-isimleri" : name.gender === "BOY" ? "/erkek-isimleri" : "/tum-isimleri";
   const genderCrumb =
     name.gender === "GIRL" ? "Kız isimleri" : name.gender === "BOY" ? "Erkek isimleri" : "Tüm isimler";
+  const breadcrumbItems = [
+    { label: "Anasayfa", href: "/" },
+    { label: genderCrumb, href: genderPath },
+    { label: `${name.displayName} isminin anlamı` },
+  ];
+  const breadcrumb = breadcrumbListSchema(breadcrumbItems, canonical);
+  const entity = nameEntitySchema({ name, url: canonical, traits });
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
-      <Breadcrumb
-        items={[
-          { label: "Anasayfa", href: "/" },
-          { label: genderCrumb, href: genderPath },
-          { label: `${name.displayName} isminin anlamı` },
-        ]}
+      <JsonLd
+        data={schemaGraph([
+          webPageSchema({
+            url: canonical,
+            name: `${name.displayName} isminin anlamı`,
+            description: `${name.displayName}: ${name.meaning} (${name.origin})`,
+            breadcrumbId: `${canonical}#breadcrumb`,
+            aboutId: `${canonical}#defined-term`,
+          }),
+          breadcrumb,
+          entity,
+        ])}
       />
+      <Breadcrumb items={breadcrumbItems} />
 
       <section
         className={`mt-8 grid gap-8 overflow-hidden rounded-3xl border border-border p-6 lg:grid-cols-[1fr_220px] lg:items-center ${nameHeroSectionClass(name.gender)}`}

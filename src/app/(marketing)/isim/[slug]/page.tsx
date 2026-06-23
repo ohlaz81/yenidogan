@@ -23,6 +23,7 @@ import { MediaImage } from "@/components/marketing/MediaImage";
 import { NameCard } from "@/components/marketing/NameCard";
 import { ShareButton } from "@/components/marketing/ShareButton";
 import { Stars } from "@/components/marketing/Stars";
+import { NAME_OG_IMAGE_SIZE } from "@/lib/name-og-image-config";
 import {
   JsonLd,
   breadcrumbListSchema,
@@ -41,10 +42,43 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const n = await getNameBySlug(slug);
   if (!n) return { title: "İsim bulunamadı" };
+  const title = `${n.displayName} isminin anlamı`;
+  const description = `${n.displayName}: ${n.meaning} (${n.origin})`;
+  const url = canonicalUrl(`/isim/${n.slug}`);
+  const ogImage = canonicalUrl(`/isim/${n.slug}/opengraph-image`);
+  const twitterImage = canonicalUrl(`/isim/${n.slug}/twitter-image`);
+
   return {
-    title: `${n.displayName} isminin anlamı`,
-    description: `${n.displayName}: ${n.meaning} (${n.origin})`,
-    alternates: { canonical: canonicalUrl(`/isim/${n.slug}`) },
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title,
+      description,
+      url,
+      type: "website",
+      images: [
+        {
+          url: ogImage,
+          width: NAME_OG_IMAGE_SIZE.width,
+          height: NAME_OG_IMAGE_SIZE.height,
+          alt: `${n.displayName} isminin anlamı - Yenidoğan.net`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [
+        {
+          url: twitterImage,
+          width: NAME_OG_IMAGE_SIZE.width,
+          height: NAME_OG_IMAGE_SIZE.height,
+          alt: `${n.displayName} isminin anlamı - Yenidoğan.net`,
+        },
+      ],
+    },
   };
 }
 

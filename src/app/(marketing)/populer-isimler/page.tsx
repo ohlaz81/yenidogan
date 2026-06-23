@@ -11,12 +11,14 @@ import {
   genderPreserveQuery,
   harfFromSearchParams,
 } from "@/lib/category-cinsiyet";
+import { canonicalUrl } from "@/lib/site";
 import { getFirstLettersForNameListFilters } from "@/lib/static/names-store";
 
 export const metadata: Metadata = {
   title: "Popüler isimler",
   description:
     "Listede popüler havuz; sıra A–Z. Anasayfadaki kayan şerit aynı isim havuzundan örnekler gösterir.",
+  alternates: { canonical: canonicalUrl("/populer-isimler") },
 };
 
 type SP = Record<string, string | string[] | undefined>;

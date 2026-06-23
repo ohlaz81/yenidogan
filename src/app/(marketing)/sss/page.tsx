@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { STATIC_FAQS } from "@/data/static-faqs";
+import { canonicalUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Sık sorulan sorular",
+  alternates: { canonical: canonicalUrl("/sss") },
 };
 
 export default function FaqPage() {

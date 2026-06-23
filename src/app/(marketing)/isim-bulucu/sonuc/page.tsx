@@ -4,12 +4,14 @@ import {
   NAME_LIST_CATEGORY_HEADER_CLASS,
 } from "@/components/marketing/CategoryListAside";
 import { NameListTemplate, loadNameListTemplateData } from "@/components/marketing/NameListTemplate";
+import { canonicalUrl } from "@/lib/site";
 import type { Gender, NameStyle } from "@/types/database";
 import type { NameListParams } from "@/lib/queries/names";
 
 export const metadata: Metadata = {
   title: "İsim bulucu sonuçları",
   description: "Seçtiğiniz filtrelere uygun isimler.",
+  alternates: { canonical: canonicalUrl("/isim-bulucu/sonuc") },
 };
 
 type SP = Record<string, string | string[] | undefined>;

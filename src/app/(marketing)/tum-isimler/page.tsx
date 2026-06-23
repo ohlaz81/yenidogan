@@ -11,11 +11,13 @@ import {
   genderPreserveQuery,
   harfFromSearchParams,
 } from "@/lib/category-cinsiyet";
+import { canonicalUrl } from "@/lib/site";
 import { getFirstLettersForNameListFilters } from "@/lib/static/names-store";
 
 export const metadata: Metadata = {
   title: "Tüm isimler (A–Z)",
   description: "Alfabetik sırayla tüm yayınlanmış isimler; isteğe kız veya erkek.",
+  alternates: { canonical: canonicalUrl("/tum-isimler") },
 };
 
 type SP = Record<string, string | string[] | undefined>;

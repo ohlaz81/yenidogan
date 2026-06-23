@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getStaticGuides } from "@/data/static-guide";
 import { MediaImage } from "@/components/marketing/MediaImage";
+import { canonicalUrl } from "@/lib/site";
 import type { MediaAsset } from "@/types/database";
 
 export const metadata: Metadata = {
   title: "İsim rehberi",
   description: "Bebek ismi seçimi, anlamlar ve öneriler hakkında rehber yazıları.",
+  alternates: { canonical: canonicalUrl("/isim-rehberi") },
 };
 
 export default function GuideIndexPage() {

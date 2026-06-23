@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getStaticGuides, getStaticGuideBySlug } from "@/data/static-guide";
 import { Breadcrumb } from "@/components/marketing/Breadcrumb";
 import { MediaImage } from "@/components/marketing/MediaImage";
+import { canonicalUrl } from "@/lib/site";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -14,7 +15,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const a = getStaticGuideBySlug(slug);
   if (!a) return { title: "Yazı bulunamadı" };
-  return { title: a.title, description: a.excerpt ?? undefined };
+  return {
+    title: a.title,
+    description: a.excerpt ?? undefined,
+    alternates: { canonical: canonicalUrl(`/isim-rehberi/${a.slug}`) },
+  };
 }
 
 export default async function GuideArticlePage({ params }: Props) {

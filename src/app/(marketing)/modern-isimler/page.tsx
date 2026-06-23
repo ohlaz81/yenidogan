@@ -11,11 +11,13 @@ import {
   genderPreserveQuery,
   harfFromSearchParams,
 } from "@/lib/category-cinsiyet";
+import { canonicalUrl } from "@/lib/site";
 import { getFirstLettersForNameListFilters } from "@/lib/static/names-store";
 
 export const metadata: Metadata = {
   title: "Modern isimler",
   description: "Çağdaş ve akıcı bebek isimleri.",
+  alternates: { canonical: canonicalUrl("/modern-isimler") },
 };
 
 type SP = Record<string, string | string[] | undefined>;

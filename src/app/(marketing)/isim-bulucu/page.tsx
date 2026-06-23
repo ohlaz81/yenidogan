@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { canonicalUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "İsim bulucu",
   description: "Cinsiyet, harf, köken ve daha fazlasına göre isim filtreleyin.",
+  alternates: { canonical: canonicalUrl("/isim-bulucu") },
 };
 
 const letters = "ABCÇDEFGĞHIİJKLMNOÖPRSŞTUÜVYZ".split("");

@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { canonicalUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Kullanım şartları",
+  alternates: { canonical: canonicalUrl("/kullanim-sartlari") },
 };
 
 export default function TermsPage() {

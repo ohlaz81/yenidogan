@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { ContactForm } from "@/components/marketing/ContactForm";
+import { canonicalUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "İletişim",
+  alternates: { canonical: canonicalUrl("/iletisim") },
 };
 
 export default function ContactPage() {

@@ -5,6 +5,7 @@ import {
   NAME_LIST_CATEGORY_HEADER_CLASS,
 } from "@/components/marketing/CategoryListAside";
 import { NameListTemplate, loadNameListTemplateData } from "@/components/marketing/NameListTemplate";
+import { canonicalUrl } from "@/lib/site";
 import type { Gender } from "@/types/database";
 import { normalizeTrLetter } from "@/lib/text";
 
@@ -20,6 +21,7 @@ export async function generateMetadata({
   return {
     title: `${L} harfi ile başlayan isimler`,
     description: `${L} harfiyle başlayan bebek isimleri.`,
+    alternates: { canonical: canonicalUrl(`/harf/${encodeURIComponent(L.toLocaleLowerCase("tr-TR"))}`) },
   };
 }
 

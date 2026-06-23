@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { FavoritesClient } from "@/components/marketing/FavoritesClient";
+import { canonicalUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Favorilerim",
+  alternates: { canonical: canonicalUrl("/favorilerim") },
 };
 
 export default function FavoritesPage() {

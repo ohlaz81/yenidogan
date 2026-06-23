@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { canonicalUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Hakkımızda",
+  alternates: { canonical: canonicalUrl("/hakkimizda") },
 };
 
 export default function AboutPage() {

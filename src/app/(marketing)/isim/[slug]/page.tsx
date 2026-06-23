@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { headers } from "next/headers";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getStaticGuides } from "@/data/static-guide";
 import { getNameBySlug, getNamesByLetter } from "@/lib/queries/names";
 import { getAllNameSlugs } from "@/lib/static/names-store";
 import { genderLabels, styleLabels } from "@/lib/labels";
+import { canonicalUrl } from "@/lib/site";
 import {
   nameCtaOutlineButtonClass,
   nameCtaStripClass,
@@ -37,6 +37,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${n.displayName} isminin anlamı`,
     description: `${n.displayName}: ${n.meaning} (${n.origin})`,
+    alternates: { canonical: canonicalUrl(`/isim/${n.slug}`) },
   };
 }
 
@@ -45,10 +46,7 @@ export default async function NameDetailPage({ params }: Props) {
   const name = await getNameBySlug(slug);
   if (!name) notFound();
 
-  const h = await headers();
-  const host = h.get("x-forwarded-host") ?? h.get("host") ?? "localhost:3000";
-  const proto = h.get("x-forwarded-proto") ?? "http";
-  const canonical = `${proto}://${host}/isim/${name.slug}`;
+  const canonical = canonicalUrl(`/isim/${name.slug}`);
 
   const traits = Array.isArray(name.traits)
     ? (name.traits as unknown[]).filter((t): t is string => typeof t === "string")

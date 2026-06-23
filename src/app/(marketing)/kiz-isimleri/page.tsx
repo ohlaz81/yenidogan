@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import { GenderListAside } from "@/components/marketing/GenderListAside";
 import { NameListTemplate, loadNameListTemplateData } from "@/components/marketing/NameListTemplate";
 import { categoryListPaginationExtra, harfFromSearchParams } from "@/lib/category-cinsiyet";
+import { canonicalUrl } from "@/lib/site";
 import { getFirstLettersForGender } from "@/lib/static/names-store";
 
 export const metadata: Metadata = {
   title: "Kız isimleri",
   description: "Anlamları ve kökenleriyle kız bebek isimleri listesi.",
+  alternates: { canonical: canonicalUrl("/kiz-isimleri") },
 };
 
 type SP = Record<string, string | string[] | undefined>;

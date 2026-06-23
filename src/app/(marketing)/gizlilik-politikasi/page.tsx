@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { canonicalUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Gizlilik politikası",
+  alternates: { canonical: canonicalUrl("/gizlilik-politikasi") },
 };
 
 export default function PrivacyPage() {

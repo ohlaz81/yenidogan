@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, DM_Serif_Display } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
-import { site } from "@/lib/site";
+import { canonicalUrl, site } from "@/lib/site";
 
 const sans = Plus_Jakarta_Sans({
   variable: "--font-sans",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   },
   description: site.description,
   alternates: {
-    canonical: "/",
+    canonical: canonicalUrl("/"),
   },
   openGraph: {
     type: "website",

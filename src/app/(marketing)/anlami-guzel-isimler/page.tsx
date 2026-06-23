@@ -11,11 +11,13 @@ import {
   genderPreserveQuery,
   harfFromSearchParams,
 } from "@/lib/category-cinsiyet";
+import { canonicalUrl } from "@/lib/site";
 import { getFirstLettersForNameListFilters } from "@/lib/static/names-store";
 
 export const metadata: Metadata = {
   title: "Anlamı güzel isimler",
   description: "Anlamı güçlü ve pozitif bebek isimleri.",
+  alternates: { canonical: canonicalUrl("/anlami-guzel-isimler") },
 };
 
 type SP = Record<string, string | string[] | undefined>;

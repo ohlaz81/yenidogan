@@ -11,11 +11,13 @@ import {
   genderPreserveQuery,
   harfFromSearchParams,
 } from "@/lib/category-cinsiyet";
+import { canonicalUrl } from "@/lib/site";
 import { getFirstLettersForNameListFilters } from "@/lib/static/names-store";
 
 export const metadata: Metadata = {
   title: "Nadir isimler",
   description: "Daha az rastlanan özgün bebek isimleri.",
+  alternates: { canonical: canonicalUrl("/nadir-isimler") },
 };
 
 type SP = Record<string, string | string[] | undefined>;

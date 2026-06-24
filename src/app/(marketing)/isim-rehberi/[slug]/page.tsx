@@ -14,6 +14,22 @@ import {
 
 type Props = { params: Promise<{ slug: string }> };
 
+const BLUE_GUIDE_SLUG = "2026-en-guzel-ve-populer-erkek-isimleri";
+
+const guideTheme = {
+  default: {
+    eyebrow: "text-accent-pink",
+    cover: "border-border",
+    body: "[&_a]:text-accent-pink [&_h2]:text-primary",
+  },
+  blue: {
+    eyebrow: "text-[#2563eb]",
+    cover: "border-[#bfdbfe]",
+    body:
+      "[&_a]:text-[#2563eb] [&_a:hover]:text-[#1d4ed8] [&_a:active]:text-[#1d4ed8] [&_a:focus-visible]:rounded-sm [&_a:focus-visible]:outline [&_a:focus-visible]:outline-2 [&_a:focus-visible]:outline-offset-2 [&_a:focus-visible]:outline-[#2563eb] [&_h2]:text-[#2563eb] [&_strong]:text-[#2563eb] [&_thead]:bg-[#eff6ff] [&_.border-border]:border-[#bfdbfe]",
+  },
+} as const;
+
 export function generateStaticParams() {
   return getStaticGuides().map((a) => ({ slug: a.slug }));
 }
@@ -33,6 +49,7 @@ export default async function GuideArticlePage({ params }: Props) {
   const { slug } = await params;
   const article = getStaticGuideBySlug(slug);
   if (!article) notFound();
+  const theme = article.slug === BLUE_GUIDE_SLUG ? guideTheme.blue : guideTheme.default;
   const url = canonicalUrl(`/isim-rehberi/${article.slug}`);
   const breadcrumbItems = [
     { label: "Anasayfa", href: "/" },
@@ -57,11 +74,11 @@ export default async function GuideArticlePage({ params }: Props) {
       />
       <Breadcrumb items={breadcrumbItems} />
       <header className="mt-8">
-        <p className="text-xs font-bold uppercase tracking-wide text-accent-pink">İsim rehberi</p>
+        <p className={`text-xs font-bold uppercase tracking-wide ${theme.eyebrow}`}>İsim rehberi</p>
         <h1 className="mt-2 font-display text-3xl font-semibold text-primary">{article.title}</h1>
         {article.excerpt && <p className="mt-3 text-lg text-muted">{article.excerpt}</p>}
       </header>
-      <div className="relative mt-8 aspect-[16/9] w-full overflow-hidden rounded-3xl border border-border">
+      <div className={`relative mt-8 aspect-[16/9] w-full overflow-hidden rounded-3xl border ${theme.cover}`}>
         <MediaImage
           src={article.cover?.url ?? "/media/placeholder.svg"}
           alt={article.cover?.alt ?? article.title}
@@ -71,7 +88,7 @@ export default async function GuideArticlePage({ params }: Props) {
         />
       </div>
       <div
-        className="mt-10 space-y-4 text-base leading-relaxed text-muted [&_a]:text-accent-pink [&_h2]:font-display [&_h2]:text-xl [&_h2]:text-primary [&_li]:ml-4 [&_ul]:list-disc"
+        className={`mt-10 space-y-4 text-base leading-relaxed text-muted [&_h2]:font-display [&_h2]:text-xl [&_li]:ml-4 [&_ul]:list-disc ${theme.body}`}
         dangerouslySetInnerHTML={{ __html: article.body }}
       />
     </article>

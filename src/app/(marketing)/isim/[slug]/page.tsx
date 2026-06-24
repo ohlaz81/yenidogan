@@ -21,7 +21,6 @@ import { Breadcrumb } from "@/components/marketing/Breadcrumb";
 import { FavoriteHeart } from "@/components/marketing/FavoriteHeart";
 import { MediaImage } from "@/components/marketing/MediaImage";
 import { NameCard } from "@/components/marketing/NameCard";
-import { NameVote } from "@/components/marketing/NameVote";
 import { ShareButton } from "@/components/marketing/ShareButton";
 import { Stars } from "@/components/marketing/Stars";
 import { NAME_OG_IMAGE_SIZE } from "@/lib/name-og-image-config";
@@ -148,7 +147,6 @@ export default async function NameDetailPage({ params }: Props) {
             >
               ♥ Favorilere ekle için kalbe dokunun
             </span>
-            <NameVote slug={name.slug} />
             <ShareButton title={name.displayName} text={name.meaning} url={canonical} />
           </div>
         </div>

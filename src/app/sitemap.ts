@@ -69,6 +69,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     entry("/kiz-isimleri", categoryLastModified(names, (name) => name.gender === "GIRL"), "daily", 0.9),
     entry("/erkek-isimleri", categoryLastModified(names, (name) => name.gender === "BOY"), "daily", 0.9),
     entry("/tum-isimler", allNamesLastModified, "daily", 0.9),
+    entry("/isim-bulucu", allNamesLastModified, "weekly", 0.7),
     entry("/kuranda-gecen-isimler", categoryLastModified(names, (name) => name.inQuran), "weekly", 0.8),
     entry("/populer-isimler", allNamesLastModified, "weekly", 0.8),
     entry("/modern-isimler", categoryLastModified(names, (name) => name.style === "MODERN"), "weekly", 0.8),

@@ -4,6 +4,7 @@ import { canonicalUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Favorilerim",
+  robots: { index: false, follow: true },
   alternates: { canonical: canonicalUrl("/favorilerim") },
 };
 

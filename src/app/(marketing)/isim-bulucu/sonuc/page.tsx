@@ -11,6 +11,7 @@ import type { NameListParams } from "@/lib/queries/names";
 export const metadata: Metadata = {
   title: "İsim bulucu sonuçları",
   description: "Seçtiğiniz filtrelere uygun isimler.",
+  robots: { index: false, follow: true },
   alternates: { canonical: canonicalUrl("/isim-bulucu/sonuc") },
 };
 

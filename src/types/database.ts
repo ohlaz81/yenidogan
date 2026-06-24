@@ -60,6 +60,15 @@ export type SimilarName = {
   targetId: string;
 };
 
+export type NameVote = {
+  id: string;
+  nameId: string;
+  deviceKeyHash: string;
+  vote: "LIKE" | "DISLIKE";
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type NameWithDetail = Name & {
   image: MediaAsset | null;
   similarFrom: Array<{ target: Name & { image: MediaAsset | null } }>;

@@ -18,6 +18,139 @@ const covers = [
 
 const articles: GuideWithCover[] = [
   {
+    id: "g-10",
+    slug: "2026-en-guzel-ve-populer-erkek-isimleri",
+    title: "2026 En Güzel ve Popüler Erkek İsimleri",
+    excerpt:
+      "2026 yılında öne çıkan modern, anlamlı ve popüler erkek isimlerini keşfedin. Erkek bebek isimleri, anlamları ve isim seçimi rehberi Yenidogan.net'te.",
+    body: `<p>2026 yılında erkek bebek isimlerinde güçlü anlam taşıyan, kulağa modern gelen ve günlük hayatta rahat kullanılan isimlerin daha fazla ilgi görmesi bekleniyor. Aileler artık yalnızca geleneksel veya sadece popüler olduğu düşünülen adlara bakmıyor; kısa, net, soyadıyla uyumlu ve çocuğun hayatı boyunca güçlü durabilecek seçenekleri birlikte değerlendiriyor. Bu nedenle <a href="/erkek-isimleri">erkek isimleri</a> arasında hem köklü hem de çağdaş hisseden adlar öne çıkıyor.</p>
+<p>Bu rehberde yer alan isimler resmi bir sıralama ya da kesin popülerlik listesi değildir. Liste, Yenidogan.net üzerinde sık aranan, ailelerin ilgisini çeken ve 2026 için öne çıkması beklenen erkek isimlerinden hazırlanmıştır. Bazı isimler klasik ağırlığıyla güven verirken, bazıları daha modern, kısa veya nadir tınısıyla dikkat çeker. Daha geniş seçenekleri karşılaştırmak için <a href="/isim-bulucu">isim bulucu</a> sayfasından da yararlanabilirsiniz.</p>
+<h2>İçindekiler</h2>
+<ul>
+  <li><a href="#one-cikan-erkek-isimleri">2026’da öne çıkan erkek isimleri</a></li>
+  <li><a href="#modern-erkek-isimleri">Modern erkek isimleri</a></li>
+  <li><a href="#kisa-erkek-isimleri">Kısa erkek isimleri</a></li>
+  <li><a href="#anlami-guclu-erkek-isimleri">Anlamı güçlü erkek isimleri</a></li>
+  <li><a href="#nadir-erkek-isimleri">Nadir erkek isimleri</a></li>
+  <li><a href="#isim-secerken-dikkat">İsim seçerken dikkat edilmesi gerekenler</a></li>
+  <li><a href="#sik-sorulan-sorular">Sık sorulan sorular</a></li>
+</ul>
+<h2 id="one-cikan-erkek-isimleri">2026’da Öne Çıkan Erkek İsimleri</h2>
+<p>Erkek bebek isimlerinde son yıllarda iki yönlü bir tercih dikkat çekiyor. Bir tarafta <a href="/isim/alparslan">Alparslan</a>, <a href="/isim/metehan">Metehan</a>, <a href="/isim/kagan">Kağan</a> ve <a href="/isim/selim">Selim</a> gibi tarihi ve güçlü isimler var. Diğer tarafta <a href="/isim/aras">Aras</a>, <a href="/isim/kuzey">Kuzey</a>, <a href="/isim/atlas">Atlas</a>, <a href="/isim/ayaz">Ayaz</a> ve <a href="/isim/doruk">Doruk</a> gibi modern, kısa ve doğayla ilişkili seçenekler öne çıkıyor.</p>
+<p>2026 için erkek ismi arayan ailelerin çoğu, ismin hem anlamlı hem de kullanımı kolay olmasını önemsiyor. Bu yüzden <a href="/populer-isimler">popüler isimler</a>, <a href="/modern-isimler">modern isimler</a> ve <a href="/nadir-isimler">nadir isimler</a> listelerini birlikte incelemek daha dengeli bir karar vermeye yardımcı olur.</p>
+<div class="overflow-x-auto rounded-2xl border border-border bg-white">
+  <table class="min-w-full text-left text-sm">
+    <thead class="bg-muted/30 text-primary">
+      <tr>
+        <th class="px-4 py-3 font-semibold">Sıra</th>
+        <th class="px-4 py-3 font-semibold">İsim</th>
+        <th class="px-4 py-3 font-semibold">Kısa Anlamı</th>
+        <th class="px-4 py-3 font-semibold">Detaylı Bilgi</th>
+      </tr>
+    </thead>
+    <tbody class="[&_tr+tr]:border-t [&_tr+tr]:border-border">
+      <tr><td class="px-4 py-3">1</td><td class="px-4 py-3"><a href="/isim/aras">Aras</a></td><td class="px-4 py-3">Akıcı, güçlü ve doğayla ilişkili bir isimdir.</td><td class="px-4 py-3"><a href="/isim/aras">Aras ismi</a></td></tr>
+      <tr><td class="px-4 py-3">2</td><td class="px-4 py-3"><a href="/isim/alparslan">Alparslan</a></td><td class="px-4 py-3">Cesur, yiğit ve tarihi ağırlığı olan bir isimdir.</td><td class="px-4 py-3"><a href="/isim/alparslan">Alparslan ismi</a></td></tr>
+      <tr><td class="px-4 py-3">3</td><td class="px-4 py-3"><a href="/isim/goktug">Göktuğ</a></td><td class="px-4 py-3">Gök ve tuğ çağrışımıyla güçlü bir duruş verir.</td><td class="px-4 py-3"><a href="/isim/goktug">Göktuğ ismi</a></td></tr>
+      <tr><td class="px-4 py-3">4</td><td class="px-4 py-3"><a href="/isim/metehan">Metehan</a></td><td class="px-4 py-3">Tarihi liderlik ve güçlü karakter çağrışımı taşır.</td><td class="px-4 py-3"><a href="/isim/metehan">Metehan ismi</a></td></tr>
+      <tr><td class="px-4 py-3">5</td><td class="px-4 py-3"><a href="/isim/kuzey">Kuzey</a></td><td class="px-4 py-3">Yön, serinlik ve modern bir kimlik hissi verir.</td><td class="px-4 py-3"><a href="/isim/kuzey">Kuzey ismi</a></td></tr>
+      <tr><td class="px-4 py-3">6</td><td class="px-4 py-3"><a href="/isim/eymen">Eymen</a></td><td class="px-4 py-3">Uğurlu, hayırlı ve bereketli anlamlarıyla sevilir.</td><td class="px-4 py-3"><a href="/isim/eymen">Eymen ismi</a></td></tr>
+      <tr><td class="px-4 py-3">7</td><td class="px-4 py-3"><a href="/isim/omer-asaf">Ömer Asaf</a></td><td class="px-4 py-3">Klasik ve manevi çağrışımı güçlü çift isimdir.</td><td class="px-4 py-3"><a href="/isim/omer-asaf">Ömer Asaf ismi</a></td></tr>
+      <tr><td class="px-4 py-3">8</td><td class="px-4 py-3"><a href="/isim/kerem">Kerem</a></td><td class="px-4 py-3">Cömertlik, iyilik ve zarif karakter anlamı taşır.</td><td class="px-4 py-3"><a href="/isim/kerem">Kerem ismi</a></td></tr>
+      <tr><td class="px-4 py-3">9</td><td class="px-4 py-3"><a href="/isim/yigit">Yiğit</a></td><td class="px-4 py-3">Cesur, mert ve sağlam duruşlu kişi anlamındadır.</td><td class="px-4 py-3"><a href="/isim/yigit">Yiğit ismi</a></td></tr>
+      <tr><td class="px-4 py-3">10</td><td class="px-4 py-3"><a href="/isim/miran">Miran</a></td><td class="px-4 py-3">Modern, yumuşak tınılı ve dikkat çekici bir isimdir.</td><td class="px-4 py-3"><a href="/isim/miran">Miran ismi</a></td></tr>
+      <tr><td class="px-4 py-3">11</td><td class="px-4 py-3"><a href="/isim/atlas">Atlas</a></td><td class="px-4 py-3">Güç, taşıyıcılık ve geniş ufuk çağrışımı sunar.</td><td class="px-4 py-3"><a href="/isim/atlas">Atlas ismi</a></td></tr>
+      <tr><td class="px-4 py-3">12</td><td class="px-4 py-3"><a href="/isim/uras">Uras</a></td><td class="px-4 py-3">Şans, uğur ve güçlü karakter hissi verir.</td><td class="px-4 py-3"><a href="/isim/uras">Uras ismi</a></td></tr>
+      <tr><td class="px-4 py-3">13</td><td class="px-4 py-3"><a href="/isim/kaan">Kaan</a></td><td class="px-4 py-3">Hükümdar, lider ve otorite çağrışımı taşır.</td><td class="px-4 py-3"><a href="/isim/kaan">Kaan ismi</a></td></tr>
+      <tr><td class="px-4 py-3">14</td><td class="px-4 py-3"><a href="/isim/emir">Emir</a></td><td class="px-4 py-3">Buyruk, liderlik ve saygınlık anlamlarıyla bilinir.</td><td class="px-4 py-3"><a href="/isim/emir">Emir ismi</a></td></tr>
+      <tr><td class="px-4 py-3">15</td><td class="px-4 py-3"><a href="/isim/poyraz">Poyraz</a></td><td class="px-4 py-3">Rüzgar, ferahlık ve güçlü doğa çağrışımı verir.</td><td class="px-4 py-3"><a href="/isim/poyraz">Poyraz ismi</a></td></tr>
+      <tr><td class="px-4 py-3">16</td><td class="px-4 py-3"><a href="/isim/cinar">Çınar</a></td><td class="px-4 py-3">Köklü, sağlam ve uzun ömürlü ağaç anlamı taşır.</td><td class="px-4 py-3"><a href="/isim/cinar">Çınar ismi</a></td></tr>
+      <tr><td class="px-4 py-3">17</td><td class="px-4 py-3"><a href="/isim/bugra">Buğra</a></td><td class="px-4 py-3">Güçlü, tarihsel ve karakterli bir erkek ismidir.</td><td class="px-4 py-3"><a href="/isim/bugra">Buğra ismi</a></td></tr>
+      <tr><td class="px-4 py-3">18</td><td class="px-4 py-3"><a href="/isim/arda">Arda</a></td><td class="px-4 py-3">Sade, akıcı ve sevilen modern klasiklerden biridir.</td><td class="px-4 py-3"><a href="/isim/arda">Arda ismi</a></td></tr>
+      <tr><td class="px-4 py-3">19</td><td class="px-4 py-3"><a href="/isim/ruzgar">Rüzgar</a></td><td class="px-4 py-3">Hareket, özgürlük ve doğallık hissi verir.</td><td class="px-4 py-3"><a href="/isim/ruzgar">Rüzgar ismi</a></td></tr>
+      <tr><td class="px-4 py-3">20</td><td class="px-4 py-3"><a href="/isim/ayaz">Ayaz</a></td><td class="px-4 py-3">Serinlik, açıklık ve keskin bir duruş çağrıştırır.</td><td class="px-4 py-3"><a href="/isim/ayaz">Ayaz ismi</a></td></tr>
+      <tr><td class="px-4 py-3">21</td><td class="px-4 py-3"><a href="/isim/berkay">Berkay</a></td><td class="px-4 py-3">Güçlü ve ay ışığıyla ilişkilenen dengeli bir isimdir.</td><td class="px-4 py-3"><a href="/isim/berkay">Berkay ismi</a></td></tr>
+      <tr><td class="px-4 py-3">22</td><td class="px-4 py-3"><a href="/isim/demir">Demir</a></td><td class="px-4 py-3">Sağlamlık, dayanıklılık ve güç anlamı taşır.</td><td class="px-4 py-3"><a href="/isim/demir">Demir ismi</a></td></tr>
+      <tr><td class="px-4 py-3">23</td><td class="px-4 py-3"><a href="/isim/tuna">Tuna</a></td><td class="px-4 py-3">Büyük nehir ve genişlik çağrışımıyla sevilir.</td><td class="px-4 py-3"><a href="/isim/tuna">Tuna ismi</a></td></tr>
+      <tr><td class="px-4 py-3">24</td><td class="px-4 py-3"><a href="/isim/yaman">Yaman</a></td><td class="px-4 py-3">Güçlü, etkileyici ve kararlı kişi anlamı verir.</td><td class="px-4 py-3"><a href="/isim/yaman">Yaman ismi</a></td></tr>
+      <tr><td class="px-4 py-3">25</td><td class="px-4 py-3"><a href="/isim/doruk">Doruk</a></td><td class="px-4 py-3">Zirve, yükseklik ve başarı çağrışımı taşır.</td><td class="px-4 py-3"><a href="/isim/doruk">Doruk ismi</a></td></tr>
+      <tr><td class="px-4 py-3">26</td><td class="px-4 py-3"><a href="/isim/alp">Alp</a></td><td class="px-4 py-3">Yiğit, cesur ve kahraman anlamıyla bilinir.</td><td class="px-4 py-3"><a href="/isim/alp">Alp ismi</a></td></tr>
+      <tr><td class="px-4 py-3">27</td><td class="px-4 py-3"><a href="/isim/baran">Baran</a></td><td class="px-4 py-3">Yağmur, bereket ve sakin güç çağrışımı verir.</td><td class="px-4 py-3"><a href="/isim/baran">Baran ismi</a></td></tr>
+      <tr><td class="px-4 py-3">28</td><td class="px-4 py-3"><a href="/isim/bora">Bora</a></td><td class="px-4 py-3">Kuvvetli rüzgar ve enerjik karakter hissi taşır.</td><td class="px-4 py-3"><a href="/isim/bora">Bora ismi</a></td></tr>
+      <tr><td class="px-4 py-3">29</td><td class="px-4 py-3"><a href="/isim/batuhan">Batuhan</a></td><td class="px-4 py-3">Güçlü, tarihi ve liderlik çağrışımlı bir isimdir.</td><td class="px-4 py-3"><a href="/isim/batuhan">Batuhan ismi</a></td></tr>
+      <tr><td class="px-4 py-3">30</td><td class="px-4 py-3"><a href="/isim/ege">Ege</a></td><td class="px-4 py-3">Deniz, ferahlık ve sakinlik hissi verir.</td><td class="px-4 py-3"><a href="/isim/ege">Ege ismi</a></td></tr>
+      <tr><td class="px-4 py-3">31</td><td class="px-4 py-3"><a href="/isim/umut">Umut</a></td><td class="px-4 py-3">Beklenti, iyimserlik ve güzel başlangıç anlamı taşır.</td><td class="px-4 py-3"><a href="/isim/umut">Umut ismi</a></td></tr>
+      <tr><td class="px-4 py-3">32</td><td class="px-4 py-3"><a href="/isim/mert">Mert</a></td><td class="px-4 py-3">Dürüst, güvenilir ve sözünün eri kişi anlamındadır.</td><td class="px-4 py-3"><a href="/isim/mert">Mert ismi</a></td></tr>
+      <tr><td class="px-4 py-3">33</td><td class="px-4 py-3"><a href="/isim/onur">Onur</a></td><td class="px-4 py-3">Saygınlık, haysiyet ve güçlü kişilik çağrışımıdır.</td><td class="px-4 py-3"><a href="/isim/onur">Onur ismi</a></td></tr>
+      <tr><td class="px-4 py-3">34</td><td class="px-4 py-3"><a href="/isim/koralp">Koralp</a></td><td class="px-4 py-3">Güçlü alp ruhunu çağrıştıran karakterli bir isimdir.</td><td class="px-4 py-3"><a href="/isim/koralp">Koralp ismi</a></td></tr>
+      <tr><td class="px-4 py-3">35</td><td class="px-4 py-3"><a href="/isim/taylan">Taylan</a></td><td class="px-4 py-3">Uzun, gösterişli ve dengeli duruş anlamı verir.</td><td class="px-4 py-3"><a href="/isim/taylan">Taylan ismi</a></td></tr>
+      <tr><td class="px-4 py-3">36</td><td class="px-4 py-3"><a href="/isim/koray">Koray</a></td><td class="px-4 py-3">Kor gibi parlak ve ayla ilişkili güçlü bir isimdir.</td><td class="px-4 py-3"><a href="/isim/koray">Koray ismi</a></td></tr>
+      <tr><td class="px-4 py-3">37</td><td class="px-4 py-3"><a href="/isim/tolga">Tolga</a></td><td class="px-4 py-3">Savaşçı başlığı ve koruyucu güç çağrışımı taşır.</td><td class="px-4 py-3"><a href="/isim/tolga">Tolga ismi</a></td></tr>
+      <tr><td class="px-4 py-3">38</td><td class="px-4 py-3"><a href="/isim/kivanc">Kıvanç</a></td><td class="px-4 py-3">Sevinç, gurur ve mutluluk anlamlarıyla sevilir.</td><td class="px-4 py-3"><a href="/isim/kivanc">Kıvanç ismi</a></td></tr>
+      <tr><td class="px-4 py-3">39</td><td class="px-4 py-3"><a href="/isim/batur">Batur</a></td><td class="px-4 py-3">Kahraman, cesur ve güçlü kişi anlamındadır.</td><td class="px-4 py-3"><a href="/isim/batur">Batur ismi</a></td></tr>
+      <tr><td class="px-4 py-3">40</td><td class="px-4 py-3"><a href="/isim/kagan">Kağan</a></td><td class="px-4 py-3">Hükümdar ve liderlik çağrışımı güçlü bir isimdir.</td><td class="px-4 py-3"><a href="/isim/kagan">Kağan ismi</a></td></tr>
+      <tr><td class="px-4 py-3">41</td><td class="px-4 py-3"><a href="/isim/selim">Selim</a></td><td class="px-4 py-3">Sağlam, doğru ve güven veren kişi anlamı taşır.</td><td class="px-4 py-3"><a href="/isim/selim">Selim ismi</a></td></tr>
+      <tr><td class="px-4 py-3">42</td><td class="px-4 py-3"><a href="/isim/bilgehan">Bilgehan</a></td><td class="px-4 py-3">Bilgelik ve yönetici duruşu birleştiren isimdir.</td><td class="px-4 py-3"><a href="/isim/bilgehan">Bilgehan ismi</a></td></tr>
+      <tr><td class="px-4 py-3">43</td><td class="px-4 py-3"><a href="/isim/sarp">Sarp</a></td><td class="px-4 py-3">Dik, güçlü ve aşılması zor anlamıyla öne çıkar.</td><td class="px-4 py-3"><a href="/isim/sarp">Sarp ismi</a></td></tr>
+      <tr><td class="px-4 py-3">44</td><td class="px-4 py-3"><a href="/isim/tufan">Tufan</a></td><td class="px-4 py-3">Büyük güç, hareket ve doğa olayı çağrışımı taşır.</td><td class="px-4 py-3"><a href="/isim/tufan">Tufan ismi</a></td></tr>
+      <tr><td class="px-4 py-3">45</td><td class="px-4 py-3"><a href="/isim/teoman">Teoman</a></td><td class="px-4 py-3">Tarihi, ağırbaşlı ve güçlü bir erkek ismidir.</td><td class="px-4 py-3"><a href="/isim/teoman">Teoman ismi</a></td></tr>
+      <tr><td class="px-4 py-3">46</td><td class="px-4 py-3"><a href="/isim/aybars">Aybars</a></td><td class="px-4 py-3">Ay ve pars çağrışımıyla güçlü, özgün bir isimdir.</td><td class="px-4 py-3"><a href="/isim/aybars">Aybars ismi</a></td></tr>
+      <tr><td class="px-4 py-3">47</td><td class="px-4 py-3"><a href="/isim/taner">Taner</a></td><td class="px-4 py-3">Tan vakti ve aydınlık başlangıç anlamı verir.</td><td class="px-4 py-3"><a href="/isim/taner">Taner ismi</a></td></tr>
+      <tr><td class="px-4 py-3">48</td><td class="px-4 py-3"><a href="/isim/yalin">Yalın</a></td><td class="px-4 py-3">Sade, gösterişsiz ve net bir karakter hissi verir.</td><td class="px-4 py-3"><a href="/isim/yalin">Yalın ismi</a></td></tr>
+      <tr><td class="px-4 py-3">49</td><td class="px-4 py-3"><a href="/isim/eren">Eren</a></td><td class="px-4 py-3">Olgun, bilge ve manevi olgunluğa erişmiş kişi.</td><td class="px-4 py-3"><a href="/isim/eren">Eren ismi</a></td></tr>
+      <tr><td class="px-4 py-3">50</td><td class="px-4 py-3"><a href="/isim/burak">Burak</a></td><td class="px-4 py-3">Hız, parlaklık ve manevi çağrışımlarla bilinir.</td><td class="px-4 py-3"><a href="/isim/burak">Burak ismi</a></td></tr>
+    </tbody>
+  </table>
+</div>
+<h2 id="modern-erkek-isimleri">Modern Erkek İsimleri</h2>
+<p>Modern erkek isimleri genellikle kısa, akıcı, güçlü ama fazla ağır durmayan seçeneklerden oluşur. <a href="/isim/aras">Aras</a>, <a href="/isim/kuzey">Kuzey</a>, <a href="/isim/atlas">Atlas</a>, <a href="/isim/miran">Miran</a>, <a href="/isim/doruk">Doruk</a> ve <a href="/isim/ayaz">Ayaz</a> bu açıdan 2026 için sık değerlendirilen isimler arasında yer alabilir. Bu isimlerin ortak yanı, hem çağdaş duyulmaları hem de farklı yaşlarda rahat kullanılabilmeleridir.</p>
+<h2 id="kisa-erkek-isimleri">Kısa Erkek İsimleri</h2>
+<p>Kısa erkek isimleri, özellikle uzun soyadlarıyla birlikte daha dengeli durduğu için ailelerin listesinde güçlü bir yer tutuyor. <a href="/isim/alp">Alp</a>, <a href="/isim/kaan">Kaan</a>, <a href="/isim/emir">Emir</a>, <a href="/isim/ege">Ege</a>, <a href="/isim/mert">Mert</a> ve <a href="/isim/sarp">Sarp</a> sade ama karakterli seçeneklerdir. Kısa isimler, okul ve sosyal yaşamda kolay hatırlanma avantajı da sağlayabilir.</p>
+<h2 id="anlami-guclu-erkek-isimleri">Anlamı Güçlü Erkek İsimleri</h2>
+<p>Erkek bebek ismi seçerken anlam çoğu aile için belirleyici bir kriterdir. <a href="/isim/alparslan">Alparslan</a>, <a href="/isim/yigit">Yiğit</a>, <a href="/isim/demir">Demir</a>, <a href="/isim/kaan">Kaan</a>, <a href="/isim/batur">Batur</a> ve <a href="/isim/bilgehan">Bilgehan</a> güçlü anlamlarıyla öne çıkan isimlerdir. Bu tür isimler, çocuğa yalnızca güzel bir ses değil, aynı zamanda sağlam bir anlam mirası da verir.</p>
+<h2 id="nadir-erkek-isimleri">Nadir Erkek İsimleri</h2>
+<p>Daha az duyulan ama yabancı veya zorlayıcı durmayan bir isim arayan aileler için <a href="/isim/koralp">Koralp</a>, <a href="/isim/aybars">Aybars</a>, <a href="/isim/bilgehan">Bilgehan</a>, <a href="/isim/teoman">Teoman</a>, <a href="/isim/taylan">Taylan</a> ve <a href="/isim/yalin">Yalın</a> iyi alternatifler olabilir. Nadir isimlerde asıl denge, özgünlük ile kullanım kolaylığını aynı anda koruyabilmektir.</p>
+<div class="grid gap-4 sm:grid-cols-2">
+  <section class="rounded-2xl border border-border bg-white p-4">
+    <h2 class="font-display text-xl text-primary">Modern erkek isimleri</h2>
+    <p><a href="/isim/aras">Aras</a>, <a href="/isim/kuzey">Kuzey</a>, <a href="/isim/atlas">Atlas</a>, <a href="/isim/miran">Miran</a>, <a href="/isim/doruk">Doruk</a>, <a href="/isim/ayaz">Ayaz</a></p>
+  </section>
+  <section class="rounded-2xl border border-border bg-white p-4">
+    <h2 class="font-display text-xl text-primary">Kısa erkek isimleri</h2>
+    <p><a href="/isim/alp">Alp</a>, <a href="/isim/kaan">Kaan</a>, <a href="/isim/emir">Emir</a>, <a href="/isim/ege">Ege</a>, <a href="/isim/mert">Mert</a>, <a href="/isim/sarp">Sarp</a></p>
+  </section>
+  <section class="rounded-2xl border border-border bg-white p-4">
+    <h2 class="font-display text-xl text-primary">Anlamı güçlü erkek isimleri</h2>
+    <p><a href="/isim/alparslan">Alparslan</a>, <a href="/isim/yigit">Yiğit</a>, <a href="/isim/demir">Demir</a>, <a href="/isim/kaan">Kaan</a>, <a href="/isim/batur">Batur</a>, <a href="/isim/bilgehan">Bilgehan</a></p>
+  </section>
+  <section class="rounded-2xl border border-border bg-white p-4">
+    <h2 class="font-display text-xl text-primary">Nadir erkek isimleri</h2>
+    <p><a href="/isim/koralp">Koralp</a>, <a href="/isim/aybars">Aybars</a>, <a href="/isim/bilgehan">Bilgehan</a>, <a href="/isim/teoman">Teoman</a>, <a href="/isim/taylan">Taylan</a>, <a href="/isim/yalin">Yalın</a></p>
+  </section>
+</div>
+<h2 id="isim-secerken-dikkat">İsim Seçerken Dikkat Edilmesi Gerekenler</h2>
+<p>Erkek bebek ismi seçerken ilk adım, ismin anlamını ve çağrışımını dikkatle değerlendirmektir. Çok güçlü görünen bir isim, günlük kullanımda fazla ağır veya zorlayıcı hissedebilir; çok modern görünen bir isim de yıllar sonra aynı etkiyi bırakmayabilir. Bu nedenle anlam, ses, yazılış ve uzun vadeli kullanım birlikte düşünülmelidir.</p>
+<p>İkinci önemli nokta, isim ve soyadının birlikte nasıl duyulduğudur. Kısa soyadlarında daha karakterli veya çift isimler rahat durabilirken, uzun soyadlarında <a href="/isim/alp">Alp</a>, <a href="/isim/ege">Ege</a>, <a href="/isim/mert">Mert</a> ve <a href="/isim/sarp">Sarp</a> gibi kısa seçenekler daha akıcı olabilir. İsmi birkaç kez yüksek sesle söylemek, kulağa doğal gelip gelmediğini anlamanın en pratik yoludur.</p>
+<p>Üçüncü olarak, popülerlik dengesine dikkat etmek gerekir. Sık tercih edilen bir isim tanıdık ve güvenli hissettirebilir; daha nadir bir isim ise çocuğun kimliğine özel bir karakter katabilir. Burada amaç sadece 2026 yılında dikkat çekmesi beklenen bir ismi bulmak değil, çocuğun ileride de rahatça taşıyacağı bir ad seçmektir. Karar verirken <a href="/erkek-isimleri">erkek isimleri</a>, <a href="/populer-isimler">popüler isimler</a>, <a href="/modern-isimler">modern isimler</a> ve <a href="/nadir-isimler">nadir isimler</a> sayfalarını birlikte incelemek daha geniş bir bakış sağlar.</p>
+<h2 id="sik-sorulan-sorular">Sık Sorulan Sorular</h2>
+<h2>2026 için hangi erkek isimleri öne çıkıyor?</h2>
+<p>2026 için <a href="/isim/aras">Aras</a>, <a href="/isim/alparslan">Alparslan</a>, <a href="/isim/goktug">Göktuğ</a>, <a href="/isim/metehan">Metehan</a>, <a href="/isim/kuzey">Kuzey</a>, <a href="/isim/atlas">Atlas</a>, <a href="/isim/demir">Demir</a> ve <a href="/isim/doruk">Doruk</a> gibi modern, anlamlı ve güçlü erkek isimlerinin öne çıkması bekleniyor. Bu değerlendirme resmi bir sıralama değil, isim arama eğilimleri ve ailelerin ilgisine göre hazırlanmış bir öneridir.</p>
+<h2>Erkek bebek ismi seçerken nelere dikkat edilmeli?</h2>
+<p>Anlam, telaffuz, soyadıyla uyum, yazılış kolaylığı ve uzun vadeli kullanım birlikte değerlendirilmelidir. İsmin yalnızca bebeklik döneminde sevimli gelmesi yeterli değildir; okul, iş ve sosyal hayatta da rahat kullanılabilecek bir ad olması önemlidir.</p>
+<h2>Modern erkek isimleri nelerdir?</h2>
+<p><a href="/isim/aras">Aras</a>, <a href="/isim/kuzey">Kuzey</a>, <a href="/isim/atlas">Atlas</a>, <a href="/isim/miran">Miran</a>, <a href="/isim/ayaz">Ayaz</a>, <a href="/isim/doruk">Doruk</a>, <a href="/isim/uras">Uras</a> ve <a href="/isim/poyraz">Poyraz</a> modern erkek isimleri arasında sık değerlendirilen seçeneklerdir. Daha fazla öneri için <a href="/modern-isimler">modern isimler</a> sayfasına bakabilirsiniz.</p>
+<h2>Kısa erkek isimleri tercih edilir mi?</h2>
+<p>Evet, kısa erkek isimleri kolay söylenmesi, akılda kalması ve uzun soyadlarıyla dengeli durması nedeniyle sık tercih edilir. <a href="/isim/alp">Alp</a>, <a href="/isim/kaan">Kaan</a>, <a href="/isim/ege">Ege</a>, <a href="/isim/mert">Mert</a>, <a href="/isim/emir">Emir</a> ve <a href="/isim/sarp">Sarp</a> bu tür isimlere örnektir.</p>
+<h2>Anlamı güçlü erkek isimleri nasıl seçilmeli?</h2>
+<p>Anlamı güçlü bir erkek ismi seçerken yalnızca iddialı duyulmasına değil, çocuğun hayatı boyunca rahat taşıyabileceği bir dengeye sahip olmasına bakmak gerekir. <a href="/isim/yigit">Yiğit</a>, <a href="/isim/demir">Demir</a>, <a href="/isim/batur">Batur</a>, <a href="/isim/kaan">Kaan</a> ve <a href="/isim/bilgehan">Bilgehan</a> gibi isimler güçlü anlamlarıyla öne çıkar; ancak son karar her zaman aile değerleri, soyadı uyumu ve kullanım kolaylığı birlikte düşünülerek verilmelidir.</p>`,
+    coverId: null,
+    published: true,
+    publishedAt: "2026-06-24T00:00:00.000Z",
+    createdAt: "2026-06-24T00:00:00.000Z",
+    updatedAt: "2026-06-24T00:00:00.000Z",
+    cover: syntheticMedia("guide-2026-erkek-isimleri", "/rehber/2026-erkek-isimleri.png", "2026 erkek isimleri rehber kapağı"),
+  },
+  {
     id: "g-9",
     slug: "2026-guzel-populer-kiz-isimleri",
     title: "2026 İçin En Güzel ve Popüler Kız İsimleri",

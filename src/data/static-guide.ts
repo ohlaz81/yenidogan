@@ -18,6 +18,139 @@ const covers = [
 
 const articles: GuideWithCover[] = [
   {
+    id: "g-9",
+    slug: "2026-guzel-populer-kiz-isimleri",
+    title: "2026 İçin En Güzel ve Popüler Kız İsimleri",
+    excerpt:
+      "2026 için öne çıkan güzel, modern ve popüler kız isimlerini keşfedin. 50 kız ismi, kısa anlamları, seçim önerileri ve detaylı isim rehberi Yenidogan.net’te.",
+    body: `<p>2026 yılında kız bebek isimlerinde kısa, zarif, anlamı güçlü ve modern isimlerin daha fazla ilgi görmesi bekleniyor. Aileler artık yalnızca kulağa hoş gelen bir isim aramıyor; aynı zamanda çocuğun hayatı boyunca rahat taşıyabileceği, anlamı temiz, yazılışı anlaşılır ve soyadıyla uyumlu seçeneklere yöneliyor. Bu nedenle <a href="/kiz-isimleri">kız isimleri</a> arasında hem tanıdık hem de çağdaş duran adlar öne çıkıyor.</p>
+<p>Bu rehberdeki isimler resmi bir sıralama ya da kesin popülerlik verisi değildir. Liste, Yenidogan.net’te sık aranan, ailelerin ilgisini çeken ve 2026 için öne çıkması beklenen kız isimlerinden oluşur. Bazıları klasik çizgisini korurken bazıları daha modern, nadir ya da kısa yapısıyla dikkat çeker. Daha geniş seçenekler için <a href="/isim-bulucu">isim bulucu</a> sayfasını da kullanabilirsiniz.</p>
+<h2>İçindekiler</h2>
+<ul>
+  <li><a href="#one-cikan-kiz-isimleri">2026’da öne çıkan kız isimleri</a></li>
+  <li><a href="#modern-kiz-isimleri">Modern kız isimleri</a></li>
+  <li><a href="#kisa-zarif-kiz-isimleri">Kısa ve zarif kız isimleri</a></li>
+  <li><a href="#anlami-guzel-kiz-isimleri">Anlamı güzel kız isimleri</a></li>
+  <li><a href="#nadir-kiz-isimleri">Nadir kız isimleri</a></li>
+  <li><a href="#isim-secerken-dikkat">İsim seçerken dikkat edilmesi gerekenler</a></li>
+  <li><a href="#sik-sorulan-sorular">Sık sorulan sorular</a></li>
+</ul>
+<h2 id="one-cikan-kiz-isimleri">2026’da Öne Çıkan Kız İsimleri</h2>
+<p>Son yıllarda kız bebek isimlerinde iki eğilim birlikte ilerliyor: Bir yanda <a href="/isim/elif">Elif</a>, <a href="/isim/zeynep">Zeynep</a> ve <a href="/isim/zehra">Zehra</a> gibi güçlü klasikler değerini koruyor; diğer yanda <a href="/isim/lina">Lina</a>, <a href="/isim/mira">Mira</a>, <a href="/isim/arya">Arya</a> ve <a href="/isim/alina">Alina</a> gibi daha modern tınılı isimler ailelerin listesine giriyor. Bu durum, 2026 için isim arayan anne babalara geniş bir tercih alanı sunuyor.</p>
+<p>Popüler olması beklenen isimlerde genellikle kısa hece yapısı, kolay telaffuz, olumlu anlam ve sosyal hayatta rahat kullanım öne çıkıyor. Bu yüzden hem <a href="/modern-isimler">modern isimler</a> hem de <a href="/nadir-isimler">nadir isimler</a> sayfalarındaki seçenekleri birlikte değerlendirmek iyi bir başlangıç olabilir.</p>
+<div class="overflow-x-auto rounded-2xl border border-border bg-white">
+  <table class="min-w-full text-left text-sm">
+    <thead class="bg-muted/30 text-primary">
+      <tr>
+        <th class="px-4 py-3 font-semibold">Sıra</th>
+        <th class="px-4 py-3 font-semibold">İsim</th>
+        <th class="px-4 py-3 font-semibold">Kısa Anlamı</th>
+        <th class="px-4 py-3 font-semibold">Detaylı Bilgi</th>
+      </tr>
+    </thead>
+    <tbody class="[&_tr+tr]:border-t [&_tr+tr]:border-border">
+      <tr><td class="px-4 py-3">1</td><td class="px-4 py-3"><a href="/isim/asel">Asel</a></td><td class="px-4 py-3">Bal, tatlılık ve bereket çağrışımı taşır.</td><td class="px-4 py-3"><a href="/isim/asel">Asel ismi</a></td></tr>
+      <tr><td class="px-4 py-3">2</td><td class="px-4 py-3"><a href="/isim/defne">Defne</a></td><td class="px-4 py-3">Zarafet ve başarıyla anılan bir bitki adıdır.</td><td class="px-4 py-3"><a href="/isim/defne">Defne ismi</a></td></tr>
+      <tr><td class="px-4 py-3">3</td><td class="px-4 py-3"><a href="/isim/zeynep">Zeynep</a></td><td class="px-4 py-3">Değerli, süslü ve köklü bir klasik isimdir.</td><td class="px-4 py-3"><a href="/isim/zeynep">Zeynep ismi</a></td></tr>
+      <tr><td class="px-4 py-3">4</td><td class="px-4 py-3"><a href="/isim/asya">Asya</a></td><td class="px-4 py-3">Geniş coğrafyayı ve güçlü bir duruşu hatırlatır.</td><td class="px-4 py-3"><a href="/isim/asya">Asya ismi</a></td></tr>
+      <tr><td class="px-4 py-3">5</td><td class="px-4 py-3"><a href="/isim/elif">Elif</a></td><td class="px-4 py-3">Sadelik, incelik ve manevi çağrışım taşır.</td><td class="px-4 py-3"><a href="/isim/elif">Elif ismi</a></td></tr>
+      <tr><td class="px-4 py-3">6</td><td class="px-4 py-3"><a href="/isim/ecrin">Ecrin</a></td><td class="px-4 py-3">Hediye, karşılık ve güzel ödül anlamlarıyla sevilir.</td><td class="px-4 py-3"><a href="/isim/ecrin">Ecrin ismi</a></td></tr>
+      <tr><td class="px-4 py-3">7</td><td class="px-4 py-3"><a href="/isim/nehir">Nehir</a></td><td class="px-4 py-3">Akış, canlılık ve doğallık hissi verir.</td><td class="px-4 py-3"><a href="/isim/nehir">Nehir ismi</a></td></tr>
+      <tr><td class="px-4 py-3">8</td><td class="px-4 py-3"><a href="/isim/lina">Lina</a></td><td class="px-4 py-3">Yumuşak tınılı, modern ve zarif bir isimdir.</td><td class="px-4 py-3"><a href="/isim/lina">Lina ismi</a></td></tr>
+      <tr><td class="px-4 py-3">9</td><td class="px-4 py-3"><a href="/isim/mira">Mira</a></td><td class="px-4 py-3">Işıltılı, kısa ve modern bir çağrışım taşır.</td><td class="px-4 py-3"><a href="/isim/mira">Mira ismi</a></td></tr>
+      <tr><td class="px-4 py-3">10</td><td class="px-4 py-3"><a href="/isim/arya">Arya</a></td><td class="px-4 py-3">Melodi, soyluluk ve zarafet hissi verir.</td><td class="px-4 py-3"><a href="/isim/arya">Arya ismi</a></td></tr>
+      <tr><td class="px-4 py-3">11</td><td class="px-4 py-3"><a href="/isim/zumra">Zümra</a></td><td class="px-4 py-3">Güzel ahlak ve seçkinlik çağrışımıyla bilinir.</td><td class="px-4 py-3"><a href="/isim/zumra">Zümra ismi</a></td></tr>
+      <tr><td class="px-4 py-3">12</td><td class="px-4 py-3"><a href="/isim/duru">Duru</a></td><td class="px-4 py-3">Saf, temiz ve berrak anlamıyla öne çıkar.</td><td class="px-4 py-3"><a href="/isim/duru">Duru ismi</a></td></tr>
+      <tr><td class="px-4 py-3">13</td><td class="px-4 py-3"><a href="/isim/ela">Ela</a></td><td class="px-4 py-3">Göz rengiyle ilişkilenen kısa ve zarif bir isimdir.</td><td class="px-4 py-3"><a href="/isim/ela">Ela ismi</a></td></tr>
+      <tr><td class="px-4 py-3">14</td><td class="px-4 py-3"><a href="/isim/ipek">İpek</a></td><td class="px-4 py-3">Yumuşaklık, incelik ve zarafet çağrışımı taşır.</td><td class="px-4 py-3"><a href="/isim/ipek">İpek ismi</a></td></tr>
+      <tr><td class="px-4 py-3">15</td><td class="px-4 py-3"><a href="/isim/gunes">Güneş</a></td><td class="px-4 py-3">Işık, sıcaklık ve umut anlamlarıyla sevilir.</td><td class="px-4 py-3"><a href="/isim/gunes">Güneş ismi</a></td></tr>
+      <tr><td class="px-4 py-3">16</td><td class="px-4 py-3"><a href="/isim/yagmur">Yağmur</a></td><td class="px-4 py-3">Bereket, tazelik ve doğallık hissi verir.</td><td class="px-4 py-3"><a href="/isim/yagmur">Yağmur ismi</a></td></tr>
+      <tr><td class="px-4 py-3">17</td><td class="px-4 py-3"><a href="/isim/masal">Masal</a></td><td class="px-4 py-3">Hayal gücü ve tatlı anlatılarla ilişkilidir.</td><td class="px-4 py-3"><a href="/isim/masal">Masal ismi</a></td></tr>
+      <tr><td class="px-4 py-3">18</td><td class="px-4 py-3"><a href="/isim/azra">Azra</a></td><td class="px-4 py-3">Temizlik, saflık ve zarafet çağrışımı taşır.</td><td class="px-4 py-3"><a href="/isim/azra">Azra ismi</a></td></tr>
+      <tr><td class="px-4 py-3">19</td><td class="px-4 py-3"><a href="/isim/esila">Esila</a></td><td class="px-4 py-3">Akşam vakti ve huzurlu bir tınıyla anılır.</td><td class="px-4 py-3"><a href="/isim/esila">Esila ismi</a></td></tr>
+      <tr><td class="px-4 py-3">20</td><td class="px-4 py-3"><a href="/isim/eylul">Eylül</a></td><td class="px-4 py-3">Sonbaharın dingin ve romantik havasını taşır.</td><td class="px-4 py-3"><a href="/isim/eylul">Eylül ismi</a></td></tr>
+      <tr><td class="px-4 py-3">21</td><td class="px-4 py-3"><a href="/isim/alina">Alina</a></td><td class="px-4 py-3">Aydınlık ve modern bir tınıya sahiptir.</td><td class="px-4 py-3"><a href="/isim/alina">Alina ismi</a></td></tr>
+      <tr><td class="px-4 py-3">22</td><td class="px-4 py-3"><a href="/isim/inci">İnci</a></td><td class="px-4 py-3">Değer, saflık ve zarafet çağrışımı verir.</td><td class="px-4 py-3"><a href="/isim/inci">İnci ismi</a></td></tr>
+      <tr><td class="px-4 py-3">23</td><td class="px-4 py-3"><a href="/isim/nil">Nil</a></td><td class="px-4 py-3">Nehir, bereket ve sakinlik anlamlarıyla anılır.</td><td class="px-4 py-3"><a href="/isim/nil">Nil ismi</a></td></tr>
+      <tr><td class="px-4 py-3">24</td><td class="px-4 py-3"><a href="/isim/lara">Lara</a></td><td class="px-4 py-3">Kısa, modern ve melodik bir isimdir.</td><td class="px-4 py-3"><a href="/isim/lara">Lara ismi</a></td></tr>
+      <tr><td class="px-4 py-3">25</td><td class="px-4 py-3"><a href="/isim/ada">Ada</a></td><td class="px-4 py-3">Sadelik, özgünlük ve doğa hissi taşır.</td><td class="px-4 py-3"><a href="/isim/ada">Ada ismi</a></td></tr>
+      <tr><td class="px-4 py-3">26</td><td class="px-4 py-3"><a href="/isim/derin">Derin</a></td><td class="px-4 py-3">Anlamlı, sakin ve güçlü bir duruş verir.</td><td class="px-4 py-3"><a href="/isim/derin">Derin ismi</a></td></tr>
+      <tr><td class="px-4 py-3">27</td><td class="px-4 py-3"><a href="/isim/melisa">Melisa</a></td><td class="px-4 py-3">Hoş kokulu bitkiyle ilişkilenen yumuşak bir isimdir.</td><td class="px-4 py-3"><a href="/isim/melisa">Melisa ismi</a></td></tr>
+      <tr><td class="px-4 py-3">28</td><td class="px-4 py-3"><a href="/isim/beren">Beren</a></td><td class="px-4 py-3">Güçlü, modern ve karakterli bir tını taşır.</td><td class="px-4 py-3"><a href="/isim/beren">Beren ismi</a></td></tr>
+      <tr><td class="px-4 py-3">29</td><td class="px-4 py-3"><a href="/isim/belinay">Belinay</a></td><td class="px-4 py-3">Ay ışığı ve zarafet çağrışımıyla tercih edilir.</td><td class="px-4 py-3"><a href="/isim/belinay">Belinay ismi</a></td></tr>
+      <tr><td class="px-4 py-3">30</td><td class="px-4 py-3"><a href="/isim/ayla">Ayla</a></td><td class="px-4 py-3">Ay çevresindeki ışık halkası anlamıyla sevilir.</td><td class="px-4 py-3"><a href="/isim/ayla">Ayla ismi</a></td></tr>
+      <tr><td class="px-4 py-3">31</td><td class="px-4 py-3"><a href="/isim/sare">Sare</a></td><td class="px-4 py-3">Saflık ve zarafetle anılan kısa bir isimdir.</td><td class="px-4 py-3"><a href="/isim/sare">Sare ismi</a></td></tr>
+      <tr><td class="px-4 py-3">32</td><td class="px-4 py-3"><a href="/isim/alya">Alya</a></td><td class="px-4 py-3">Yükseklik, yücelik ve incelik çağrışımı taşır.</td><td class="px-4 py-3"><a href="/isim/alya">Alya ismi</a></td></tr>
+      <tr><td class="px-4 py-3">33</td><td class="px-4 py-3"><a href="/isim/mina">Mina</a></td><td class="px-4 py-3">Kısa, yumuşak ve modern bir isimdir.</td><td class="px-4 py-3"><a href="/isim/mina">Mina ismi</a></td></tr>
+      <tr><td class="px-4 py-3">34</td><td class="px-4 py-3"><a href="/isim/lila">Lila</a></td><td class="px-4 py-3">Renk, zarafet ve modernlik hissi verir.</td><td class="px-4 py-3"><a href="/isim/lila">Lila ismi</a></td></tr>
+      <tr><td class="px-4 py-3">35</td><td class="px-4 py-3"><a href="/isim/cemre">Cemre</a></td><td class="px-4 py-3">Baharın gelişini ve sıcaklığı hatırlatır.</td><td class="px-4 py-3"><a href="/isim/cemre">Cemre ismi</a></td></tr>
+      <tr><td class="px-4 py-3">36</td><td class="px-4 py-3"><a href="/isim/ceren">Ceren</a></td><td class="px-4 py-3">Zarif ve çevik bir duruş çağrıştırır.</td><td class="px-4 py-3"><a href="/isim/ceren">Ceren ismi</a></td></tr>
+      <tr><td class="px-4 py-3">37</td><td class="px-4 py-3"><a href="/isim/leyla">Leyla</a></td><td class="px-4 py-3">Gece güzelliği ve edebi bir çağrışım taşır.</td><td class="px-4 py-3"><a href="/isim/leyla">Leyla ismi</a></td></tr>
+      <tr><td class="px-4 py-3">38</td><td class="px-4 py-3"><a href="/isim/meva">Meva</a></td><td class="px-4 py-3">Sığınak, huzur ve manevi anlamlarla anılır.</td><td class="px-4 py-3"><a href="/isim/meva">Meva ismi</a></td></tr>
+      <tr><td class="px-4 py-3">39</td><td class="px-4 py-3"><a href="/isim/elifnaz">Elifnaz</a></td><td class="px-4 py-3">Elif’in sadeliğiyle nazlı bir tınıyı birleştirir.</td><td class="px-4 py-3"><a href="/isim/elifnaz">Elifnaz ismi</a></td></tr>
+      <tr><td class="px-4 py-3">40</td><td class="px-4 py-3"><a href="/isim/aybuke">Aybüke</a></td><td class="px-4 py-3">Ay gibi parlak ve güçlü bir çağrışım sunar.</td><td class="px-4 py-3"><a href="/isim/aybuke">Aybüke ismi</a></td></tr>
+      <tr><td class="px-4 py-3">41</td><td class="px-4 py-3"><a href="/isim/nisa">Nisa</a></td><td class="px-4 py-3">Kadınlar anlamıyla manevi bir bağ taşır.</td><td class="px-4 py-3"><a href="/isim/nisa">Nisa ismi</a></td></tr>
+      <tr><td class="px-4 py-3">42</td><td class="px-4 py-3"><a href="/isim/eslem">Eslem</a></td><td class="px-4 py-3">Teslimiyet, huzur ve sakinlik çağrışımı verir.</td><td class="px-4 py-3"><a href="/isim/eslem">Eslem ismi</a></td></tr>
+      <tr><td class="px-4 py-3">43</td><td class="px-4 py-3"><a href="/isim/erva">Erva</a></td><td class="px-4 py-3">Güzel, zarif ve hoş anlamlarıyla bilinir.</td><td class="px-4 py-3"><a href="/isim/erva">Erva ismi</a></td></tr>
+      <tr><td class="px-4 py-3">44</td><td class="px-4 py-3"><a href="/isim/hiranur">Hiranur</a></td><td class="px-4 py-3">Hira ve nur çağrışımlarıyla manevi bir isimdir.</td><td class="px-4 py-3"><a href="/isim/hiranur">Hiranur ismi</a></td></tr>
+      <tr><td class="px-4 py-3">45</td><td class="px-4 py-3"><a href="/isim/ebrar">Ebrar</a></td><td class="px-4 py-3">İyiler, doğrular ve erdemli kişiler anlamı taşır.</td><td class="px-4 py-3"><a href="/isim/ebrar">Ebrar ismi</a></td></tr>
+      <tr><td class="px-4 py-3">46</td><td class="px-4 py-3"><a href="/isim/zehra">Zehra</a></td><td class="px-4 py-3">Parlak, aydınlık ve güzel anlamlarıyla sevilir.</td><td class="px-4 py-3"><a href="/isim/zehra">Zehra ismi</a></td></tr>
+      <tr><td class="px-4 py-3">47</td><td class="px-4 py-3"><a href="/isim/feride">Feride</a></td><td class="px-4 py-3">Eşsiz, tek ve özel anlamıyla öne çıkar.</td><td class="px-4 py-3"><a href="/isim/feride">Feride ismi</a></td></tr>
+      <tr><td class="px-4 py-3">48</td><td class="px-4 py-3"><a href="/isim/serra">Serra</a></td><td class="px-4 py-3">Bolluk, genişlik ve ferahlık çağrışımı taşır.</td><td class="px-4 py-3"><a href="/isim/serra">Serra ismi</a></td></tr>
+      <tr><td class="px-4 py-3">49</td><td class="px-4 py-3"><a href="/isim/aylin">Aylin</a></td><td class="px-4 py-3">Ay ışığı ve zarif parlaklık anlamıyla sevilir.</td><td class="px-4 py-3"><a href="/isim/aylin">Aylin ismi</a></td></tr>
+      <tr><td class="px-4 py-3">50</td><td class="px-4 py-3"><a href="/isim/yasemin">Yasemin</a></td><td class="px-4 py-3">Hoş kokulu çiçek ve zarafet çağrışımı taşır.</td><td class="px-4 py-3"><a href="/isim/yasemin">Yasemin ismi</a></td></tr>
+    </tbody>
+  </table>
+</div>
+<h2 id="modern-kiz-isimleri">Modern Kız İsimleri</h2>
+<p>Modern kız isimleri çoğu zaman kısa, akıcı ve farklı ortamlarda rahat kullanılan isimlerdir. <a href="/isim/lina">Lina</a>, <a href="/isim/mira">Mira</a>, <a href="/isim/arya">Arya</a>, <a href="/isim/alina">Alina</a>, <a href="/isim/lara">Lara</a> ve <a href="/isim/ada">Ada</a> bu açıdan 2026 için sık bakılan seçenekler arasında yer alabilir. Bu isimlerin ortak yönü, hem güncel duyulmaları hem de fazla ağır bir yapı taşımamalarıdır.</p>
+<h2 id="kisa-zarif-kiz-isimleri">Kısa ve Zarif Kız İsimleri</h2>
+<p>Kısa isimler, günlük kullanımda kolay hatırlanması ve soyadıyla birlikte dengeli durması nedeniyle ailelerin listesinde güçlü bir yer tutuyor. <a href="/isim/ela">Ela</a>, <a href="/isim/nil">Nil</a>, <a href="/isim/ada">Ada</a>, <a href="/isim/su">Su</a>, <a href="/isim/lila">Lila</a> ve <a href="/isim/ipek">İpek</a> sade ama etkili seçeneklerdir. Özellikle uzun soyadlarında kısa isimler kulağa daha temiz ve akıcı gelebilir.</p>
+<h2 id="anlami-guzel-kiz-isimleri">Anlamı Güzel Kız İsimleri</h2>
+<p>Bir ismin güzel duyulması kadar taşıdığı anlam da önemlidir. <a href="/isim/asel">Asel</a>, <a href="/isim/duru">Duru</a>, <a href="/isim/zumra">Zümra</a>, <a href="/isim/ecrin">Ecrin</a>, <a href="/isim/nehir">Nehir</a> ve <a href="/isim/gunes">Güneş</a> anlamı güçlü kız isimleri arasında değerlendirilebilir. Daha fazla seçenek için <a href="/kuranda-gecen-isimler">Kur’an’da geçen isimler</a> ve anlam odaklı isim listelerini birlikte incelemek faydalı olur.</p>
+<h2 id="nadir-kiz-isimleri">Nadir Kız İsimleri</h2>
+<p>Daha az duyulan ama yabancı durmayan bir isim arayan aileler için <a href="/isim/mira">Mira</a>, <a href="/isim/serra">Serra</a>, <a href="/isim/feride">Feride</a>, <a href="/isim/alya">Alya</a>, <a href="/isim/meva">Meva</a> ve <a href="/isim/aybuke">Aybüke</a> iyi alternatifler olabilir. Nadir isim seçerken yalnızca farklı olmasına değil, anlamının net olmasına ve telaffuzunun çocuğu zorlamamasına dikkat etmek gerekir.</p>
+<div class="grid gap-4 sm:grid-cols-2">
+  <section class="rounded-2xl border border-border bg-white p-4">
+    <h2 class="font-display text-xl text-primary">Modern kız isimleri</h2>
+    <p><a href="/isim/lina">Lina</a>, <a href="/isim/mira">Mira</a>, <a href="/isim/arya">Arya</a>, <a href="/isim/alina">Alina</a>, <a href="/isim/lara">Lara</a>, <a href="/isim/ada">Ada</a></p>
+  </section>
+  <section class="rounded-2xl border border-border bg-white p-4">
+    <h2 class="font-display text-xl text-primary">Kısa ve zarif kız isimleri</h2>
+    <p><a href="/isim/ela">Ela</a>, <a href="/isim/nil">Nil</a>, <a href="/isim/ada">Ada</a>, <a href="/isim/su">Su</a>, <a href="/isim/lila">Lila</a>, <a href="/isim/ipek">İpek</a></p>
+  </section>
+  <section class="rounded-2xl border border-border bg-white p-4">
+    <h2 class="font-display text-xl text-primary">Anlamı güzel kız isimleri</h2>
+    <p><a href="/isim/asel">Asel</a>, <a href="/isim/duru">Duru</a>, <a href="/isim/zumra">Zümra</a>, <a href="/isim/ecrin">Ecrin</a>, <a href="/isim/nehir">Nehir</a>, <a href="/isim/gunes">Güneş</a></p>
+  </section>
+  <section class="rounded-2xl border border-border bg-white p-4">
+    <h2 class="font-display text-xl text-primary">Nadir kız isimleri</h2>
+    <p><a href="/isim/mira">Mira</a>, <a href="/isim/serra">Serra</a>, <a href="/isim/feride">Feride</a>, <a href="/isim/alya">Alya</a>, <a href="/isim/meva">Meva</a>, <a href="/isim/aybuke">Aybüke</a></p>
+  </section>
+</div>
+<h2 id="isim-secerken-dikkat">İsim Seçerken Dikkat Edilmesi Gerekenler</h2>
+<p>Kız bebek ismi seçerken ilk adım, ismin anlamını güvenilir kaynaklardan kontrol etmektir. Güzel bir ses bazen tek başına yeterli olmaz; anlamın olumlu, anlaşılır ve aile değerleriyle uyumlu olması gerekir. İkinci olarak isim ve soyadını birlikte birkaç kez yüksek sesle söylemek faydalıdır. Akıcı duyulan bir isim, günlük hayatta daha rahat kullanılır.</p>
+<p>Üçüncü nokta, ismin yazılış ve telaffuz kolaylığıdır. Çok sık yanlış yazılan ya da söylenen isimler ileride yorucu olabilir. Dördüncü olarak, popülerlik dengesini düşünmek gerekir. Çok bilinen bir isim güvenli hissettirebilir; daha nadir bir isim ise çocuğa özel bir kimlik duygusu verebilir. Burada önemli olan, sadece 2026’da dikkat çekmesi beklenen bir adı değil, yıllar sonra da içine sinen bir seçeneği bulmaktır.</p>
+<p>Son olarak, isim seçimini aceleye getirmemek iyi olur. Aile büyüklerinin önerilerini dinlemek, <a href="/kiz-isimleri">kız isimleri listesini</a> incelemek, <a href="/modern-isimler">modern isimleri</a> ve <a href="/nadir-isimler">nadir isimleri</a> karşılaştırmak karar sürecini daha sağlıklı hale getirir.</p>
+<h2 id="sik-sorulan-sorular">Sık Sorulan Sorular</h2>
+<h2>2026 için hangi kız isimleri öne çıkıyor?</h2>
+<p>2026 için <a href="/isim/asel">Asel</a>, <a href="/isim/defne">Defne</a>, <a href="/isim/zeynep">Zeynep</a>, <a href="/isim/lina">Lina</a>, <a href="/isim/mira">Mira</a>, <a href="/isim/arya">Arya</a>, <a href="/isim/duru">Duru</a> ve <a href="/isim/ada">Ada</a> gibi kısa, anlamlı ve modern tınılı isimlerin öne çıkması bekleniyor. Bu ifade resmi bir sıralama değil, isim arama eğilimlerine ve ailelerin ilgisine göre hazırlanmış bir öneridir.</p>
+<h2>Kız bebek ismi seçerken nelere dikkat edilmeli?</h2>
+<p>Anlam, telaffuz, soyadıyla uyum, yazılış kolaylığı ve uzun vadeli kullanım birlikte değerlendirilmelidir. Bir isim bugün çok sevimli görünebilir; ancak çocuğun okul, iş ve sosyal hayatında da rahat taşıyabileceği bir ad olması önemlidir.</p>
+<h2>Modern kız isimleri nelerdir?</h2>
+<p><a href="/isim/lina">Lina</a>, <a href="/isim/mira">Mira</a>, <a href="/isim/arya">Arya</a>, <a href="/isim/alina">Alina</a>, <a href="/isim/lara">Lara</a>, <a href="/isim/ada">Ada</a>, <a href="/isim/derin">Derin</a> ve <a href="/isim/lila">Lila</a> modern kız isimleri arasında sık değerlendirilen seçeneklerdir. Daha fazlası için <a href="/modern-isimler">modern isimler</a> sayfasına bakabilirsiniz.</p>
+<h2>Kısa kız isimleri tercih edilir mi?</h2>
+<p>Evet, kısa kız isimleri hem kolay söylenmesi hem de uzun soyadlarıyla dengeli durması nedeniyle sık tercih edilir. <a href="/isim/ela">Ela</a>, <a href="/isim/nil">Nil</a>, <a href="/isim/su">Su</a>, <a href="/isim/ada">Ada</a> ve <a href="/isim/lila">Lila</a> bu tür isimlere örnektir.</p>
+<h2>Kur’an’da geçen kız isimleri nasıl seçilmeli?</h2>
+<p>Kur’an’da geçen bir isim seçerken yalnızca kelimenin geçip geçmediğine değil, hangi anlam ve bağlamda yer aldığına bakmak gerekir. Anlamı olumlu, kullanımı uygun ve çocuğun hayatı boyunca rahat taşıyabileceği isimler tercih edilmelidir. Bu konuda <a href="/kuranda-gecen-isimler">Kur’an’da geçen isimler</a> sayfası iyi bir başlangıç sunar.</p>`,
+    coverId: null,
+    published: true,
+    publishedAt: "2026-06-24T00:00:00.000Z",
+    createdAt: "2026-06-24T00:00:00.000Z",
+    updatedAt: "2026-06-24T00:00:00.000Z",
+    cover: covers[7],
+  },
+  {
     id: "g-1",
     slug: "bebek-ismi-nasil-secilir",
     title: "Bebek İsmi Nasıl Seçilir?",

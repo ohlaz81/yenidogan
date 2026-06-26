@@ -235,6 +235,8 @@ export default async function NameDetailPage({ params }: Props) {
         </section>
       </div>
 
+      <NameComments slug={name.slug} />
+
       {others.length > 0 && (
         <section className="mt-12">
           <h2 className="font-display text-xl font-semibold text-primary">
@@ -247,8 +249,6 @@ export default async function NameDetailPage({ params }: Props) {
           </div>
         </section>
       )}
-
-      <NameComments slug={name.slug} />
 
       {guides.length > 0 && (
         <section className="mt-12">

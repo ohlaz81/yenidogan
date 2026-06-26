@@ -46,6 +46,12 @@ export const adminNavGroups: AdminNavGroup[] = [
         permission: ADMIN_PERMISSIONS.content,
       },
       {
+        href: "/admin/yorumlar",
+        label: "Yorumlar",
+        description: "İsim yorumlarını onayla veya reddet",
+        permission: ADMIN_PERMISSIONS.content,
+      },
+      {
         href: "/admin/sss-faq",
         label: "SSS (FAQ)",
         description: "Sık sorulan sorular",

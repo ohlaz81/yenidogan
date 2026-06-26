@@ -21,6 +21,7 @@ import { Breadcrumb } from "@/components/marketing/Breadcrumb";
 import { FavoriteHeart } from "@/components/marketing/FavoriteHeart";
 import { MediaImage } from "@/components/marketing/MediaImage";
 import { NameCard } from "@/components/marketing/NameCard";
+import { NameComments } from "@/components/marketing/NameComments";
 import { ShareButton } from "@/components/marketing/ShareButton";
 import { Stars } from "@/components/marketing/Stars";
 import { NAME_OG_IMAGE_SIZE } from "@/lib/name-og-image-config";
@@ -246,6 +247,8 @@ export default async function NameDetailPage({ params }: Props) {
           </div>
         </section>
       )}
+
+      <NameComments slug={name.slug} />
 
       {guides.length > 0 && (
         <section className="mt-12">

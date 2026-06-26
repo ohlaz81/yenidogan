@@ -69,6 +69,17 @@ export type NameVote = {
   updatedAt: string;
 };
 
+export type NameComment = {
+  id: string;
+  nameId: string;
+  fullName: string;
+  displayName: string;
+  comment: string;
+  status: "PENDING" | "APPROVED" | "REJECTED";
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type NameWithDetail = Name & {
   image: MediaAsset | null;
   similarFrom: Array<{ target: Name & { image: MediaAsset | null } }>;

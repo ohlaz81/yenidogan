@@ -162,34 +162,29 @@ export function NameVote({ slug }: { slug: string }) {
   const disabled = state.pending;
 
   return (
-    <section className="mt-8 rounded-2xl border border-border bg-card p-4 shadow-sm">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h2 className="font-display text-lg font-semibold text-primary">Bu ismi beğendiniz mi?</h2>
-        <div className="flex flex-wrap gap-2">
-          <button
-            type="button"
-            onClick={() => void submit("LIKE")}
-            aria-pressed={state.myVote === "LIKE"}
-            disabled={disabled}
-            className={voteButtonClass(state.myVote === "LIKE")}
-          >
-            <span aria-hidden="true">👍</span>
-            Beğendim {state.likeCount}
-          </button>
-          <button
-            type="button"
-            onClick={() => void submit("DISLIKE")}
-            aria-pressed={state.myVote === "DISLIKE"}
-            disabled={disabled}
-            className={voteButtonClass(state.myVote === "DISLIKE")}
-          >
-            <span aria-hidden="true">👎</span>
-            Beğenmedim {state.dislikeCount}
-          </button>
-        </div>
-      </div>
-      {state.loading ? <p className="mt-2 text-xs text-muted">Oylar yükleniyor...</p> : null}
-      {state.error ? <p className="mt-2 text-xs font-medium text-accent-pink">Tekrar deneyin.</p> : null}
-    </section>
+    <div className="flex flex-wrap items-center gap-2">
+      <button
+        type="button"
+        onClick={() => void submit("LIKE")}
+        aria-pressed={state.myVote === "LIKE"}
+        disabled={disabled}
+        className={voteButtonClass(state.myVote === "LIKE")}
+      >
+        <span aria-hidden="true">👍</span>
+        Beğendim {state.likeCount}
+      </button>
+      <button
+        type="button"
+        onClick={() => void submit("DISLIKE")}
+        aria-pressed={state.myVote === "DISLIKE"}
+        disabled={disabled}
+        className={voteButtonClass(state.myVote === "DISLIKE")}
+      >
+        <span aria-hidden="true">👎</span>
+        Beğenmedim {state.dislikeCount}
+      </button>
+      {state.loading ? <span className="text-xs text-muted">Oylar yükleniyor...</span> : null}
+      {state.error ? <span className="text-xs font-medium text-accent-pink">Tekrar deneyin.</span> : null}
+    </div>
   );
 }

@@ -149,6 +149,7 @@ export default async function NameDetailPage({ params }: Props) {
             >
               ♥ Favorilere ekle için kalbe dokunun
             </span>
+            <NameVote slug={name.slug} />
             <ShareButton title={name.displayName} text={name.meaning} url={canonical} />
           </div>
         </div>
@@ -235,8 +236,6 @@ export default async function NameDetailPage({ params }: Props) {
           )}
         </section>
       </div>
-
-      <NameVote slug={name.slug} />
 
       <NameComments slug={name.slug} />
 

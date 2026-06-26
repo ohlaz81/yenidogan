@@ -22,6 +22,7 @@ import { FavoriteHeart } from "@/components/marketing/FavoriteHeart";
 import { MediaImage } from "@/components/marketing/MediaImage";
 import { NameCard } from "@/components/marketing/NameCard";
 import { NameComments } from "@/components/marketing/NameComments";
+import { NameVote } from "@/components/marketing/NameVote";
 import { ShareButton } from "@/components/marketing/ShareButton";
 import { Stars } from "@/components/marketing/Stars";
 import { NAME_OG_IMAGE_SIZE } from "@/lib/name-og-image-config";
@@ -234,6 +235,8 @@ export default async function NameDetailPage({ params }: Props) {
           )}
         </section>
       </div>
+
+      <NameVote slug={name.slug} />
 
       <NameComments slug={name.slug} />
 

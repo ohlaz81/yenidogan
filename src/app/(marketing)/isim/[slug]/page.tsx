@@ -11,7 +11,6 @@ import {
   nameCtaStripClass,
   nameDisplayTextClass,
   nameGenderBadgeLgClass,
-  nameHeartHintClass,
   nameHeroSectionClass,
   nameMeaningCardBgClass,
   nameSimilarPillClass,
@@ -135,7 +134,6 @@ export default async function NameDetailPage({ params }: Props) {
         <div className="space-y-4">
           <div className="flex flex-wrap items-center gap-3">
             <h1 className={`font-display text-4xl font-semibold ${nameDisplayTextClass(name.gender)}`}>{name.displayName}</h1>
-            <FavoriteHeart slug={name.slug} />
           </div>
           <div className="flex flex-wrap gap-2 text-xs font-semibold">
             <span className={nameGenderBadgeLgClass(name.gender)}>{genderLabels[name.gender]}</span>
@@ -143,14 +141,10 @@ export default async function NameDetailPage({ params }: Props) {
             <span className="rounded-full bg-sky-100 px-3 py-1 text-sky-800">{name.origin}</span>
           </div>
           {name.intro && <p className="text-sm leading-relaxed text-muted">{name.intro}</p>}
-          <div className="flex flex-wrap gap-3">
-            <span
-              className={`inline-flex items-center gap-2 rounded-2xl border border-border bg-white px-4 py-2 text-xs font-semibold ${nameHeartHintClass(name.gender)}`}
-            >
-              ♥ Favorilere ekle için kalbe dokunun
-            </span>
+          <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center sm:gap-3">
+            <FavoriteHeart slug={name.slug} variant="action" />
             <NameVote slug={name.slug} />
-            <ShareButton title={name.displayName} text={name.meaning} url={canonical} />
+            <ShareButton title={name.displayName} text={name.meaning} url={canonical} variant="action" />
           </div>
         </div>
         <div className="relative mx-auto h-48 w-48 overflow-hidden rounded-full border-4 border-white shadow-lg lg:mx-0 lg:h-56 lg:w-56">

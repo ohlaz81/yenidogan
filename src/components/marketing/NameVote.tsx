@@ -59,7 +59,7 @@ function nextState(current: VoteState, vote: Vote | null): VoteState {
 
 function voteButtonClass(active: boolean) {
   return [
-    "inline-flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl border px-4 py-2 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-60 sm:flex-none",
+    "inline-flex min-h-[72px] w-full flex-col items-center justify-center gap-1 rounded-2xl border px-3 py-2 text-center text-xs font-semibold transition disabled:cursor-not-allowed disabled:opacity-60 sm:min-h-11 sm:w-auto sm:flex-row sm:gap-2 sm:px-4",
     active
       ? "border-accent-pink bg-accent-pink-soft text-accent-pink"
       : "border-border bg-white text-primary hover:border-accent-pink/40 hover:bg-accent-pink-soft/40",
@@ -162,7 +162,7 @@ export function NameVote({ slug }: { slug: string }) {
   const disabled = state.pending;
 
   return (
-    <div className="flex flex-wrap items-center gap-2">
+    <div className="contents sm:flex sm:flex-wrap sm:items-center sm:gap-2">
       <button
         type="button"
         onClick={() => void submit("LIKE")}
@@ -170,8 +170,11 @@ export function NameVote({ slug }: { slug: string }) {
         disabled={disabled}
         className={voteButtonClass(state.myVote === "LIKE")}
       >
-        <span aria-hidden="true">👍</span>
-        Beğendim {state.likeCount}
+        <span className="text-lg leading-none" aria-hidden="true">
+          👍
+        </span>
+        <span className="leading-tight">Beğendim</span>
+        <span className="leading-tight">{state.likeCount}</span>
       </button>
       <button
         type="button"
@@ -180,11 +183,16 @@ export function NameVote({ slug }: { slug: string }) {
         disabled={disabled}
         className={voteButtonClass(state.myVote === "DISLIKE")}
       >
-        <span aria-hidden="true">👎</span>
-        Beğenmedim {state.dislikeCount}
+        <span className="text-lg leading-none" aria-hidden="true">
+          👎
+        </span>
+        <span className="leading-tight">Beğenmedim</span>
+        <span className="leading-tight">{state.dislikeCount}</span>
       </button>
-      {state.loading ? <span className="text-xs text-muted">Oylar yükleniyor...</span> : null}
-      {state.error ? <span className="text-xs font-medium text-accent-pink">Tekrar deneyin.</span> : null}
+      {state.loading ? <span className="col-span-2 text-xs text-muted sm:col-span-1">Oylar yükleniyor...</span> : null}
+      {state.error ? (
+        <span className="col-span-2 text-xs font-medium text-accent-pink sm:col-span-1">Tekrar deneyin.</span>
+      ) : null}
     </div>
   );
 }

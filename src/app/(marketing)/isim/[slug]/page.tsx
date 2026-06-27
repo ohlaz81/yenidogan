@@ -23,6 +23,7 @@ import { NameCard } from "@/components/marketing/NameCard";
 import { NameComments } from "@/components/marketing/NameComments";
 import { NameVote } from "@/components/marketing/NameVote";
 import { ShareButton } from "@/components/marketing/ShareButton";
+import { SiblingNameSuggestions } from "@/components/marketing/SiblingNameSuggestions";
 import { Stars } from "@/components/marketing/Stars";
 import { NAME_OG_IMAGE_SIZE } from "@/lib/name-og-image-config";
 import {
@@ -230,6 +231,8 @@ export default async function NameDetailPage({ params }: Props) {
           )}
         </section>
       </div>
+
+      <SiblingNameSuggestions name={name} />
 
       <NameComments slug={name.slug} />
 

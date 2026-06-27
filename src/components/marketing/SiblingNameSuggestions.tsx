@@ -13,29 +13,26 @@ type Props =
     };
 
 function suggestionCardClass(gender: "GIRL" | "BOY") {
-  if (gender === "GIRL") return "border-accent-pink/20 bg-accent-pink-soft/35";
-  return "border-accent-blue/20 bg-accent-blue-soft/35";
+  if (gender === "GIRL") return "border-accent-pink/15 bg-pink-50/35";
+  return "border-accent-blue/15 bg-sky-50/35";
 }
 
 function suggestionTitleClass(gender: "GIRL" | "BOY") {
-  if (gender === "GIRL") return "text-accent-pink";
-  return "text-accent-blue";
+  if (gender === "GIRL") return "text-accent-pink/90";
+  return "text-accent-blue/90";
 }
 
 function suggestionPillClass(gender: "GIRL" | "BOY") {
-  const base =
-    "inline-flex min-w-0 items-center justify-center rounded-full border bg-white/80 px-3 py-1.5 text-sm font-semibold shadow-sm transition hover:bg-white hover:shadow";
-  if (gender === "GIRL") return `${base} border-accent-pink/20 text-accent-pink`;
-  return `${base} border-accent-blue/20 text-accent-blue`;
+  const base = "rounded-full px-3 py-1 text-sm font-semibold transition hover:underline";
+  if (gender === "GIRL") return `${base} bg-accent-pink-soft/70 text-accent-pink`;
+  return `${base} bg-accent-blue-soft/70 text-accent-blue`;
 }
 
 function SuggestionGroup({
-  emoji,
   title,
   gender,
   items,
 }: {
-  emoji: string;
   title: string;
   gender: "GIRL" | "BOY";
   items: SiblingNameSuggestion[];
@@ -44,9 +41,7 @@ function SuggestionGroup({
 
   return (
     <div className={`rounded-2xl border p-4 shadow-sm ${suggestionCardClass(gender)}`}>
-      <h3 className={`font-display text-lg font-semibold ${suggestionTitleClass(gender)}`}>
-        <span aria-hidden="true">{emoji}</span> {title}
-      </h3>
+      <h3 className={`font-display text-base font-semibold ${suggestionTitleClass(gender)}`}>{title}</h3>
       <div className="mt-3 flex flex-wrap gap-2">
         {items.map((item) => (
           <Link key={item.id} href={`/isim/${item.slug}`} className={suggestionPillClass(gender)}>
@@ -68,11 +63,11 @@ export async function SiblingNameSuggestions(props: Props) {
   return (
     <section className="mt-10">
       <h2 className="font-display text-xl font-semibold text-primary">
-        {name.displayName} için kardeş isim önerileri
+        {name.displayName} ile uyumlu kardeş isimleri
       </h2>
       <div className="mt-4 grid gap-4 md:grid-cols-2">
-        <SuggestionGroup emoji="👧" title="Kız Kardeş Seçenekleri" gender="GIRL" items={suggestions.girls} />
-        <SuggestionGroup emoji="👦" title="Erkek Kardeş Seçenekleri" gender="BOY" items={suggestions.boys} />
+        <SuggestionGroup title="Kız kardeş isimleri" gender="GIRL" items={suggestions.girls} />
+        <SuggestionGroup title="Erkek kardeş isimleri" gender="BOY" items={suggestions.boys} />
       </div>
     </section>
   );

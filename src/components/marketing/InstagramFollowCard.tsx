@@ -26,7 +26,7 @@ export function InstagramFollowCard() {
         </div>
 
         <div className="relative min-w-0 flex-1">
-          <p className="font-display text-xl font-semibold text-primary sm:text-2xl">Yenidoğan.net Instagram</p>
+          <p className="font-display text-xl font-semibold text-primary sm:text-2xl">Yenidogan.net Instagram</p>
           <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-muted lg:mx-0">
             Yeni eklenen isimleri, isim rehberlerini, bebek isim önerilerini ve ilham veren içerikleri kaçırmayın.
           </p>

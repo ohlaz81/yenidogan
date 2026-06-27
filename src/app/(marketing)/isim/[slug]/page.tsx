@@ -141,7 +141,7 @@ export default async function NameDetailPage({ params }: Props) {
             <span className="rounded-full bg-sky-100 px-3 py-1 text-sky-800">{name.origin}</span>
           </div>
           {name.intro && <p className="text-sm leading-relaxed text-muted">{name.intro}</p>}
-          <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center sm:gap-3">
+          <div className="grid min-h-[84px] grid-cols-4 overflow-hidden rounded-2xl border border-border bg-white shadow-sm sm:min-h-0 sm:w-fit sm:flex sm:flex-wrap sm:items-center sm:gap-3 sm:overflow-visible sm:rounded-none sm:border-0 sm:bg-transparent sm:shadow-none">
             <FavoriteHeart slug={name.slug} variant="action" />
             <NameVote slug={name.slug} />
             <ShareButton title={name.displayName} text={name.meaning} url={canonical} variant="action" />

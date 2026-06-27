@@ -43,14 +43,14 @@ export function FavoriteHeart({ slug, variant = "icon" }: { slug: string; varian
       <button
         type="button"
         onClick={toggle}
-        className="inline-flex min-h-[72px] w-full flex-col items-center justify-center gap-1 rounded-2xl border border-border bg-white px-3 py-2 text-center text-xs font-semibold text-primary shadow-sm transition hover:bg-accent-pink-soft sm:min-h-11 sm:w-auto sm:flex-row sm:gap-2 sm:px-4"
+        className="inline-flex min-h-[84px] min-w-0 flex-1 flex-col items-center justify-center gap-1 border-0 border-r border-border bg-transparent px-1.5 py-2 text-center text-[11px] font-semibold leading-tight text-primary shadow-none transition hover:bg-accent-pink-soft sm:min-h-11 sm:w-auto sm:flex-none sm:flex-row sm:gap-2 sm:rounded-2xl sm:border sm:border-border sm:bg-white sm:px-4 sm:text-xs sm:shadow-sm"
         aria-pressed={on}
         aria-label={on ? "Favorilerden çıkar" : "Favorilere ekle"}
       >
         <span className="text-lg leading-none text-accent-pink" aria-hidden="true">
           {on ? "♥" : "♡"}
         </span>
-        <span className="leading-tight">Favorilere ekle</span>
+        <span className="max-w-full whitespace-normal leading-tight">Favorilere ekle</span>
       </button>
     );
   }

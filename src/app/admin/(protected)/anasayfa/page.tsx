@@ -9,32 +9,68 @@ type NameLite = {
   displayName: string;
   slug: string;
   gender: "GIRL" | "BOY" | "UNISEX";
-  popularScore: number;
-  published: boolean;
 };
 type Slot = { id: string; column: "girl" | "boy"; position: number; nameId: string | null };
+
+const NAME_OPTION_PAGE_SIZE = 1000;
+
+function byNameAsc(a: NameLite, b: NameLite) {
+  return (
+    a.displayName.localeCompare(b.displayName, "tr-TR", { sensitivity: "base" }) ||
+    a.slug.localeCompare(b.slug, "tr-TR", { sensitivity: "base" })
+  );
+}
+
+function uniqueBySlug(names: NameLite[]) {
+  const seen = new Set<string>();
+  const out: NameLite[] = [];
+
+  for (const name of names) {
+    const slugKey = name.slug.toLocaleLowerCase("tr-TR");
+    if (seen.has(slugKey)) continue;
+    seen.add(slugKey);
+    out.push(name);
+  }
+
+  return out;
+}
+
+async function fetchPublishedNameOptions(gender: "GIRL" | "BOY") {
+  const s = getSupabase();
+  const rows: NameLite[] = [];
+
+  for (let from = 0; ; from += NAME_OPTION_PAGE_SIZE) {
+    const { data, error } = await s
+      .from("Name")
+      .select("id,displayName,slug,gender")
+      .eq("published", true)
+      .eq("gender", gender)
+      .order("displayName", { ascending: true })
+      .order("slug", { ascending: true })
+      .range(from, from + NAME_OPTION_PAGE_SIZE - 1);
+
+    if (error) throw postgrestToError(error, `admin/anasayfa:Name:${gender}`);
+
+    const batch = (data ?? []) as NameLite[];
+    rows.push(...batch);
+    if (batch.length < NAME_OPTION_PAGE_SIZE) break;
+  }
+
+  return uniqueBySlug(rows).sort(byNameAsc);
+}
 
 export default async function AdminHomeSettingsPage() {
   await requirePermission(ADMIN_PERMISSIONS.homeFeatured);
   const s = getSupabase();
-  const [{ data: rows, error: slotsErr }, { data: names, error: namesErr }] = await Promise.all([
+  const [{ data: rows, error: slotsErr }, girlNames, boyNames] = await Promise.all([
     s.from("HomeFeaturedName").select("id,column,position,nameId").order("column").order("position"),
-    s
-      .from("Name")
-      .select("id,displayName,slug,gender,popularScore,published")
-      .order("published", { ascending: false })
-      .order("popularScore", { ascending: false })
-      .limit(500),
+    fetchPublishedNameOptions("GIRL"),
+    fetchPublishedNameOptions("BOY"),
   ]);
   if (slotsErr) throw postgrestToError(slotsErr, "admin/anasayfa:HomeFeaturedName");
-  if (namesErr) throw postgrestToError(namesErr, "admin/anasayfa:Name");
 
   const slots = (rows ?? []) as Slot[];
-  const allNames = (names ?? []) as NameLite[];
-  const byNameAsc = (a: NameLite, b: NameLite) =>
-    a.displayName.localeCompare(b.displayName, "tr-TR", { sensitivity: "base" });
-  const girlNames = allNames.filter((n) => n.gender !== "BOY").sort(byNameAsc);
-  const boyNames = allNames.filter((n) => n.gender !== "GIRL").sort(byNameAsc);
+  const allNames = [...girlNames, ...boyNames];
   const byId = new Map(allNames.map((n) => [n.id, n]));
 
   return (
@@ -81,7 +117,7 @@ export default async function AdminHomeSettingsPage() {
                         <option value="">— Boş bırak —</option>
                         {options.map((n) => (
                           <option key={n.id} value={n.id}>
-                            {n.displayName} ({n.slug}){n.published ? "" : " [Yayında değil]"}
+                            {n.displayName} ({n.slug})
                           </option>
                         ))}
                       </select>

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { HomePageData } from "@/lib/queries/home";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
+import { InstagramFollowCard } from "@/components/marketing/InstagramFollowCard";
 import { MediaImage } from "@/components/marketing/MediaImage";
 import { DiscoverRastgeleCard } from "@/components/marketing/DiscoverRastgeleCard";
 import type { FAQ } from "@/types/database";
@@ -246,48 +247,6 @@ export function HomePageView({
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4">
-        <div className="grid items-stretch grid-cols-1 gap-2.5 min-[500px]:grid-cols-2 min-[500px]:gap-3 sm:gap-3">
-          <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
-            <div className="flex items-center justify-between bg-primary px-2.5 py-2 text-white sm:px-3 sm:py-2.5">
-              <span className="text-[0.65rem] font-semibold uppercase tracking-wide sm:text-sm">İsim Rehberi</span>
-              <Link href="/isim-rehberi" className="text-[0.6rem] font-semibold uppercase sm:text-xs">
-                Tümü
-              </Link>
-            </div>
-            <div className="divide-y divide-border/80 sm:hidden">
-              {guideMobileTopItems.map((a) => (
-                <Link
-                  key={a.id}
-                  href={`/isim-rehberi/${a.slug}`}
-                  className="flex min-h-0 items-center justify-between px-2 py-1.5 text-[0.7rem] hover:bg-accent-pink-soft/40 min-[500px]:text-xs sm:px-2.5 sm:py-2 sm:text-sm"
-                >
-                  <span className="line-clamp-1 pr-1">{a.title}</span>
-                  <span className="shrink-0" aria-hidden>
-                    ›
-                  </span>
-                </Link>
-              ))}
-            </div>
-            <div className="hidden divide-y divide-border/80 sm:block">
-              {guideDesktopItems.map((a) => (
-                <Link
-                  key={a.id}
-                  href={`/isim-rehberi/${a.slug}`}
-                  className="flex min-h-0 items-center justify-between px-2 py-1.5 text-[0.7rem] hover:bg-accent-pink-soft/40 min-[500px]:text-xs sm:px-2.5 sm:py-2 sm:text-sm"
-                >
-                  <span className="line-clamp-1 pr-1">{a.title}</span>
-                  <span className="shrink-0" aria-hidden>
-                    ›
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </div>
-          <DiscoverRastgeleCard initial={data.discoverName} fallbacks={stockFb} />
-        </div>
-      </section>
-
       <section className="mx-auto max-w-6xl space-y-2.5 px-4 sm:space-y-3">
         <div className="flex items-center justify-between">
           <h2 className="font-display text-xl font-semibold text-primary">Türkiye&apos;de En Popüler İsimler</h2>
@@ -413,6 +372,50 @@ export function HomePageView({
             </Link>
           </div>
         </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4">
+        <div className="grid items-stretch grid-cols-1 gap-2.5 min-[500px]:grid-cols-2 min-[500px]:gap-3 sm:gap-3">
+          <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
+            <div className="flex items-center justify-between bg-primary px-2.5 py-2 text-white sm:px-3 sm:py-2.5">
+              <span className="text-[0.65rem] font-semibold uppercase tracking-wide sm:text-sm">İsim Rehberi</span>
+              <Link href="/isim-rehberi" className="text-[0.6rem] font-semibold uppercase sm:text-xs">
+                Tümü
+              </Link>
+            </div>
+            <div className="divide-y divide-border/80 sm:hidden">
+              {guideMobileTopItems.map((a) => (
+                <Link
+                  key={a.id}
+                  href={`/isim-rehberi/${a.slug}`}
+                  className="flex min-h-0 items-center justify-between px-2 py-1.5 text-[0.7rem] hover:bg-accent-pink-soft/40 min-[500px]:text-xs sm:px-2.5 sm:py-2 sm:text-sm"
+                >
+                  <span className="line-clamp-1 pr-1">{a.title}</span>
+                  <span className="shrink-0" aria-hidden>
+                    ›
+                  </span>
+                </Link>
+              ))}
+            </div>
+            <div className="hidden divide-y divide-border/80 sm:block">
+              {guideDesktopItems.map((a) => (
+                <Link
+                  key={a.id}
+                  href={`/isim-rehberi/${a.slug}`}
+                  className="flex min-h-0 items-center justify-between px-2 py-1.5 text-[0.7rem] hover:bg-accent-pink-soft/40 min-[500px]:text-xs sm:px-2.5 sm:py-2 sm:text-sm"
+                >
+                  <span className="line-clamp-1 pr-1">{a.title}</span>
+                  <span className="shrink-0" aria-hidden>
+                    ›
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+          <DiscoverRastgeleCard initial={data.discoverName} fallbacks={stockFb} />
+        </div>
+
+        <InstagramFollowCard />
       </section>
 
     </div>

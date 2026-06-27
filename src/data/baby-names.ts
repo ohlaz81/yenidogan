@@ -4,6 +4,7 @@
  * Varsayılan görsel: /media/default-name.jpg
  */
 import { BOY_NAME_PIPE, GIRL_NAME_PIPE } from "@/data/baby-name-pipe-lists";
+import { KLM_GIRL_NAME_SEED } from "@/data/klm-girl-names";
 import { expandExtraNameSeeds } from "@/lib/expand-extra-name-seeds";
 import type { BabyNameSeed } from "@/types/baby-name-seed";
 import type { Name } from "@/types/database";
@@ -2675,6 +2676,7 @@ const CORE_BABY_NAME_SEED: BabyNameSeed[] = [
     similar: ["fahriye", "fazilet", "halime"],
   },
   ...IIJ_GIRL_NAME_SEED,
+  ...KLM_GIRL_NAME_SEED,
 ];
 
 export const BABY_NAME_SEED: BabyNameSeed[] = [

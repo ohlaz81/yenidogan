@@ -18,6 +18,7 @@ import {
 } from "@/lib/name-gender-styles";
 import { Breadcrumb } from "@/components/marketing/Breadcrumb";
 import { FavoriteHeart } from "@/components/marketing/FavoriteHeart";
+import { InstagramFollowCard } from "@/components/marketing/InstagramFollowCard";
 import { MediaImage } from "@/components/marketing/MediaImage";
 import { NameCard } from "@/components/marketing/NameCard";
 import { NameComments } from "@/components/marketing/NameComments";
@@ -235,6 +236,8 @@ export default async function NameDetailPage({ params }: Props) {
       <SiblingNameSuggestions name={name} />
 
       <NameComments slug={name.slug} />
+
+      <InstagramFollowCard />
 
       {others.length > 0 && (
         <section className="mt-12">

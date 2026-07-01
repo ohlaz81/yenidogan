@@ -34,6 +34,12 @@ function pickImageUrl(url: string | null | undefined, fallback = "/media/placeho
   return trimmed.length > 0 ? trimmed : fallback;
 }
 
+const featuredGuideLink = {
+  id: "trend-bebek-isimleri-2026",
+  title: "Son Dönemlerde Trend Olan Bebek İsimleri (2026)",
+  href: "/rehber/trend-bebek-isimleri-2026",
+};
+
 export function HomePageView({
   data,
   faqs,
@@ -101,8 +107,16 @@ export function HomePageView({
     shortMeaning: n.meaning.length > 72 ? `${n.meaning.slice(0, 72).trim()}...` : n.meaning,
   }));
   const popularTickerLoop = [...popularTickerItems, ...popularTickerItems];
-  const guideMobileTopItems = data.guideArticles.slice(0, 4);
-  const guideDesktopItems = data.guideArticles.slice(0, 7);
+  const guideItems = [
+    featuredGuideLink,
+    ...data.guideArticles.map((article) => ({
+      id: article.id,
+      title: article.title,
+      href: `/isim-rehberi/${article.slug}`,
+    })),
+  ];
+  const guideMobileTopItems = guideItems.slice(0, 4);
+  const guideDesktopItems = guideItems.slice(0, 7);
 
   return (
     <div className="space-y-6 pb-8 sm:space-y-10">
@@ -387,7 +401,7 @@ export function HomePageView({
               {guideMobileTopItems.map((a) => (
                 <Link
                   key={a.id}
-                  href={`/isim-rehberi/${a.slug}`}
+                  href={a.href}
                   className="flex min-h-0 items-center justify-between px-2 py-1.5 text-[0.7rem] hover:bg-accent-pink-soft/40 min-[500px]:text-xs sm:px-2.5 sm:py-2 sm:text-sm"
                 >
                   <span className="line-clamp-1 pr-1">{a.title}</span>
@@ -401,7 +415,7 @@ export function HomePageView({
               {guideDesktopItems.map((a) => (
                 <Link
                   key={a.id}
-                  href={`/isim-rehberi/${a.slug}`}
+                  href={a.href}
                   className="flex min-h-0 items-center justify-between px-2 py-1.5 text-[0.7rem] hover:bg-accent-pink-soft/40 min-[500px]:text-xs sm:px-2.5 sm:py-2 sm:text-sm"
                 >
                   <span className="line-clamp-1 pr-1">{a.title}</span>

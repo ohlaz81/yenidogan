@@ -7,6 +7,7 @@ import { BOY_NAME_PIPE, GIRL_NAME_PIPE } from "@/data/baby-name-pipe-lists";
 import { KLM_GIRL_NAME_SEED } from "@/data/klm-girl-names";
 import { NOP_GIRL_NAME_SEED } from "@/data/nop-girl-names";
 import { R_GIRL_NAME_SEED } from "@/data/r-girl-names";
+import { SH_GIRL_NAME_SEED } from "@/data/sh-girl-names";
 import { S_GIRL_NAME_SEED } from "@/data/s-girl-names";
 import { expandExtraNameSeeds } from "@/lib/expand-extra-name-seeds";
 import type { BabyNameSeed } from "@/types/baby-name-seed";
@@ -2683,6 +2684,7 @@ const CORE_BABY_NAME_SEED: BabyNameSeed[] = [
   ...NOP_GIRL_NAME_SEED,
   ...R_GIRL_NAME_SEED,
   ...S_GIRL_NAME_SEED,
+  ...SH_GIRL_NAME_SEED,
 ];
 
 export const BABY_NAME_SEED: BabyNameSeed[] = [

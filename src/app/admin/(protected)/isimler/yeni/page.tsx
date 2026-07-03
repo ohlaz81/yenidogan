@@ -4,12 +4,14 @@ import { ADMIN_PERMISSIONS, requirePermission } from "@/lib/admin-permissions";
 import { NameForm } from "@/components/admin/NameForm";
 import { ensurePublicMediaAssets } from "@/lib/static/public-media-options";
 
+const MEDIA_OPTION_SELECT = "id,url,alt,createdAt";
+
 export default async function NewNamePage() {
   await requirePermission(ADMIN_PERMISSIONS.names);
   const s = getSupabase();
   const { data: mediaOptions, error } = await s
     .from("MediaAsset")
-    .select("*")
+    .select(MEDIA_OPTION_SELECT)
     .order("createdAt", { ascending: false })
     .limit(200);
   if (error) throw postgrestToError(error, "admin/isimler/yeni:MediaAsset");

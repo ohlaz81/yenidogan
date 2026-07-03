@@ -1,3 +1,4 @@
+import { revalidateTag, unstable_cache } from "next/cache";
 import {
   defaultHeroIfEmpty,
   defaultQuickLinksIfEmpty,
@@ -37,6 +38,12 @@ function toFeaturedSlots(names: NameWithImage[], col: "girl" | "boy"): Hfn[] {
 }
 
 const IST = "Europe/Istanbul";
+const HOME_CACHE_TAG = "home-page-data";
+const HOME_CACHE_REVALIDATE_SECONDS = 86400;
+
+export function revalidateHomePageDataCache() {
+  revalidateTag(HOME_CACHE_TAG, "max");
+}
 
 async function resolveDailyName(): Promise<NWithImg | null> {
   const db = await pickDailyNameFromPublishedDb({ timeZone: IST });
@@ -50,6 +57,33 @@ async function resolveDiscoverSeed(): Promise<NWithImg | null> {
   if (db) return db as NWithImg;
   return pickRandomNameFromStore() as NWithImg | null;
 }
+
+const getFeaturedSlotsFromDb = unstable_cache(
+  async (): Promise<{ girls: Hfn[]; boys: Hfn[] } | null> => {
+    try {
+      const s = getSupabase();
+      const { data, error } = await s
+        .from("HomeFeaturedName")
+        .select(
+          `id,column,position,nameId,name:Name!HomeFeaturedName_nameId_fkey(id,slug,displayName,meaning,gender,image:imageId(id,url,alt,createdAt))`,
+        )
+        .order("column", { ascending: true })
+        .order("position", { ascending: true });
+
+      if (error || !data) return null;
+
+      const rows = data as unknown as Hfn[];
+      return {
+        girls: rows.filter((r) => r.column === "girl"),
+        boys: rows.filter((r) => r.column === "boy"),
+      };
+    } catch {
+      return null;
+    }
+  },
+  ["home-featured-slots-v1"],
+  { revalidate: HOME_CACHE_REVALIDATE_SECONDS, tags: [HOME_CACHE_TAG] },
+);
 
 /**
  * Ana sayfa tamamen koddan: hero, kategoriler, hızlı linkler, öne çıkan isimler, rehber.
@@ -67,26 +101,9 @@ export async function getHomePageData() {
   let featuredGirlSlots = toFeaturedSlots(getFeaturedByGenderFromStore("GIRL", 5), "girl");
   let featuredBoySlots = toFeaturedSlots(getFeaturedByGenderFromStore("BOY", 5), "boy");
 
-  try {
-    const s = getSupabase();
-    const { data, error } = await s
-      .from("HomeFeaturedName")
-      .select(
-        `id,column,position,nameId,name:Name!HomeFeaturedName_nameId_fkey(id,slug,displayName,meaning,gender,image:imageId(id,url,alt,createdAt))`,
-      )
-      .order("column", { ascending: true })
-      .order("position", { ascending: true });
-
-    if (!error && data) {
-      const rows = data as unknown as Hfn[];
-      const girls = rows.filter((r) => r.column === "girl");
-      const boys = rows.filter((r) => r.column === "boy");
-      if (girls.length > 0) featuredGirlSlots = girls;
-      if (boys.length > 0) featuredBoySlots = boys;
-    }
-  } catch {
-    // Supabase erişimi yoksa veya ilişki şeması farklıysa statik veriyle devam eder.
-  }
+  const featuredSlots = await getFeaturedSlotsFromDb();
+  if (featuredSlots?.girls.length) featuredGirlSlots = featuredSlots.girls;
+  if (featuredSlots?.boys.length) featuredBoySlots = featuredSlots.boys;
 
   return {
     heroSlides,

@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getStaticGuides } from "@/data/static-guide";
-import { getNameBySlug, getNamesByLetter } from "@/lib/queries/names";
-import { getAllNameSlugs } from "@/lib/static/names-store";
+import { getNameBySlug, getNamesByLetter, getPublishedNameSlugs } from "@/lib/queries/names";
 import { genderLabels, styleLabels } from "@/lib/labels";
 import { canonicalUrl } from "@/lib/site";
 import {
@@ -37,8 +36,11 @@ import {
 
 type Props = { params: Promise<{ slug: string }> };
 
-export function generateStaticParams() {
-  return getAllNameSlugs().map((slug) => ({ slug }));
+export const revalidate = 86400;
+
+export async function generateStaticParams() {
+  const slugs = await getPublishedNameSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

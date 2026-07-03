@@ -7,7 +7,10 @@ import { deleteGuideAction } from "@/app/admin/actions/guide";
 export default async function AdminGuideListPage() {
   await requirePermission(ADMIN_PERMISSIONS.content);
   const s = getSupabase();
-  const { data: items, error } = await s.from("GuideArticle").select("*").order("updatedAt", { ascending: false });
+  const { data: items, error } = await s
+    .from("GuideArticle")
+    .select("id,slug,title,published,updatedAt")
+    .order("updatedAt", { ascending: false });
   if (error) throw postgrestToError(error, "admin/rehber:GuideArticle");
   return (
     <div className="space-y-6">

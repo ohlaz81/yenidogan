@@ -7,7 +7,7 @@ import { deleteFaqAction } from "@/app/admin/actions/faq";
 export default async function AdminFaqPage() {
   await requirePermission(ADMIN_PERMISSIONS.content);
   const s = getSupabase();
-  const { data: faqs, error } = await s.from("FAQ").select("*").order("sortOrder", { ascending: true });
+  const { data: faqs, error } = await s.from("FAQ").select("id,sortOrder,question,answer").order("sortOrder", { ascending: true });
   if (error) throw postgrestToError(error, "admin/sss-faq:FAQ");
   return (
     <div className="space-y-8">

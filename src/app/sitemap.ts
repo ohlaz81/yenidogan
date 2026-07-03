@@ -6,7 +6,7 @@ import type { Name } from "@/types/database";
 const SITE_URL = "https://yenidogan.net";
 const FALLBACK_LAST_MODIFIED = new Date("2020-01-01T00:00:00.000Z");
 
-export const dynamic = "force-dynamic";
+export const revalidate = 86400;
 
 type SitemapEntry = MetadataRoute.Sitemap[number];
 type NameLike = Pick<

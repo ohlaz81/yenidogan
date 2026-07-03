@@ -13,7 +13,11 @@ export default async function AdminNamesPage({ searchParams }: Props) {
   const sp = (await searchParams) ?? {};
   const q = (sp.q ?? "").trim();
   const s = getSupabase();
-  let query = s.from("Name").select("*").order("displayName", { ascending: true }).limit(200);
+  let query = s
+    .from("Name")
+    .select("id,slug,displayName,gender,published")
+    .order("displayName", { ascending: true })
+    .limit(200);
   if (q.length > 0) {
     query = query.or(`displayName.ilike.%${q}%,slug.ilike.%${q}%`);
   }

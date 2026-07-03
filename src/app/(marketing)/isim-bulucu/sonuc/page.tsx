@@ -15,6 +15,8 @@ export const metadata: Metadata = {
   alternates: { canonical: canonicalUrl("/isim-bulucu/sonuc") },
 };
 
+export const revalidate = 86400;
+
 type SP = Record<string, string | string[] | undefined>;
 
 function val(sp: SP, key: string) {

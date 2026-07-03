@@ -1,11 +1,13 @@
 import type { Gender, Name, NameWithDetail } from "@/types/database";
 import {
+  getAllNameSlugs,
   getNameBySlugFromStore,
   getNamesByLetterFromStore,
   listNamesFromStore,
 } from "@/lib/static/names-store";
 import { ensureNameDetailDisplayImage } from "@/lib/name-display-image";
 import {
+  fetchPublishedNameSlugs,
   getNameBySlugFromDb,
   getNamesByLetterFromDb,
   listNamesFromDb,
@@ -25,6 +27,12 @@ export async function getNameBySlug(slug: string): Promise<NameWithDetail | null
   const fromDb = await getNameBySlugFromDb(slug);
   if (fromDb) return ensureNameDetailDisplayImage(fromDb);
   return getNameBySlugFromStore(slug);
+}
+
+export async function getPublishedNameSlugs(): Promise<string[]> {
+  const fromDb = await fetchPublishedNameSlugs();
+  if (fromDb && fromDb.length > 0) return fromDb;
+  return getAllNameSlugs();
 }
 
 export async function getNamesByLetter(letter: string, gender?: Gender, take = 12) {

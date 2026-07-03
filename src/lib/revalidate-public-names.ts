@@ -1,4 +1,5 @@
 import { revalidatePath } from "next/cache";
+import { revalidatePublishedNameCache } from "@/lib/queries/names-from-db";
 
 /** İsim listesi kullanan ön yüz rotaları (kaydet/sil sonrası önbellek). */
 export const MARKETING_NAME_LIST_PATHS = [
@@ -15,6 +16,7 @@ export const MARKETING_NAME_LIST_PATHS = [
 ] as const;
 
 export function revalidatePublicNamePages(opts?: { slug?: string; previousSlug?: string }) {
+  revalidatePublishedNameCache();
   for (const p of MARKETING_NAME_LIST_PATHS) {
     revalidatePath(p);
   }

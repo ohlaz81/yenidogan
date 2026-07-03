@@ -9,7 +9,7 @@ export default async function AdminMediaPage() {
   const s = getSupabase();
   const { data: items, error } = await s
     .from("MediaAsset")
-    .select("*")
+    .select("id,url,alt,createdAt")
     .order("createdAt", { ascending: false })
     .limit(200);
   if (error) throw postgrestToError(error, "admin/medya:MediaAsset");

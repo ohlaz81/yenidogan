@@ -9,6 +9,8 @@ import { canonicalUrl } from "@/lib/site";
 import type { Gender } from "@/types/database";
 import { normalizeTrLetter } from "@/lib/text";
 
+export const revalidate = 86400;
+
 type SP = Record<string, string | string[] | undefined>;
 
 export async function generateMetadata({

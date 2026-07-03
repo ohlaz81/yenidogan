@@ -8,7 +8,7 @@ export default async function AdminInboxPage() {
   const s = getSupabase();
   const { data: msgs, error } = await s
     .from("ContactMessage")
-    .select("*")
+    .select("id,name,email,message,createdAt,read")
     .order("createdAt", { ascending: false })
     .limit(100);
   if (error) throw postgrestToError(error, "admin/iletisim:ContactMessage");

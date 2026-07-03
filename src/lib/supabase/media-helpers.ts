@@ -10,7 +10,7 @@ export async function mapByIds(
   if (!ids.length) return m;
   const { data, error } = await s
     .from("MediaAsset")
-    .select("*")
+    .select("id,url,alt,createdAt")
     .in("id", [...new Set(ids)]);
   if (error) {
     if (isMissingTableError(error)) return m;

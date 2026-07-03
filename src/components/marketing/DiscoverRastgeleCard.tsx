@@ -28,7 +28,7 @@ export function DiscoverRastgeleCard({ initial, fallbacks }: Props) {
     try {
       const ex = name?.slug ?? "";
       const qs = ex ? `?exclude=${encodeURIComponent(ex)}` : "";
-      const r = await fetch(`/api/public/random-name${qs}`, { cache: "no-store" });
+      const r = await fetch(`/api/public/random-name${qs}`);
       if (!r.ok) return;
       const json: unknown = await r.json();
       if (

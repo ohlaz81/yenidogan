@@ -6,17 +6,19 @@ import { GuideForm } from "@/components/admin/GuideForm";
 import type { GuideArticle } from "@/types/database";
 
 type Props = { params: Promise<{ id: string }> };
+const GUIDE_FORM_SELECT = "id,slug,title,excerpt,body,coverId,published,publishedAt,createdAt,updatedAt";
+const MEDIA_OPTION_SELECT = "id,url,alt,createdAt";
 
 export default async function EditGuidePage({ params }: Props) {
   await requirePermission(ADMIN_PERMISSIONS.content);
   const { id } = await params;
   const s = getSupabase();
-  const { data: article, error } = await s.from("GuideArticle").select("*").eq("id", id).maybeSingle();
+  const { data: article, error } = await s.from("GuideArticle").select(GUIDE_FORM_SELECT).eq("id", id).maybeSingle();
   if (error) throw postgrestToError(error, "admin/rehber/[id]:GuideArticle");
   if (!article) notFound();
   const { data: mediaOptions, error: mErr } = await s
     .from("MediaAsset")
-    .select("*")
+    .select(MEDIA_OPTION_SELECT)
     .order("createdAt", { ascending: false })
     .limit(200);
   if (mErr) throw postgrestToError(mErr, "admin/rehber/[id]:MediaAsset");

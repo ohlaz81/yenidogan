@@ -20,6 +20,8 @@ export const metadata: Metadata = {
   alternates: { canonical: canonicalUrl("/tum-isimler") },
 };
 
+export const revalidate = 86400;
+
 type SP = Record<string, string | string[] | undefined>;
 
 export default async function Page({ searchParams }: { searchParams: Promise<SP> }) {

@@ -7,12 +7,15 @@ import type { Name } from "@/types/database";
 import { ensurePublicMediaAssets } from "@/lib/static/public-media-options";
 
 type Props = { params: Promise<{ id: string }> };
+const NAME_FORM_SELECT =
+  "id,slug,displayName,gender,meaning,origin,pronunciation,popularity,popularScore,inQuran,quranReference,style,isShort,beautifulMeaning,firstLetter,intro,traits,published,imageId,createdAt,updatedAt";
+const MEDIA_OPTION_SELECT = "id,url,alt,createdAt";
 
 export default async function EditNamePage({ params }: Props) {
   await requirePermission(ADMIN_PERMISSIONS.names);
   const { id } = await params;
   const s = getSupabase();
-  const { data: row, error } = await s.from("Name").select("*").eq("id", id).maybeSingle();
+  const { data: row, error } = await s.from("Name").select(NAME_FORM_SELECT).eq("id", id).maybeSingle();
   if (error) throw postgrestToError(error, "admin/isimler/[id]:Name");
   if (!row) notFound();
   const { data: sims } = await s.from("SimilarName").select("targetId").eq("sourceId", id);
@@ -27,7 +30,7 @@ export default async function EditNamePage({ params }: Props) {
   const name = { ...(row as Name), similarFrom };
   const { data: mediaOptions, error: mErr } = await s
     .from("MediaAsset")
-    .select("*")
+    .select(MEDIA_OPTION_SELECT)
     .order("createdAt", { ascending: false })
     .limit(200);
   if (mErr) throw postgrestToError(mErr, "admin/isimler/[id]:MediaAsset");

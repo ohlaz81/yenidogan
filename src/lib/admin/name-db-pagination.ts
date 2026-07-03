@@ -4,6 +4,8 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 const PAGE_SIZE = 1000;
 const IN_CHUNK = 200;
 const UPSERT_CHUNK = 200;
+const NAME_BACKUP_SELECT =
+  "id,slug,displayName,gender,meaning,origin,pronunciation,popularity,popularScore,inQuran,quranReference,style,isShort,beautifulMeaning,firstLetter,intro,traits,published,imageId,createdAt,updatedAt";
 
 export type NameSlugRow = { id: string; slug: string; createdAt: string };
 
@@ -42,7 +44,7 @@ export async function fetchAllNamesForBackup(
   while (true) {
     const { data, error } = await s
       .from("Name")
-      .select("*")
+      .select(NAME_BACKUP_SELECT)
       .order("slug", { ascending: true })
       .range(from, from + PAGE_SIZE - 1);
 

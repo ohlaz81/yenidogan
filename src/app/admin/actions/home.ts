@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { getSupabase } from "@/lib/supabase/admin";
 import { postgrestToError } from "@/lib/supabase/errors";
 import { ADMIN_PERMISSIONS, requirePermission } from "@/lib/admin-permissions";
+import { revalidateHomePageDataCache } from "@/lib/queries/home";
 
 export async function updateFeaturedSlot(formData: FormData) {
   await requirePermission(ADMIN_PERMISSIONS.homeFeatured);
@@ -14,6 +15,7 @@ export async function updateFeaturedSlot(formData: FormData) {
   const s = getSupabase();
   const { error } = await s.from("HomeFeaturedName").update({ nameId } as never).eq("id", id);
   if (error) throw postgrestToError(error, "updateFeaturedSlot:HomeFeaturedName");
+  revalidateHomePageDataCache();
   revalidatePath("/");
   revalidatePath("/admin/anasayfa");
 }

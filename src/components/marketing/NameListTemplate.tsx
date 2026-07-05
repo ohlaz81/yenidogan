@@ -6,8 +6,10 @@ import { type NameWithImage } from "./NameCard";
 import { NameListRow } from "./NameListRow";
 import { AlphabetStrip } from "./AlphabetStrip";
 import { CategoryGenderFilter } from "./CategoryGenderFilter";
-import { JsonLd, collectionPageSchema } from "@/lib/json-ld";
+import { JsonLd, collectionPageSchema, faqPageSchema } from "@/lib/json-ld";
 import { canonicalUrl } from "@/lib/site";
+import { CategorySeoSection } from "./CategorySeoSection";
+import type { CategorySeoContent } from "@/data/category-seo-content";
 
 function buildPageHref(path: string, page: number, extra?: Record<string, string>) {
   const qs = new URLSearchParams();
@@ -108,6 +110,7 @@ export function NameListTemplate({
   headerClassName,
   alphabetStrip,
   genderFilter,
+  categorySeo,
 }: {
   title: string;
   description: string;
@@ -131,12 +134,15 @@ export function NameListTemplate({
   };
   /** Kur’an / popüler / modern / nadir / A–Z kategorilerinde cinsiyet sekmesi */
   genderFilter?: { basePath: string; active: "GIRL" | "BOY" | null };
+  /** Liste ve sayfalamanın altına yerleşen kategoriye özel SEO + SSS bölümü */
+  categorySeo?: CategorySeoContent;
 }) {
   const url = canonicalUrl(path);
 
   return (
     <>
       <JsonLd data={collectionPageSchema({ url, name: title, description, items })} />
+      {categorySeo && <JsonLd data={faqPageSchema(categorySeo.faqs, url)} />}
       <div className="mx-auto max-w-6xl px-4 py-10">
         <Breadcrumb items={crumbs} />
         <header
@@ -185,6 +191,7 @@ export function NameListTemplate({
             </div>
             {items.length === 0 && <p className="mt-10 text-center text-muted">Bu kritere uygun isim bulunamadı.</p>}
             <Pagination page={page} pages={pages} path={path} extra={paginationExtra} />
+            {categorySeo && <CategorySeoSection faqs={categorySeo.faqs}>{categorySeo.body}</CategorySeoSection>}
           </div>
           {aside && (
             <aside className="w-full min-w-0 space-y-4 lg:sticky lg:top-6 lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto">

@@ -4,8 +4,14 @@ import { useState } from "react";
 
 export type FaqItem = { id: string; question: string; answer: string };
 
-export function FaqAccordion({ items }: { items: FaqItem[] }) {
-  const [open, setOpen] = useState<string | null>(items[0]?.id ?? null);
+export function FaqAccordion({
+  items,
+  initialOpenId = items[0]?.id ?? null,
+}: {
+  items: FaqItem[];
+  initialOpenId?: string | null;
+}) {
+  const [open, setOpen] = useState<string | null>(initialOpenId);
 
   return (
     <div className="divide-y divide-border rounded-2xl border border-border bg-card">

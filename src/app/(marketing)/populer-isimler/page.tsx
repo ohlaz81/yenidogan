@@ -13,6 +13,7 @@ import {
 } from "@/lib/category-cinsiyet";
 import { canonicalUrl } from "@/lib/site";
 import { getFirstLettersForNameListFilters } from "@/lib/static/names-store";
+import { CATEGORY_SEO_CONTENT } from "@/data/category-seo-content";
 
 export const metadata: Metadata = {
   title: "Popüler isimler",
@@ -62,6 +63,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<SP>
         preserveQuery: genderPreserveQuery(gender),
       }}
       aside={<CategoryListAside variant="popular" gender={gender} />}
+      categorySeo={CATEGORY_SEO_CONTENT.popular}
       {...list}
     />
   );

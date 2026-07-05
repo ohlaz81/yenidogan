@@ -4,6 +4,7 @@ import { NameListTemplate, loadNameListTemplateData } from "@/components/marketi
 import { categoryListPaginationExtra, harfFromSearchParams } from "@/lib/category-cinsiyet";
 import { canonicalUrl } from "@/lib/site";
 import { getFirstLettersForGender } from "@/lib/static/names-store";
+import { CATEGORY_SEO_CONTENT } from "@/data/category-seo-content";
 
 export const metadata: Metadata = {
   title: "Erkek isimleri",
@@ -37,6 +38,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<SP>
       path="/erkek-isimleri"
       headerClassName="rounded-2xl border border-sky-200/60 bg-gradient-to-br from-sky-50 via-white to-pink-50/50 p-5 shadow-sm sm:p-7"
       aside={<GenderListAside gender="BOY" />}
+      categorySeo={CATEGORY_SEO_CONTENT.boys}
       paginationExtra={paginationExtra}
       alphabetStrip={{
         letters,

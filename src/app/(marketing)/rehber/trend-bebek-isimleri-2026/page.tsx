@@ -376,7 +376,7 @@ export default function TrendBabyNames2026Page() {
             <p className="text-xs font-bold uppercase tracking-wide text-accent-pink">Kız bebek isimleri</p>
             <h2 className="mt-2 font-display text-2xl font-semibold text-primary">Trend kız bebek isimleri</h2>
             <p className="mt-3 max-w-3xl text-base leading-8 text-muted">
-              2026'da kız isimlerinde zarif sesler, kısa heceler ve olumlu anlamlar öne çıkıyor.
+              2026&apos;da kız isimlerinde zarif sesler, kısa heceler ve olumlu anlamlar öne çıkıyor.
               Pembe tonlu bu listede hem modern hem de kullanımı rahat seçenekler yer alıyor.
             </p>
           </div>

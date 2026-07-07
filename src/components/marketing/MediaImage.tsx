@@ -1,7 +1,9 @@
- "use client";
+"use client";
+
+/* eslint-disable @next/next/no-img-element */
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export function MediaImage({
   src,
@@ -21,10 +23,8 @@ export function MediaImage({
   sizes?: string;
 }) {
   const fallbackSrc = "/media/placeholder.svg";
-  const [resolvedSrc, setResolvedSrc] = useState(src);
-  useEffect(() => {
-    setResolvedSrc(src);
-  }, [src]);
+  const [failedSrc, setFailedSrc] = useState<string | null>(null);
+  const resolvedSrc = failedSrc === src ? fallbackSrc : src;
 
   const hasNoOrganic = (className ?? "").includes("no-organic");
   const mergedClassName = `${hasNoOrganic ? "" : "site-organic-image"} ${className ?? ""}`.trim();
@@ -34,14 +34,13 @@ export function MediaImage({
     const cls = fill
       ? `absolute inset-0 h-full w-full object-cover ${mergedClassName}`.trim()
       : mergedClassName;
-    // eslint-disable-next-line @next/next/no-img-element
     return (
       <img
         src={resolvedSrc}
         alt={alt}
         className={cls}
         onError={() => {
-          if (resolvedSrc !== fallbackSrc) setResolvedSrc(fallbackSrc);
+          if (resolvedSrc !== fallbackSrc) setFailedSrc(src);
         }}
       />
     );
@@ -55,7 +54,7 @@ export function MediaImage({
         className={mergedClassName}
         sizes={sizes}
         onError={() => {
-          if (resolvedSrc !== fallbackSrc) setResolvedSrc(fallbackSrc);
+          if (resolvedSrc !== fallbackSrc) setFailedSrc(src);
         }}
       />
     );
@@ -69,7 +68,7 @@ export function MediaImage({
       className={mergedClassName}
       sizes={sizes}
       onError={() => {
-        if (resolvedSrc !== fallbackSrc) setResolvedSrc(fallbackSrc);
+        if (resolvedSrc !== fallbackSrc) setFailedSrc(src);
       }}
     />
   );

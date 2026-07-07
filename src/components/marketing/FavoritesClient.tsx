@@ -22,7 +22,7 @@ export function FavoritesClient() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setSlugs(read());
+    queueMicrotask(() => setSlugs(read()));
     const onChange = () => setSlugs(read());
     window.addEventListener("favorites-changed", onChange);
     return () => window.removeEventListener("favorites-changed", onChange);
@@ -30,11 +30,13 @@ export function FavoritesClient() {
 
   useEffect(() => {
     if (!slugs.length) {
-      setNames([]);
-      setLoading(false);
+      queueMicrotask(() => {
+        setNames([]);
+        setLoading(false);
+      });
       return;
     }
-    setLoading(true);
+    queueMicrotask(() => setLoading(true));
     fetch(`/api/public/names?slugs=${encodeURIComponent(slugs.join(","))}`)
       .then((r) => r.json())
       .then((data: NameWithImage[]) => setNames(data))

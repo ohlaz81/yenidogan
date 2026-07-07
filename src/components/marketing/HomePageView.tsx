@@ -34,11 +34,23 @@ function pickImageUrl(url: string | null | undefined, fallback = "/media/placeho
   return trimmed.length > 0 ? trimmed : fallback;
 }
 
-const featuredGuideLink = {
-  id: "trend-bebek-isimleri-2026",
-  title: "Son Dönemlerde Trend Olan Bebek İsimleri (2026)",
-  href: "/rehber/trend-bebek-isimleri-2026",
-};
+const featuredGuideLinks = [
+  {
+    id: "en-anlamli-100-kiz-bebek-ismi",
+    title: "En Anlamlı 100 Kız Bebek İsmi",
+    href: "/rehber/en-anlamli-100-kiz-bebek-ismi",
+  },
+  {
+    id: "en-anlamli-100-erkek-bebek-ismi",
+    title: "En Anlamlı 100 Erkek Bebek İsmi",
+    href: "/rehber/en-anlamli-100-erkek-bebek-ismi",
+  },
+  {
+    id: "trend-bebek-isimleri-2026",
+    title: "Son Dönemlerde Trend Olan Bebek İsimleri (2026)",
+    href: "/rehber/trend-bebek-isimleri-2026",
+  },
+];
 
 export function HomePageView({
   data,
@@ -108,15 +120,15 @@ export function HomePageView({
   }));
   const popularTickerLoop = [...popularTickerItems, ...popularTickerItems];
   const guideItems = [
-    featuredGuideLink,
+    ...featuredGuideLinks,
     ...data.guideArticles.map((article) => ({
       id: article.id,
       title: article.title,
       href: `/isim-rehberi/${article.slug}`,
     })),
   ];
-  const guideMobileTopItems = guideItems.slice(0, 4);
-  const guideDesktopItems = guideItems.slice(0, 7);
+  const guideMobileTopItems = guideItems.slice(0, 9);
+  const guideDesktopItems = guideItems.slice(0, 9);
 
   return (
     <div className="space-y-6 pb-8 sm:space-y-10">

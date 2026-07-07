@@ -2,7 +2,6 @@
  * Tek seferlik: örnek toplu import Excel üretir.
  * Çalıştır: node scripts/generate-sample-import-excel.mjs
  */
-import * as fs from "node:fs";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 import * as XLSX from "xlsx";

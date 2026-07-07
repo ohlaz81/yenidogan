@@ -10,6 +10,7 @@ import { R_GIRL_NAME_SEED } from "@/data/r-girl-names";
 import { SH_GIRL_NAME_SEED } from "@/data/sh-girl-names";
 import { S_GIRL_NAME_SEED } from "@/data/s-girl-names";
 import { T_GIRL_NAME_SEED } from "@/data/t-girl-names";
+import { U_GIRL_NAME_SEED } from "@/data/u-girl-names";
 import { expandExtraNameSeeds } from "@/lib/expand-extra-name-seeds";
 import type { BabyNameSeed } from "@/types/baby-name-seed";
 import type { Name } from "@/types/database";
@@ -2687,6 +2688,7 @@ const CORE_BABY_NAME_SEED: BabyNameSeed[] = [
   ...S_GIRL_NAME_SEED,
   ...SH_GIRL_NAME_SEED,
   ...T_GIRL_NAME_SEED,
+  ...U_GIRL_NAME_SEED,
 ];
 
 export const BABY_NAME_SEED: BabyNameSeed[] = [

@@ -109,7 +109,7 @@ async function fetchPublishedNamesRowsUncached(): Promise<Array<Name & { image: 
 
 export const fetchPublishedNamesRows = unstable_cache(
   fetchPublishedNamesRowsUncached,
-  ["published-names-rows-v3"],
+  ["published-names-rows-v4"],
   { revalidate: NAME_CACHE_REVALIDATE_SECONDS, tags: [NAME_CACHE_TAG] },
 );
 

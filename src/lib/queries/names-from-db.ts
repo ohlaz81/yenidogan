@@ -73,6 +73,22 @@ export function revalidatePublishedNameCache() {
   revalidateTag(NAME_DETAIL_CACHE_TAG, "max");
 }
 
+async function fetchPublishedNamesVersion(): Promise<string> {
+  const s = tryGetSupabase();
+  if (!s) return "no-db";
+
+  const { data, error } = await s
+    .from("Name")
+    .select("updatedAt")
+    .eq("published", true)
+    .order("updatedAt", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (error || !data?.updatedAt) return "unknown";
+  return String(data.updatedAt);
+}
+
 /**
  * Yayında tüm isimler (filtre için bellek içi kullanım).
  * PostgREST tek istekte ~1000 satır döndürür; sayfalı okunur.
@@ -107,11 +123,18 @@ async function fetchPublishedNamesRowsUncached(): Promise<Array<Name & { image: 
   return all.map(mapNameRow).map((row) => ensureNameDisplayImage(row));
 }
 
-export const fetchPublishedNamesRows = unstable_cache(
-  fetchPublishedNamesRowsUncached,
-  ["published-names-rows-v4"],
+const fetchPublishedNamesRowsCached = unstable_cache(
+  async (version: string) => {
+    void version;
+    return fetchPublishedNamesRowsUncached();
+  },
+  ["published-names-rows"],
   { revalidate: NAME_CACHE_REVALIDATE_SECONDS, tags: [NAME_CACHE_TAG] },
 );
+
+export async function fetchPublishedNamesRows() {
+  return fetchPublishedNamesRowsCached(await fetchPublishedNamesVersion());
+}
 
 async function fetchPublishedNameSlugsUncached(): Promise<string[] | null> {
   const s = tryGetSupabase();
@@ -139,11 +162,18 @@ async function fetchPublishedNameSlugsUncached(): Promise<string[] | null> {
   return all;
 }
 
-export const fetchPublishedNameSlugs = unstable_cache(
-  fetchPublishedNameSlugsUncached,
-  ["published-name-slugs-v1"],
+const fetchPublishedNameSlugsCached = unstable_cache(
+  async (version: string) => {
+    void version;
+    return fetchPublishedNameSlugsUncached();
+  },
+  ["published-name-slugs"],
   { revalidate: NAME_CACHE_REVALIDATE_SECONDS, tags: [NAME_CACHE_TAG] },
 );
+
+export async function fetchPublishedNameSlugs() {
+  return fetchPublishedNameSlugsCached(await fetchPublishedNamesVersion());
+}
 
 export async function listNamesFromDb(p: NameListParams) {
   const rows = await fetchPublishedNamesRows();
@@ -228,13 +258,16 @@ async function getSimilarNamesForBase(
 }
 
 const getCachedNameBySlugFromDb = unstable_cache(
-  getNameBySlugFromDbUncached,
-  ["published-name-detail-v2"],
+  async (slug: string, version: string) => {
+    void version;
+    return getNameBySlugFromDbUncached(slug);
+  },
+  ["published-name-detail"],
   { revalidate: NAME_CACHE_REVALIDATE_SECONDS, tags: [NAME_CACHE_TAG, NAME_DETAIL_CACHE_TAG] },
 );
 
 export async function getNameBySlugFromDb(slug: string): Promise<NameWithDetail | null> {
-  return getCachedNameBySlugFromDb(slug);
+  return getCachedNameBySlugFromDb(slug, await fetchPublishedNamesVersion());
 }
 
 export async function getNamesByLetterFromDb(letter: string, gender?: Gender, take = 12) {

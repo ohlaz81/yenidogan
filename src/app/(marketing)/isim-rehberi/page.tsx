@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { modernGuideIndexCards } from "@/data/modern-name-guides";
 import { getStaticGuides } from "@/data/static-guide";
 import { MediaImage } from "@/components/marketing/MediaImage";
 import { canonicalUrl } from "@/lib/site";
@@ -13,7 +14,13 @@ export const metadata: Metadata = {
 };
 
 export default function GuideIndexPage() {
-  const articles = getStaticGuides();
+  const articles = [
+    ...modernGuideIndexCards,
+    ...getStaticGuides().map((article) => ({
+      ...article,
+      href: `/isim-rehberi/${article.slug}`,
+    })),
+  ];
   const url = canonicalUrl("/isim-rehberi");
 
   return (
@@ -34,7 +41,7 @@ export default function GuideIndexPage() {
             itemListElement: articles.map((article, index) => ({
               "@type": "ListItem",
               position: index + 1,
-              url: canonicalUrl(`/isim-rehberi/${article.slug}`),
+              url: canonicalUrl(article.href),
               name: article.title,
               description: article.excerpt ?? undefined,
             })),
@@ -49,7 +56,7 @@ export default function GuideIndexPage() {
           return (
             <Link
               key={a.id}
-              href={`/isim-rehberi/${a.slug}`}
+              href={a.href}
               className="group overflow-hidden rounded-2xl border border-border bg-white shadow-sm transition hover:border-primary/30"
             >
               <div className="relative aspect-[16/10] bg-muted/30">

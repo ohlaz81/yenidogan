@@ -4,6 +4,7 @@ import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { InstagramFollowCard } from "@/components/marketing/InstagramFollowCard";
 import { MediaImage } from "@/components/marketing/MediaImage";
 import { DiscoverRastgeleCard } from "@/components/marketing/DiscoverRastgeleCard";
+import { modernGuideIndexCards } from "@/data/modern-name-guides";
 import type { FAQ } from "@/types/database";
 import { babyMediaPublicUrl } from "@/lib/static/baby-media-url";
 import { resolveTickerBabyImageUrl } from "@/lib/name-display-image";
@@ -35,6 +36,11 @@ function pickImageUrl(url: string | null | undefined, fallback = "/media/placeho
 }
 
 const featuredGuideLinks = [
+  ...modernGuideIndexCards.map((article) => ({
+    id: article.id,
+    title: article.title,
+    href: article.href,
+  })),
   {
     id: "en-anlamli-100-kiz-bebek-ismi",
     title: "En Anlamlı 100 Kız Bebek İsmi",

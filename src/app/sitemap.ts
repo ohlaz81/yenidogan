@@ -1,5 +1,6 @@
 import { MetadataRoute } from "next";
 import { modernGuideIndexCards } from "@/data/modern-name-guides";
+import { quranGuideIndexCard } from "@/data/quran-names-guide";
 import { getStaticGuides } from "@/data/static-guide";
 import { listNames } from "@/lib/queries/names";
 import { normalizeNameSlug } from "@/lib/slug";
@@ -122,6 +123,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const modernGuideEntries = modernGuideIndexCards.map((guide) =>
     entry(guide.href, toDate(guide.cover.createdAt), "monthly", 0.7),
   );
+  const quranGuideEntry = entry(
+    quranGuideIndexCard.href,
+    toDate(quranGuideIndexCard.cover.createdAt),
+    "monthly",
+    0.7,
+  );
 
-  return [...categories, ...letterEntries, ...nameEntries, ...guideEntries, ...modernGuideEntries];
+  return [...categories, ...letterEntries, ...nameEntries, ...guideEntries, ...modernGuideEntries, quranGuideEntry];
 }

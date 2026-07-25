@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { modernGuideIndexCards } from "@/data/modern-name-guides";
+import { quranGuideIndexCard } from "@/data/quran-names-guide";
 import { getStaticGuides } from "@/data/static-guide";
 import { MediaImage } from "@/components/marketing/MediaImage";
 import { canonicalUrl } from "@/lib/site";
@@ -15,6 +16,7 @@ export const metadata: Metadata = {
 
 export default function GuideIndexPage() {
   const articles = [
+    quranGuideIndexCard,
     ...modernGuideIndexCards,
     ...getStaticGuides().map((article) => ({
       ...article,

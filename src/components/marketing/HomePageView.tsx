@@ -5,6 +5,7 @@ import { InstagramFollowCard } from "@/components/marketing/InstagramFollowCard"
 import { MediaImage } from "@/components/marketing/MediaImage";
 import { DiscoverRastgeleCard } from "@/components/marketing/DiscoverRastgeleCard";
 import { modernGuideIndexCards } from "@/data/modern-name-guides";
+import { quranGuideIndexCard } from "@/data/quran-names-guide";
 import type { FAQ } from "@/types/database";
 import { babyMediaPublicUrl } from "@/lib/static/baby-media-url";
 import { resolveTickerBabyImageUrl } from "@/lib/name-display-image";
@@ -36,6 +37,11 @@ function pickImageUrl(url: string | null | undefined, fallback = "/media/placeho
 }
 
 const featuredGuideLinks = [
+  {
+    id: quranGuideIndexCard.id,
+    title: "Kur’an’da Geçen Kız ve Erkek İsimleri",
+    href: quranGuideIndexCard.href,
+  },
   ...modernGuideIndexCards.map((article) => ({
     id: article.id,
     title: article.title,

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Name } from "@/types/database";
 import { getNameBySlug, getSiblingNameSuggestions, type SiblingNameSuggestion } from "@/lib/queries/names";
+import { nameDisplayTextClass } from "@/lib/name-gender-styles";
 
 type Props =
   | {
@@ -40,8 +41,18 @@ function SuggestionGroup({
   if (items.length === 0) return null;
 
   return (
-    <div className={`rounded-2xl border p-4 shadow-sm ${suggestionCardClass(gender)}`}>
-      <h3 className={`font-display text-base font-semibold ${suggestionTitleClass(gender)}`}>{title}</h3>
+    <div className={`rounded-2xl border p-3 shadow-sm sm:p-4 ${suggestionCardClass(gender)}`}>
+      <h3 className={`flex items-center gap-2 font-display text-lg font-semibold leading-tight sm:text-base ${suggestionTitleClass(gender)}`}>
+        <span
+          className={`flex size-7 items-center justify-center rounded-full text-xs ${
+            gender === "GIRL" ? "bg-accent-pink-soft" : "bg-accent-blue-soft"
+          }`}
+          aria-hidden="true"
+        >
+          {gender === "GIRL" ? "♀" : "♂"}
+        </span>
+        {title}
+      </h3>
       <div className="mt-3 flex flex-wrap gap-2">
         {items.map((item) => (
           <Link key={item.id} href={`/isim/${item.slug}`} className={suggestionPillClass(gender)}>
@@ -61,11 +72,12 @@ export async function SiblingNameSuggestions(props: Props) {
   if (suggestions.girls.length === 0 && suggestions.boys.length === 0) return null;
 
   return (
-    <section className="mt-10">
+    <section className="mt-10 rounded-3xl border border-border bg-white p-4 shadow-sm md:rounded-none md:border-0 md:bg-transparent md:p-0 md:shadow-none">
       <h2 className="font-display text-xl font-semibold text-primary">
-        {name.displayName} ile uyumlu kardeş isimleri
+        <span className={nameDisplayTextClass(name.gender)}>{name.displayName}</span> ile uyumlu kardeş isimleri
       </h2>
-      <div className="mt-4 grid gap-4 md:grid-cols-2">
+      <span className={`mt-2 block h-0.5 w-12 rounded-full ${name.gender === "BOY" ? "bg-accent-blue" : "bg-accent-pink"}`} />
+      <div className="mt-3 grid gap-3 md:mt-4 md:grid-cols-2 md:gap-4">
         <SuggestionGroup title="Kız kardeş isimleri" gender="GIRL" items={suggestions.girls} />
         <SuggestionGroup title="Erkek kardeş isimleri" gender="BOY" items={suggestions.boys} />
       </div>

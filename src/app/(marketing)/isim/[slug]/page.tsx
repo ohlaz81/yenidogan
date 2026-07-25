@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getStaticGuides } from "@/data/static-guide";
-import { getNameBySlug, getNamesByLetter, getPublishedNameSlugs } from "@/lib/queries/names";
+import { getNameBySlug, getNamesByLetter, getPublishedNameSlugs, getSecondNameSuggestions } from "@/lib/queries/names";
 import { genderLabels, styleLabels } from "@/lib/labels";
 import { canonicalUrl } from "@/lib/site";
 import {
@@ -101,7 +101,10 @@ export default async function NameDetailPage({ params }: Props) {
     : [];
 
   const similar = name.similarFrom.map((s) => s.target);
-  const sameLetter = await getNamesByLetter(name.firstLetter, name.gender, 8);
+  const [sameLetter, secondNameSuggestions] = await Promise.all([
+    getNamesByLetter(name.firstLetter, name.gender, 8),
+    getSecondNameSuggestions(name, 10),
+  ]);
   const others = sameLetter.filter((n) => n.id !== name.id && !similar.some((s) => s.id === n.id)).slice(0, 6);
 
   const guides = getStaticGuides().slice(0, 3);
@@ -164,7 +167,111 @@ export default async function NameDetailPage({ params }: Props) {
         </div>
       </section>
 
-      <section className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <section className="mt-8 space-y-4 sm:hidden">
+        <div className="rounded-3xl border border-pink-100 bg-pink-50/70 p-6 shadow-sm">
+          <div className="flex items-center gap-2.5">
+            <span
+              className="flex size-8 shrink-0 items-center justify-center rounded-full bg-accent-pink-soft text-accent-pink"
+              aria-hidden="true"
+            >
+              <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.8">
+                <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H11v16H6.5A2.5 2.5 0 0 0 4 21.5v-16Z" />
+                <path d="M20 5.5A2.5 2.5 0 0 0 17.5 3H13v16h4.5a2.5 2.5 0 0 1 2.5 2.5v-16Z" />
+              </svg>
+            </span>
+            <p className="text-xs font-semibold tracking-wide text-accent-pink">Anlamı</p>
+          </div>
+          <p className="mt-2 text-sm font-medium leading-relaxed text-foreground">{name.meaning}</p>
+        </div>
+
+        <div className="grid grid-cols-4 overflow-hidden rounded-3xl border border-violet-100 bg-white px-1 py-5 shadow-sm">
+          <div className="flex min-w-0 flex-col items-center px-1 text-center">
+            <span className="flex size-14 items-center justify-center rounded-full bg-emerald-100 text-emerald-700" aria-hidden="true">
+              <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="1.7">
+                <path d="M19.5 4.5C12 4.6 7.2 8.1 6.4 13.2c-.5 3.1 1.6 5.5 4.7 5.1 5.2-.7 8.3-6.1 8.4-13.8Z" />
+                <path d="M5 20c2.7-4.4 6.1-7.6 10.4-9.8" />
+              </svg>
+            </span>
+            <p className="mt-2.5 text-[0.8rem] font-semibold leading-tight text-emerald-700">Köken</p>
+            <p className="mt-1.5 w-full break-words text-sm font-semibold leading-tight text-foreground">
+              {name.origin}
+            </p>
+          </div>
+          <div className="flex min-w-0 flex-col items-center border-l border-border px-1 text-center">
+            <span className="flex size-14 items-center justify-center rounded-full bg-sky-100 text-sky-700" aria-hidden="true">
+              <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="1.7">
+                <path d="M4 18 8.5 6 13 18M5.5 14h6" />
+                <path d="M15 10h5M17.5 7.5v5" />
+              </svg>
+            </span>
+            <p className="mt-2.5 text-[0.8rem] font-semibold leading-tight text-sky-700">Okunuş</p>
+            <p className="mt-1.5 w-full break-words text-sm font-semibold leading-tight text-foreground">
+              {name.pronunciation}
+            </p>
+          </div>
+          <div className="flex min-w-0 flex-col items-center border-l border-border px-0.5 text-center">
+            <span className="flex size-14 items-center justify-center rounded-full bg-violet-100 text-violet-700" aria-hidden="true">
+              <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="1.7">
+                <path d="m12 3 2.2 4.5 5 .7-3.6 3.5.8 5-4.4-2.3-4.4 2.3.8-5-3.6-3.5 5-.7L12 3Z" />
+              </svg>
+            </span>
+            <p className="mt-2.5 text-[0.75rem] font-semibold leading-tight text-violet-700">Popülerlik</p>
+            <div className="mt-1.5 scale-[0.82] whitespace-nowrap text-sm font-medium leading-none text-foreground min-[360px]:scale-90">
+              <Stars value={name.popularity} />
+            </div>
+          </div>
+          <div className="flex min-w-0 flex-col items-center border-l border-border px-1 text-center">
+            <span
+              className={`flex size-14 items-center justify-center rounded-full ${nameDisplayTextClass(name.gender)} ${
+                name.gender === "GIRL"
+                  ? "bg-accent-pink-soft"
+                  : name.gender === "BOY"
+                    ? "bg-accent-blue-soft"
+                    : "bg-purple-100"
+              }`}
+              aria-hidden="true"
+            >
+              <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="1.7">
+                <circle cx="12" cy="8" r="3" />
+                <path d="M6.5 19c.5-3.3 2.4-5 5.5-5s5 1.7 5.5 5" />
+              </svg>
+            </span>
+            <p className={`mt-2.5 text-[0.8rem] font-semibold leading-tight ${nameDisplayTextClass(name.gender)}`}>
+              Cinsiyet
+            </p>
+            <p
+              className={`mt-1.5 w-full break-words text-sm font-semibold leading-tight ${nameDisplayTextClass(name.gender)}`}
+            >
+              {genderLabels[name.gender]}
+            </p>
+          </div>
+        </div>
+
+        <div className="rounded-3xl border border-amber-200/70 bg-amber-50/80 p-6 shadow-sm">
+          <div className="flex items-center gap-2.5">
+            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-700" aria-hidden="true">
+              <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.8">
+                <path d="M5 4h11a3 3 0 0 1 3 3v13H7a2 2 0 0 1-2-2V4Z" />
+                <path d="M5 17.5A2.5 2.5 0 0 1 7.5 15H19M9 7h6" />
+              </svg>
+            </span>
+            <p className="text-xs font-semibold tracking-wide text-amber-700">Kur’an’da geçiyor mu?</p>
+          </div>
+          <p className="mt-2 text-sm font-medium text-foreground">
+            {name.inQuran ? "Evet" : "Hayır, geçmemektedir"}
+          </p>
+          {name.inQuran ? (
+            <>
+              <p className="mt-3 text-xs font-bold uppercase tracking-wide text-muted">Nerede / kısa not</p>
+              <p className="mt-1 text-sm leading-relaxed text-foreground/90">
+                {name.quranReference?.trim() ? name.quranReference.trim() : "—"}
+              </p>
+            </>
+          ) : null}
+        </div>
+      </section>
+
+      <section className="mt-8 hidden gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-3">
         <div className={`rounded-2xl border border-border p-4 shadow-sm ${nameMeaningCardBgClass(name.gender)}`}>
           <p className="text-xs font-bold uppercase tracking-wide text-muted">📖 Anlamı</p>
           <p className="mt-2 text-sm font-medium text-foreground">{name.meaning}</p>
@@ -208,11 +315,12 @@ export default async function NameDetailPage({ params }: Props) {
           <h2 className="font-display text-xl font-semibold text-primary">
             <span className={nameDisplayTextClass(name.gender)}>{name.displayName}</span> isminin özellikleri
           </h2>
+          <span className={`mt-2 block h-0.5 w-14 rounded-full ${name.gender === "BOY" ? "bg-accent-blue" : "bg-accent-pink"}`} />
           {traits.length > 0 ? (
-            <ul className="mt-4 space-y-2 text-sm text-muted">
+            <ul className="mt-5 flex flex-wrap gap-2.5 text-[0.9375rem] text-muted">
               {traits.map((t) => (
-                <li key={t} className="flex gap-2">
-                  <span className={nameTraitCheckClass(name.gender)}>✓</span>
+                <li key={t} className="flex min-h-10 w-fit max-w-full items-center gap-2 rounded-full border border-pink-100 bg-white px-4 py-2 shadow-sm sm:min-h-0 sm:px-3 sm:py-1.5">
+                  <span className={`text-xs ${nameTraitCheckClass(name.gender)}`}>✓</span>
                   {t}
                 </li>
               ))}
@@ -238,6 +346,27 @@ export default async function NameDetailPage({ params }: Props) {
       </div>
 
       <SiblingNameSuggestions name={name} />
+
+      {secondNameSuggestions.length > 0 ? (
+        <section className="mt-8 sm:mt-10">
+          <h2 className="font-display text-xl font-semibold text-primary">
+            {name.displayName} için ikinci isim önerileri
+          </h2>
+          <span className="mt-2 block h-0.5 w-12 rounded-full bg-violet-400" />
+          <div className="mt-3 flex flex-wrap gap-2">
+            {secondNameSuggestions.map((suggestion) => (
+              <Link
+                key={suggestion.id}
+                href={`/isim/${suggestion.slug}`}
+                className="rounded-full border border-violet-100 bg-violet-50/60 px-3 py-1.5 text-sm shadow-sm transition hover:bg-violet-50 hover:underline active:bg-violet-100/70"
+              >
+                <span className="font-bold text-accent-pink">{name.displayName}</span>{" "}
+                <span className="font-semibold text-slate-800">{suggestion.displayName}</span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       <NameComments slug={name.slug} />
 

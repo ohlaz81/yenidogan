@@ -26,6 +26,7 @@ import { ShareButton } from "@/components/marketing/ShareButton";
 import { SiblingNameSuggestions } from "@/components/marketing/SiblingNameSuggestions";
 import { Stars } from "@/components/marketing/Stars";
 import { NAME_OG_IMAGE_SIZE } from "@/lib/name-og-image-config";
+import { normalizeNameSlug } from "@/lib/slug";
 import {
   JsonLd,
   breadcrumbListSchema,
@@ -37,14 +38,15 @@ import {
 type Props = { params: Promise<{ slug: string }> };
 
 export const revalidate = 86400;
+export const dynamicParams = true;
 
 export async function generateStaticParams() {
   const slugs = await getPublishedNameSlugs();
-  return slugs.map((slug) => ({ slug }));
+  return Array.from(new Set(slugs.map(normalizeNameSlug).filter(Boolean))).map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
+  const slug = normalizeNameSlug((await params).slug);
   const n = await getNameBySlug(slug);
   if (!n) return { title: "İsim bulunamadı" };
   const title = `${n.displayName} isminin anlamı`;
@@ -88,7 +90,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function NameDetailPage({ params }: Props) {
-  const { slug } = await params;
+  const slug = normalizeNameSlug((await params).slug);
   const name = await getNameBySlug(slug);
   if (!name) notFound();
 

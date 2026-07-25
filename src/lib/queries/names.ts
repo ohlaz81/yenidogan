@@ -1,10 +1,4 @@
 import type { Gender, Name, NameWithDetail } from "@/types/database";
-import {
-  getAllNameSlugs,
-  getNameBySlugFromStore,
-  getNamesByLetterFromStore,
-  listNamesFromStore,
-} from "@/lib/static/names-store";
 import { ensureNameDetailDisplayImage } from "@/lib/name-display-image";
 import {
   fetchPublishedNameSlugs,
@@ -13,32 +7,33 @@ import {
   listNamesFromDb,
 } from "@/lib/queries/names-from-db";
 import type { NameListParams } from "@/lib/name-list-params";
+import { normalizeNameSlug } from "@/lib/slug";
 
 export type { NameListParams } from "@/lib/name-list-params";
 
 /** Canlı içerik: Supabase’de yayınlanmış isimler öncelikli; eksik ortamda `baby-names` seed kullanılır. */
 export async function listNames(p: NameListParams) {
   const fromDb = await listNamesFromDb(p);
-  if (fromDb !== null) return fromDb;
-  return listNamesFromStore(p);
+  if (fromDb === null) throw new Error("Yayınlanmış isim listesi alınamadı.");
+  return fromDb;
 }
 
 export async function getNameBySlug(slug: string): Promise<NameWithDetail | null> {
-  const fromDb = await getNameBySlugFromDb(slug);
+  const fromDb = await getNameBySlugFromDb(normalizeNameSlug(slug));
   if (fromDb) return ensureNameDetailDisplayImage(fromDb);
-  return getNameBySlugFromStore(slug);
+  return null;
 }
 
 export async function getPublishedNameSlugs(): Promise<string[]> {
   const fromDb = await fetchPublishedNameSlugs();
-  if (fromDb && fromDb.length > 0) return fromDb;
-  return getAllNameSlugs();
+  if (fromDb === null) throw new Error("Yayınlanmış isim slug'ları alınamadı.");
+  return fromDb;
 }
 
 export async function getNamesByLetter(letter: string, gender?: Gender, take = 12) {
   const fromDb = await getNamesByLetterFromDb(letter, gender, take);
-  if (fromDb !== null) return fromDb;
-  return getNamesByLetterFromStore(letter, gender, take);
+  if (fromDb === null) throw new Error("Harfe göre isim listesi alınamadı.");
+  return fromDb;
 }
 
 export type SiblingNameSuggestion = Pick<

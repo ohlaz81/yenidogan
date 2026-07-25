@@ -1,7 +1,9 @@
-export function slugify(text: string) {
+export function normalizeNameSlug(text: string) {
   return text
     .trim()
-    .toLowerCase()
+    .toLocaleLowerCase("tr-TR")
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
     .replace(/ğ/g, "g")
     .replace(/ü/g, "u")
     .replace(/ş/g, "s")
@@ -11,3 +13,5 @@ export function slugify(text: string) {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 }
+
+export const slugify = normalizeNameSlug;

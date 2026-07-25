@@ -2,6 +2,7 @@ import { MetadataRoute } from "next";
 import { modernGuideIndexCards } from "@/data/modern-name-guides";
 import { getStaticGuides } from "@/data/static-guide";
 import { listNames } from "@/lib/queries/names";
+import { normalizeNameSlug } from "@/lib/slug";
 import type { Name } from "@/types/database";
 
 const SITE_URL = "https://yenidogan.net";
@@ -101,8 +102,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       entry(`/harf/${encodeURIComponent(letter.toLocaleLowerCase("tr-TR"))}`, lastModified, "weekly", 0.6),
     );
 
-  const nameEntries = names.map((name) =>
-    entry(`/isim/${name.slug}`, toDate(name.updatedAt ?? name.createdAt), "weekly", 0.7),
+  const nameEntries = Array.from(
+    new Map(
+      names
+        .map((name) => ({ name, slug: normalizeNameSlug(name.slug) }))
+        .filter(({ slug }) => Boolean(slug))
+        .map(({ name, slug }) => [slug, entry(`/isim/${slug}`, toDate(name.updatedAt ?? name.createdAt), "weekly", 0.7)]),
+    ).values(),
   );
 
   const guideEntries = guides.map((guide) =>

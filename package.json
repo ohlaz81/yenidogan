@@ -9,7 +9,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "audit:names": "tsx scripts/audit-published-names.ts"
   },
   "dependencies": {
     "@paralleldrive/cuid2": "^3.3.0",

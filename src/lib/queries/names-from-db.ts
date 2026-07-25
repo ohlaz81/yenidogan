@@ -2,6 +2,8 @@ import { revalidateTag, unstable_cache } from "next/cache";
 import { getSupabase } from "@/lib/supabase/admin";
 import { ensureNameDisplayImage } from "@/lib/name-display-image";
 import { applyNameListParams, pickDailyFromNameList } from "@/lib/static/names-store";
+import { firstLetterTr } from "@/lib/text";
+import { normalizeNameSlug } from "@/lib/slug";
 import type { NameListParams } from "@/lib/name-list-params";
 import type { Gender, MediaAsset, Name, NameWithDetail } from "@/types/database";
 
@@ -26,31 +28,70 @@ function mapTraits(raw: unknown): unknown {
   return null;
 }
 
+export class PublishedNamesDataSourceError extends Error {
+  constructor(message: string, options?: ErrorOptions) {
+    super(message, options);
+    this.name = "PublishedNamesDataSourceError";
+  }
+}
+
+function requireSupabase() {
+  const client = tryGetSupabase();
+  if (!client) {
+    throw new PublishedNamesDataSourceError("Yayınlanmış isimler için Supabase bağlantısı yapılandırılmamış.");
+  }
+  return client;
+}
+
+function normalizeDbBool(raw: unknown): boolean {
+  if (typeof raw === "boolean") return raw;
+  if (typeof raw === "number") return raw === 1;
+  if (typeof raw === "string") {
+    const value = raw.trim().toLocaleLowerCase("tr-TR");
+    return ["true", "1", "yes", "evet", "e", "yayinda", "yayında", "published"].includes(value);
+  }
+  return false;
+}
+
+function normalizeDbGender(raw: unknown): Gender {
+  const value = String(raw ?? "").trim().toLocaleUpperCase("tr-TR");
+  if (["GIRL", "KIZ", "KIZLAR", "FEMALE"].includes(value)) return "GIRL";
+  if (["BOY", "ERKEK", "OĞLAN", "OGLAN", "MALE"].includes(value)) return "BOY";
+  if (["UNISEX", "UNİSEX", "UNISEKS", "ÜNISEX", "ÜNİSEX"].includes(value)) return "UNISEX";
+  return "UNISEX";
+}
+
+function normalizeDbFirstLetter(raw: unknown, displayName: string): string {
+  const fromDb = String(raw ?? "").trim();
+  return firstLetterTr(fromDb || displayName);
+}
+
 function mapNameRow(row: RowWithImg): Name & { image: MediaAsset | null } {
   const rawImage = Array.isArray(row.image) ? row.image[0] : row.image;
   const image = rawImage && typeof rawImage === "object" ? (rawImage as MediaAsset) : null;
+  const displayName = String(row.displayName);
   return {
     id: String(row.id),
     slug: String(row.slug),
-    displayName: String(row.displayName),
-    gender: row.gender as Gender,
+    displayName,
+    gender: normalizeDbGender(row.gender),
     meaning: row.meaning === null || row.meaning === undefined ? "" : String(row.meaning),
     origin: row.origin === null || row.origin === undefined ? "" : String(row.origin),
     pronunciation: row.pronunciation === null || row.pronunciation === undefined ? "" : String(row.pronunciation),
     popularity: Number(row.popularity) || 1,
     popularScore: Number(row.popularScore) ?? 0,
-    inQuran: Boolean(row.inQuran),
+    inQuran: normalizeDbBool(row.inQuran),
     quranReference:
       row.quranReference === null || row.quranReference === undefined
         ? null
         : String(row.quranReference).trim() || null,
     style: row.style as Name["style"],
-    isShort: Boolean(row.isShort),
-    beautifulMeaning: Boolean(row.beautifulMeaning),
-    firstLetter: String(row.firstLetter),
+    isShort: normalizeDbBool(row.isShort),
+    beautifulMeaning: normalizeDbBool(row.beautifulMeaning),
+    firstLetter: normalizeDbFirstLetter(row.firstLetter, displayName),
     intro: row.intro === null || row.intro === undefined ? null : String(row.intro),
     traits: mapTraits(row.traits),
-    published: Boolean(row.published),
+    published: normalizeDbBool(row.published),
     imageId: row.imageId === null || row.imageId === undefined ? null : String(row.imageId),
     createdAt: row.createdAt === null || row.createdAt === undefined ? "2020-01-01T00:00:00.000Z" : String(row.createdAt),
     updatedAt: row.updatedAt === null || row.updatedAt === undefined ? "2020-01-01T00:00:00.000Z" : String(row.updatedAt),
@@ -95,8 +136,7 @@ async function fetchPublishedNamesVersion(): Promise<string> {
  * Başarısız veya env yoksa null.
  */
 async function fetchPublishedNamesRowsUncached(): Promise<Array<Name & { image: MediaAsset | null }> | null> {
-  const s = tryGetSupabase();
-  if (!s) return null;
+  const s = requireSupabase();
 
   const all: RowWithImg[] = [];
   let from = 0;
@@ -110,7 +150,9 @@ async function fetchPublishedNamesRowsUncached(): Promise<Array<Name & { image: 
       .order("displayName", { ascending: true })
       .range(from, from + PUBLISHED_PAGE_SIZE - 1);
 
-    if (error) return all.length > 0 ? all.map(mapNameRow).map((row) => ensureNameDisplayImage(row)) : null;
+    if (error) {
+      throw new PublishedNamesDataSourceError(`Yayınlanmış isim listesi okunamadı: ${error.message}`, { cause: error });
+    }
 
     const batch = (data ?? []) as unknown as RowWithImg[];
     all.push(...batch);
@@ -137,8 +179,7 @@ export async function fetchPublishedNamesRows() {
 }
 
 async function fetchPublishedNameSlugsUncached(): Promise<string[] | null> {
-  const s = tryGetSupabase();
-  if (!s) return null;
+  const s = requireSupabase();
 
   const all: string[] = [];
   let from = 0;
@@ -151,7 +192,9 @@ async function fetchPublishedNameSlugsUncached(): Promise<string[] | null> {
       .order("slug", { ascending: true })
       .range(from, from + PUBLISHED_PAGE_SIZE - 1);
 
-    if (error) return all.length > 0 ? all : null;
+    if (error) {
+      throw new PublishedNamesDataSourceError(`Yayınlanmış isim slug'ları okunamadı: ${error.message}`, { cause: error });
+    }
 
     const batch = (data ?? []) as Array<{ slug: string | null }>;
     all.push(...batch.map((row) => row.slug).filter((slug): slug is string => Boolean(slug)));
@@ -177,27 +220,39 @@ export async function fetchPublishedNameSlugs() {
 
 export async function listNamesFromDb(p: NameListParams) {
   const rows = await fetchPublishedNamesRows();
-  if (rows === null) return null;
-  /** Tablo boşsa seed veriye düşelim (importsuz ortam). */
-  if (rows.length === 0) return null;
+  if (rows === null) throw new PublishedNamesDataSourceError("Yayınlanmış isim listesi alınamadı.");
   return applyNameListParams(rows, p);
 }
 
-async function getNameBySlugFromDbUncached(slug: string): Promise<NameWithDetail | null> {
-  const s = tryGetSupabase();
-  if (!s) return null;
+export async function getNameBySlugFromDbUncached(slug: string): Promise<NameWithDetail | null> {
+  const s = requireSupabase();
+  const normalizedSlug = normalizeNameSlug(slug);
+  if (!normalizedSlug) return null;
 
-  const { data: row, error } = await s
+  const { data: exactRows, error } = await s
     .from("Name")
     .select(NAME_DETAIL_SELECT)
-    .eq("slug", slug)
+    .ilike("slug", normalizedSlug)
     .eq("published", true)
-    .maybeSingle();
+    .limit(2);
 
-  if (error) return getNameBySlugFromDbFallback(slug);
+  if (error) return getNameBySlugFromDbFallback(normalizedSlug);
+  let row = (exactRows ?? [])[0] as unknown as RowWithImg | undefined;
+  if (!row) {
+    const id = await findPublishedNameIdByNormalizedSlug(s, normalizedSlug);
+    if (!id) return null;
+    const { data: recoveredRow, error: recoveredError } = await s
+      .from("Name")
+      .select(NAME_DETAIL_SELECT)
+      .eq("id", id)
+      .eq("published", true)
+      .maybeSingle();
+    if (recoveredError) return getNameBySlugFromDbFallback(normalizedSlug, id);
+    row = recoveredRow as unknown as RowWithImg | undefined;
+  }
   if (!row) return null;
 
-  const rowWithSimilar = row as unknown as RowWithImg;
+  const rowWithSimilar = row;
   const base = ensureNameDisplayImage(mapNameRow(rowWithSimilar));
   const embeddedSimilar = (rowWithSimilar.similarFrom ?? [])
     .map((link) => link.target)
@@ -213,18 +268,44 @@ async function getNameBySlugFromDbUncached(slug: string): Promise<NameWithDetail
   return getSimilarNamesForBase(s, base);
 }
 
-async function getNameBySlugFromDbFallback(slug: string): Promise<NameWithDetail | null> {
-  const s = tryGetSupabase();
-  if (!s) return null;
+async function findPublishedNameIdByNormalizedSlug(
+  s: ReturnType<typeof getSupabase>,
+  normalizedSlug: string,
+): Promise<string | null> {
+  let from = 0;
+  while (true) {
+    const { data, error } = await s
+      .from("Name")
+      .select("id,slug")
+      .eq("published", true)
+      .order("id", { ascending: true })
+      .range(from, from + PUBLISHED_PAGE_SIZE - 1);
+    if (error) {
+      throw new PublishedNamesDataSourceError(`İsim slug dizini okunamadı: ${error.message}`, { cause: error });
+    }
+    const batch = (data ?? []) as Array<{ id: string; slug: string | null }>;
+    const match = batch.find((candidate) => normalizeNameSlug(candidate.slug ?? "") === normalizedSlug);
+    if (match) return match.id;
+    if (batch.length < PUBLISHED_PAGE_SIZE) return null;
+    from += PUBLISHED_PAGE_SIZE;
+  }
+}
 
-  const { data: row, error } = await s
+async function getNameBySlugFromDbFallback(slug: string, id?: string): Promise<NameWithDetail | null> {
+  const s = requireSupabase();
+
+  let query = s
     .from("Name")
     .select(NAME_DETAIL_BASE_SELECT)
-    .eq("slug", slug)
-    .eq("published", true)
-    .maybeSingle();
+    .eq("published", true);
+  query = id ? query.eq("id", id) : query.ilike("slug", slug);
+  const { data: rows, error } = await query.limit(2);
 
-  if (error || !row) return null;
+  if (error) {
+    throw new PublishedNamesDataSourceError(`İsim detayı okunamadı: ${error.message}`, { cause: error });
+  }
+  const row = (rows ?? [])[0];
+  if (!row) return null;
 
   const base = ensureNameDisplayImage(mapNameRow(row as unknown as RowWithImg));
   return getSimilarNamesForBase(s, base);
@@ -267,7 +348,9 @@ const getCachedNameBySlugFromDb = unstable_cache(
 );
 
 export async function getNameBySlugFromDb(slug: string): Promise<NameWithDetail | null> {
-  return getCachedNameBySlugFromDb(slug, await fetchPublishedNamesVersion());
+  const normalizedSlug = normalizeNameSlug(slug);
+  if (!normalizedSlug) return null;
+  return getCachedNameBySlugFromDb(normalizedSlug, await fetchPublishedNamesVersion());
 }
 
 export async function getNamesByLetterFromDb(letter: string, gender?: Gender, take = 12) {

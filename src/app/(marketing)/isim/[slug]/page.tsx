@@ -360,7 +360,7 @@ export default async function NameDetailPage({ params }: Props) {
                 href={`/isim/${suggestion.slug}`}
                 className="rounded-full border border-violet-100 bg-violet-50/60 px-3 py-1.5 text-sm shadow-sm transition hover:bg-violet-50 hover:underline active:bg-violet-100/70"
               >
-                <span className="font-bold text-accent-pink">{name.displayName}</span>{" "}
+                <span className={`font-bold ${nameDisplayTextClass(name.gender)}`}>{name.displayName}</span>{" "}
                 <span className="font-semibold text-slate-800">{suggestion.displayName}</span>
               </Link>
             ))}

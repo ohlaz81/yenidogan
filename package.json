@@ -10,7 +10,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "audit:names": "tsx scripts/audit-published-names.ts"
+    "typecheck": "tsc --noEmit",
+    "audit:names": "tsx scripts/audit-published-names.ts",
+    "audit:second-names": "tsx scripts/audit-second-name-suggestions.ts"
   },
   "dependencies": {
     "@paralleldrive/cuid2": "^3.3.0",

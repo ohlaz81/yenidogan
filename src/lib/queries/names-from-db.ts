@@ -135,7 +135,7 @@ async function fetchPublishedNamesVersion(): Promise<string> {
  * PostgREST tek istekte ~1000 satır döndürür; sayfalı okunur.
  * Başarısız veya env yoksa null.
  */
-async function fetchPublishedNamesRowsUncached(): Promise<Array<Name & { image: MediaAsset | null }> | null> {
+export async function fetchPublishedNamesRowsUncached(): Promise<Array<Name & { image: MediaAsset | null }> | null> {
   const s = requireSupabase();
 
   const all: RowWithImg[] = [];

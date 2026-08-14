@@ -44,7 +44,7 @@ export default function GuideIndexPage() {
               "@type": "ListItem",
               position: index + 1,
               url: canonicalUrl(article.href),
-              name: article.title,
+              name: "cardTitle" in article ? article.cardTitle ?? article.title : article.title,
               description: article.excerpt ?? undefined,
             })),
           },
@@ -74,7 +74,7 @@ export default function GuideIndexPage() {
               </div>
               <div className="p-4">
                 <h2 className="font-display text-lg font-semibold text-primary group-hover:underline">
-                  {a.title}
+                  {"cardTitle" in a ? a.cardTitle ?? a.title : a.title}
                 </h2>
                 {a.excerpt && <p className="mt-1 line-clamp-2 text-sm text-muted">{a.excerpt}</p>}
               </div>

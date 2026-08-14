@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getStaticGuides, getStaticGuideBySlug } from "@/data/static-guide";
+import { newbornGuideFaqs } from "@/data/newborn-guide";
+import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { Breadcrumb } from "@/components/marketing/Breadcrumb";
 import { MediaImage } from "@/components/marketing/MediaImage";
 import { canonicalUrl } from "@/lib/site";
@@ -8,6 +10,7 @@ import {
   JsonLd,
   articleSchema,
   breadcrumbListSchema,
+  faqPageSchema,
   schemaGraph,
   webPageSchema,
 } from "@/lib/json-ld";
@@ -38,10 +41,26 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const a = getStaticGuideBySlug(slug);
   if (!a) return { title: "Yazı bulunamadı" };
+  const canonical = a.slug === "yenidogan-nedir"
+    ? "https://yenidogan.net/isim-rehberi/yenidogan-nedir"
+    : canonicalUrl(`/isim-rehberi/${a.slug}`);
   return {
-    title: a.title,
+    title: a.seoTitle ? { absolute: a.seoTitle } : a.title,
     description: a.excerpt ?? undefined,
-    alternates: { canonical: canonicalUrl(`/isim-rehberi/${a.slug}`) },
+    alternates: { canonical },
+    openGraph: {
+      type: "article",
+      title: a.seoTitle ?? a.title,
+      description: a.excerpt ?? undefined,
+      url: canonical,
+      images: a.cover?.url ? [{ url: canonicalUrl(a.cover.url), alt: a.cover.alt ?? a.title }] : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: a.seoTitle ?? a.title,
+      description: a.excerpt ?? undefined,
+      images: a.cover?.url ? [canonicalUrl(a.cover.url)] : undefined,
+    },
   };
 }
 
@@ -50,7 +69,10 @@ export default async function GuideArticlePage({ params }: Props) {
   const article = getStaticGuideBySlug(slug);
   if (!article) notFound();
   const theme = article.slug === BLUE_GUIDE_SLUG ? guideTheme.blue : guideTheme.default;
-  const url = canonicalUrl(`/isim-rehberi/${article.slug}`);
+  const url = article.slug === "yenidogan-nedir"
+    ? "https://yenidogan.net/isim-rehberi/yenidogan-nedir"
+    : canonicalUrl(`/isim-rehberi/${article.slug}`);
+  const faqs = article.slug === "yenidogan-nedir" ? newbornGuideFaqs : [];
   const breadcrumbItems = [
     { label: "Anasayfa", href: "/" },
     { label: "İsim rehberi", href: "/isim-rehberi" },
@@ -70,6 +92,7 @@ export default async function GuideArticlePage({ params }: Props) {
           }),
           breadcrumbListSchema(breadcrumbItems, url),
           articleSchema(article, url),
+          ...(faqs.length > 0 ? [faqPageSchema(faqs, url)] : []),
         ])}
       />
       <Breadcrumb items={breadcrumbItems} />
@@ -91,6 +114,12 @@ export default async function GuideArticlePage({ params }: Props) {
         className={`mt-10 space-y-4 text-base leading-relaxed text-muted [&_h2]:font-display [&_h2]:text-xl [&_li]:ml-4 [&_ul]:list-disc ${theme.body}`}
         dangerouslySetInnerHTML={{ __html: article.body }}
       />
+      {faqs.length > 0 && (
+        <section className="mt-10" aria-labelledby="faq-heading">
+          <h2 id="faq-heading" className="font-display text-2xl font-semibold text-primary">Sık Sorulan Sorular</h2>
+          <div className="mt-4"><FaqAccordion items={faqs} /></div>
+        </section>
+      )}
     </article>
   );
 }

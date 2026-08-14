@@ -1,9 +1,14 @@
 import type { GuideArticle, MediaAsset } from "@/types/database";
+import { newbornGuide } from "@/data/newborn-guide";
 import { syntheticMedia } from "@/lib/queries/home-fallbacks";
 
 const T = "2020-01-20T00:00:00.000Z";
 
-export type GuideWithCover = GuideArticle & { cover: MediaAsset | null };
+export type GuideWithCover = GuideArticle & {
+  cover: MediaAsset | null;
+  cardTitle?: string;
+  seoTitle?: string;
+};
 
 const covers = [
   syntheticMedia("guide-1", "/rehber/rehber1.jpeg", "Bebek ismi rehber kapağı 1"),
@@ -17,6 +22,7 @@ const covers = [
 ];
 
 const articles: GuideWithCover[] = [
+  newbornGuide,
   {
     id: "g-10",
     slug: "2026-en-guzel-ve-populer-erkek-isimleri",

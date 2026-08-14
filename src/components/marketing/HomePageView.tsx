@@ -135,7 +135,7 @@ export function HomePageView({
     ...featuredGuideLinks,
     ...data.guideArticles.map((article) => ({
       id: article.id,
-      title: article.title,
+      title: article.cardTitle ?? article.title,
       href: `/isim-rehberi/${article.slug}`,
     })),
   ];
